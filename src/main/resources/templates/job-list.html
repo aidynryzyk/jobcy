@@ -1,0 +1,517 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Job List | Jobcy - Job Listing Template | Themesdesign</title>
+
+    <div th:insert="~{fragments :: meta}"></div>
+</head>
+
+<body >
+<div th:insert="~{fragments :: preloader}"></div>
+<div>
+    <div th:insert="~{fragments :: top-bar}"></div>
+    <div th:insert="~{fragments :: navbar}"></div>
+
+    <div class="main-content">
+
+        <div class="page-content">
+
+            <!-- Start home -->
+            <section class="page-title-box">
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col-md-6">
+                            <div class="text-center text-white">
+                                <h3 class="mb-4">Job List</h3>
+                                <div class="page-next">
+                                    <nav class="d-inline-block" aria-label="breadcrumb text-center">
+                                        <ol class="breadcrumb justify-content-center">
+                                            <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                                            <li class="breadcrumb-item"><a href="javascript:void(0)">Pages</a></li>
+                                            <li class="breadcrumb-item active" aria-current="page"> Job List </li>
+                                        </ol>
+                                    </nav>
+                                </div>
+                            </div>
+                        </div>
+                        <!--end col-->
+                    </div>
+                    <!--end row-->
+                </div>
+                <!--end container-->
+            </section>
+            <!-- end home -->
+
+            <!-- START SHAPE -->
+            <div class="position-relative" style="z-index: 1">
+                <div class="shape">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 250">
+                        <path fill="" fill-opacity="1"
+                            d="M0,192L120,202.7C240,213,480,235,720,234.7C960,235,1200,213,1320,202.7L1440,192L1440,320L1320,320C1200,320,960,320,720,320C480,320,240,320,120,320L0,320Z"></path>
+                    </svg>
+                </div>
+            </div>
+            <!-- END SHAPE -->
+
+
+            <!-- START JOB-LIST -->
+            <section class="section">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-9">
+                            <div class="me-lg-5">
+                                <div id="jobs-list">
+
+
+                                    <script>
+                                        loadJobs(0, 10);
+                                        function loadJobs(page, size) {
+                                            const httpRequest = new XMLHttpRequest();
+                                            httpRequest.open("GET", "/api/v1/jobs?page=" + page + "&size=" + size, true);
+                                            httpRequest.onreadystatechange = function () {
+                                                if (httpRequest.readyState === XMLHttpRequest.DONE && httpRequest.status === 200) {
+                                                    let jobs = JSON.parse(httpRequest.responseText).content;
+                                                    let content = "";
+                                                    for (let i = 0; i < jobs.length; i++) {
+                                                        content += "<div class=\"job-box card mt-5\">\n" +
+                                "                                        <div class=\"p-4\">\n" +
+                                "                                            <div class=\"row align-items-center\">\n" +
+                                "                                                <div class=\"col-md-2\">\n" +
+                                "                                                    <div class=\"text-center mb-4 mb-lg-0\">\n" +
+                                "                                                        <a href=\"company-details.html\"><img src=\"/api/v1/users/" + jobs[i].user.id + "/image\" alt=\"\" class=\"img-fluid rounded-3\"></a>\n" +
+                                "                                                    </div>\n" +
+                                "                                                </div>\n" +
+                                "                                                <!--end col-->\n" +
+                                "                                                <div class=\"col-md-3\">\n" +
+                                "                                                    <div class=\"mb-2 mb-md-0\">\n" +
+                                "                                                        <h5 class=\"fs-18 mb-0\"><a href=\"/jobs/" + jobs[i].id + "\" class=\"text-dark\">" + jobs[i].name + "</a></h5>\n" +
+                                "                                                        <p class=\"text-muted fs-14 mb-0\">" + jobs[i].user.username + "</p>\n" +
+                                "                                                    </div>\n" +
+                                "                                                </div>\n" +
+                                "                                                <!--end col-->\n" +
+                                "                                                <div class=\"col-md-3\">\n" +
+                                "                                                    <div class=\"d-flex mb-2\">\n" +
+                                "                                                        <div class=\"flex-shrink-0\">\n" +
+                                "                                                            <i class=\"mdi mdi-map-marker text-primary me-1\"></i>\n" +
+                                "                                                        </div>\n" +
+                                "                                                        <p class=\"text-muted\">" + jobs[i].location + "</p>\n" +
+                                "                                                    </div>\n" +
+                                "                                                </div>\n" +
+                                "                                                <!--end col-->\n" +
+                                "                                                <div class=\"col-md-2\">\n" +
+                                "                                                    <div class=\"d-flex mb-0\">\n" +
+                                "                                                        <div>\n" +
+                                "                                                            <p class=\"text-muted mb-0\">\n" +
+                                "                                                                <span class=\"text-primary\">$</span>" + jobs[i].salary + "/m</p>\n" +
+                                "                                                        </div>\n" +
+                                "                                                    </div>\n" +
+                                "                                                </div>\n" +
+                                "                                                <!--end col-->\n" +
+                                "                                                <div class=\"col-md-2\">\n" +
+                                "                                                    <div>\n" +
+                                "                                                        <span class=\"badge bg-success-subtle text-success fs-13 mt-1\">" + jobs[i].type + "</span>\n" +
+                                "                                                    </div>\n" +
+                                "                                                </div>\n" +
+                                "                                                <!--end col-->\n" +
+                                "                                            </div>\n" +
+                                "                                            <!--end row-->\n" +
+                                "                                        </div>\n" +
+                                "                                        <div class=\"p-3 bg-light\">\n" +
+                                "                                            <div class=\"row justify-content-between\">\n" +
+                                "                                                <div class=\"col-md-4\">\n" +
+                                "                                                    <div>\n" +
+                                "                                                        <p class=\"text-muted mb-0\"><span class=\"text-dark\">Experience :</span>\n" +
+                                "                                                            <span>" + jobs[i].experience.level + "</span>\n" +
+                                "                                                        </p>\n" +
+                                "                                                    </div>\n" +
+                                "                                                </div>\n" +
+                                "                                                <!--end col-->\n" +
+                                "                                                <div class=\"col-lg-2 col-md-3\">\n" +
+                                "                                                    <div class=\"text-start text-md-end\">\n" +
+                                "                                                        <a onclick='document.getElementById(\"jobId\").value = " + jobs[i].id + "' href=\"#applyNow\" data-bs-toggle=\"modal\" class=\"primary-link\">Apply Now <i class=\"mdi mdi-chevron-double-right\"></i></a>\n" +
+                                "                                                    </div>\n" +
+                                "                                                </div>\n" +
+                                "                                                <!--end col-->\n" +
+                                "                                            </div>\n" +
+                                "                                            <!--end row-->\n" +
+                                "                                        </div>\n" +
+                                "                                    </div>\n" +
+                                                            "                                    <!--end job-box-->";
+                                                    }
+                                                    document.getElementById("jobs-list").innerHTML = content;
+                                                }
+                                            }
+                                            httpRequest.send();
+                                            loadPagination(page, size);
+                                        }
+
+                                        function loadPagination(page, size) {
+                                            const httpRequest = new XMLHttpRequest();
+                                            httpRequest.open("GET", "/api/v1/jobs?page=" + page + "&size=" + size, true);
+                                            httpRequest.onreadystatechange = function () {
+                                                if (httpRequest.readyState === XMLHttpRequest.DONE && httpRequest.status === 200) {
+                                                    let jobs = JSON.parse(httpRequest.responseText);
+                                                    let content = "";
+                                                    if (jobs.totalElements > 0) {
+                                                        content += "<ul class=\"pagination job-pagination mb-0 justify-content-center\">\n" +
+                                                            "                                                <li class=\"page-item\">\n" +
+                                                            "                                                    <button class=\"page-link\" tabindex=\"-1\" onclick=\"loadJobs(0, 10)\">\n" +
+                                                            "                                                        <i class=\"mdi mdi-chevron-double-left fs-15\"></i>\n" +
+                                                            "                                                    </button>\n" +
+                                                            "                                                </li>\n";
+                                                        for (let i = 0; i < jobs.totalElements / 10; i++) {
+                                                            content += "                                         <li class=\"page-item" + (i == jobs.number ? ' active' : '') + "\">\n" +
+                                                                // "                                                    <a class=\"page-link\" href=\"/jobs?page=" + i + "&size=" + 10 + "\">" + i+1 + "</a>\n" +
+                                                                "                                                    <button class=\"page-link\" onclick='loadJobs(" + i + ", 10)'>" + (i+1) + "</button>\n" +
+                                                                "                                                </li>\n";
+                                                        }
+                                                        content += "                                                <li class=\"page-item\">\n" +
+                                                            "                                                    <button class=\"page-link\" tabindex=\"-1\" onclick=\"loadJobs(" + (jobs.totalPages) + ", 10)\">\n" +
+                                                            "                                                        <i class=\"mdi mdi-chevron-double-right fs-15\"></i>\n" +
+                                                            "                                                    </button>\n" +
+                                                            "                                                </li>\n" +
+                                                            "                                            </ul>";
+                                                    }
+                                                    document.getElementById("pagination").innerHTML = content;
+                                                }
+                                            }
+                                            httpRequest.send();
+                                        }
+
+                                        function apply() {
+                                            let httpRequest = new XMLHttpRequest();
+                                            httpRequest.open("POST", "/api/v1/jobs-users/apply", true);
+                                            httpRequest.setRequestHeader("Content-Type", "application/json");
+                                            let body;
+                                            httpRequest.onreadystatechange = function () {
+                                                if (httpRequest.readyState === XMLHttpRequest.DONE && httpRequest.status === 200) {
+                                                    console.log(body);
+                                                }
+                                            }
+                                            body = {
+                                                "jobId" : document.getElementById("jobId").value,
+                                                "userId" : document.getElementById("userId").value,
+                                                "message" : document.getElementById("message").value
+                                            };
+                                            body = JSON.stringify(body);
+                                            console.log(body);
+                                            httpRequest.send(body);
+                                            // window.location.href = '/jobs';
+                                        }
+                                    </script>
+                                </div>
+
+                                <input type="hidden" id="jobId" value="dummy">
+                                <input type="hidden" id="userId" th:value="${userId}">
+                                <!-- End Job-list -->
+                                <div class="row">
+<!--                                    <div class="col-lg-12 mt-4 pt-2" th:if="${jobs.getTotalPages() > 10}">-->
+                                    <div class="col-lg-12 mt-4 pt-2">
+                                        <nav aria-label="Page navigation example" id="pagination">
+
+                                        </nav>
+                                    </div>
+                                    <!--end col-->
+                                </div><!-- end row -->
+                            </div>
+                        </div>
+                        <!--end col-->
+
+                        <!-- START SIDE-BAR -->
+                        <div class="col-lg-3">
+                            <div class="side-bar mt-5 mt-lg-0">
+                                <div class="accordion" id="accordionExample">
+                                    <form name="filterForm">
+                                        <div class="row">
+                                            <div class="col mt-4">
+                                                <div class="filler-job-form">
+                                                    <i class="uil uil-briefcase-alt"></i>
+                                                    <input type="search" th:value="${filter.getName()}" class="form-control filter-job-input-box" id="exampleFormControlInput1" name="name" placeholder="Job, company... ">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!--end col-->
+                                        <div class="row">
+                                            <div class="col mt-4">
+                                                <div class="filler-job-form">
+                                                    <i class="uil uil-location-point"></i>
+                                                    <select class="form-select" name="location" id="choices-single-location" aria-label="Default select example">
+                                                        <option disabled selected value="">Select city</option>
+                                                        <option th:each="city : ${cities}" th:selected="${city.name() == filter.getLocation()}" th:text="${city.name()}" th:value="${city.name()}">City</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!--end col-->
+                                        <div class="row">
+                                            <div class="col mt-4">
+                                                <div class="filler-job-form">
+                                                    <i class="uil uil-clipboard-notes"></i>
+                                                    <select class="form-select" name="categoryId" id="choices-single-categories" aria-label="Default select example">
+                                                        <option disabled selected value="">Select category</option>
+                                                        <option th:each="category : ${categories}" th:value="${category.id()}" th:selected="${filter.getCategoryId() == category.id()}" th:text="${category.name()}">Category name</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!--end col-->
+
+                                        <div class="accordion-item mt-4">
+                                            <h2 class="accordion-header" id="experienceOne">
+                                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#experience" aria-expanded="true" aria-controls="experience">
+                                                    Work experience
+                                                </button>
+                                            </h2>
+                                            <div id="experience" class="accordion-collapse collapse show" aria-labelledby="experienceOne">
+                                                <div class="accordion-body">
+                                                    <div class="side-title">
+                                                        <div th:each="experience : ${experiences}" class="form-check mt-2">
+                                                            <input class="form-check-input" type="radio" name="experience" th:value="${experience.getId()}" id="flexCheckChecked1" th:checked="${filter.getExperience() != null && experience.getId() == filter.getExperience()}" />
+                                                            <label class="form-check-label ms-2 text-muted" for="flexCheckChecked1" th:text="${experience.getLevel()}">Experience</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div><!-- end accordion-item -->
+
+                                        <div class="accordion-item mt-3">
+                                            <h2 class="accordion-header" id="jobType">
+                                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#jobtype1" aria-expanded="false" aria-controls="jobtype1">
+                                                    Type of employment
+                                                </button>
+                                            </h2>
+                                            <div id="jobtype1" class="accordion-collapse collapse show" aria-labelledby="jobType">
+                                                <div class="accordion-body">
+                                                    <div class="side-title">
+                                                        <div class="form-check mt-2" th:each="type : ${types}">
+                                                            <input class="form-check-input" type="radio" name="type" th:value="${type.name()}" id="type" th:checked="${type == filter.getType()}">
+                                                            <label class="form-check-label ms-2 text-muted" th:for="type" th:text="${type.name().replace('_', '-')}">
+                                                                Type
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div><!-- end accordion-item -->
+
+                                        <div class="accordion-item mt-3">
+                                            <h2 class="accordion-header" id="datePosted">
+                                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#dateposted1" aria-expanded="false" aria-controls="dateposted1">
+                                                    Date Posted
+                                                </button>
+                                            </h2>
+                                            <div id="dateposted1" class="accordion-collapse collapse show" aria-labelledby="datePosted">
+                                                <div class="accordion-body">
+                                                    <div class="side-title form-check-all" th:with="currentDateTime = ${#temporals.createNow()}">
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="radio" id="flexCheckChecked" />
+                                                            <label class="form-check-label ms-2 text-muted" for="flexCheckChecked">
+                                                                All
+                                                            </label>
+                                                        </div>
+                                                        <div class="form-check mt-2">
+                                                            <input class="form-check-input" type="radio" name="postDate" th:value="${currentDateTime.minusHours(1)}" id="flexCheckChecked"  />
+                                                            <!--                                                            <p th:text="${currentDateTime.minusHours(1)}"></p>-->
+                                                            <!--                                                            <p th:text="${filter.postDate()}"></p>-->
+                                                            <label class="form-check-label ms-2 text-muted" for="flexCheckChecked">
+                                                                Last Hour
+                                                            </label>
+                                                        </div>
+                                                        <div class="form-check mt-2">
+                                                            <input class="form-check-input" type="radio" name="postDate" th:value="${#temporals.createNow().minusDays(1)}" id="flexCheckChecked"  />
+                                                            <label class="form-check-label ms-2 text-muted" for="flexCheckChecked">
+                                                                Last 24 hours
+                                                            </label>
+                                                        </div>
+                                                        <div class="form-check mt-2">
+                                                            <input class="form-check-input" type="radio" name="postDate" th:value="${#temporals.createNow().minusWeeks(1)}" id="flexCheckChecked" />
+                                                            <label class="form-check-label ms-2 text-muted" for="flexCheckChecked">
+                                                                Last 7 days
+                                                            </label>
+                                                        </div>
+                                                        <div class="form-check mt-2">
+                                                            <input class="form-check-input" type="radio" name="postDate" th:value="${#temporals.createNow().minusWeeks(2)}" id="flexCheckChecked"  />
+                                                            <label class="form-check-label ms-2 text-muted" for="flexCheckChecked">
+                                                                Last 14 days
+                                                            </label>
+                                                        </div>
+                                                        <div class="form-check mt-2">
+                                                            <input class="form-check-input" type="radio" name="postDate" th:value="${#temporals.createNow().minusMonths(1)}" id="flexCheckChecked"  />
+                                                            <label class="form-check-label ms-2 text-muted" for="flexCheckChecked">
+                                                                Last 30 days
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div><!-- end accordion-item -->
+
+                                        <div class="accordion-item mt-3">
+                                            <h2 class="accordion-header" id="tagCloud">
+                                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#tagcloud1" aria-expanded="false" aria-controls="tagcloud1">
+                                                    Tags Cloud
+                                                </button>
+                                            </h2>
+                                            <div id="tagcloud1" class="accordion-collapse collapse show" aria-labelledby="tagCloud">
+                                                <div class="accordion-body">
+                                                    <div class="side-title">
+                                                        <div class="form-check mt-2" th:each="keyword : ${keywords}">
+                                                            <input class="form-check-input" type="checkbox" name="keywords" th:value="${keyword.getId()}" th:id="keywords" th:checked="${filter.getKeywords() != null && filter.getKeywords().contains(keyword)}" />
+                                                            <label class="form-check-label ms-2 text-muted" th:for="keywords" th:text="${keyword.getName()}">
+                                                                Keyword
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div><!-- end accordion-item -->
+                                    </form>
+                                    <div class="col col-md-6">
+                                        <button type="submit" class="btn btn-primary w-100" onclick="saveFilter(
+                                            document.getElementById('exampleFormControlInput1'),
+                                            document.getElementById('choices-single-location'),
+                                            document.getElementById('choices-single-categories'),
+                                            document.forms.filterForm.elements.experience,
+                                            document.forms.filterForm.elements.type,
+                                            document.forms.filterForm.elements.postDate,
+                                            document.getElementsByName('keywords')
+                                            // document.getElementsByName('experience'),
+                                            // document.getElementsByName('type'),
+                                            // document.getElementsByName('postDate'),
+                                            // document.getElementById('type'),
+                                            // document.getElementById('flexCheckChecked'),
+                                            // document.getElementsByName('keywords')
+                                        )">
+                                            <i class="uil uil-filter"></i> Filter
+                                        </button>
+                                    </div>
+                                </div>
+                                <!--end accordion-->
+
+                                <script>
+                                    function saveFilter(name, location, categoryId, experience, type, postDate, keywords) {
+                                        let httpRequest = new XMLHttpRequest();
+                                        httpRequest.open("POST", "/api/v1/jobs/filter", true);
+                                        httpRequest.setRequestHeader("Content-Type", "application/json");
+                                        let body;
+                                        httpRequest.onreadystatechange = function () {
+                                            if (httpRequest.readyState === XMLHttpRequest.DONE && httpRequest.status === 200) {
+                                                loadJobs(0, 10);
+                                                console.log(body);
+                                            }
+                                        }
+                                        let words = "[";
+                                        for (let i = 0; i < keywords.length; i++) {
+                                            console.log(keywords[i].value);
+                                            if (keywords[i].checked) {
+                                                words += "{\"id\" : " + keywords[i].value + "},";
+                                            }
+                                        }
+                                        if (words.length > 1) {
+                                            words = words.substring(0, words.length - 1);
+                                        }
+                                        words += "]";
+                                        body = {
+                                            "name": name.value,
+                                            "location": location.value,
+                                            "categoryId": categoryId.value,
+                                            "experience": experience.value,
+                                            "type": type.value === "" ? null : type.value,
+                                            "postDate": postDate.value === "" ? null : postDate.value,
+                                            "keywords": JSON.parse(words)
+                                        };
+                                        body = JSON.stringify(body);
+                                        console.log(body);
+                                        httpRequest.send(body);
+                                    }
+                                </script>
+
+                            </div>
+                            <!--end side-bar-->
+                        </div>
+                        <!--end col-->
+                        <!-- END SIDE-BAR -->
+                    </div>
+                    <!--end row-->
+                </div>
+                <!--end container-->
+            </section>
+            <!-- END JOB-LIST -->
+
+            <!-- START APPLY MODAL -->
+            <div class="modal fade" id="applyNow" tabindex="-1" aria-labelledby="applyNow" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-body p-5">
+                            <div class="text-center mb-4">
+                                <h5 class="modal-title" id="staticBackdropLabel">Apply For This Job</h5>
+                            </div>
+                            <div class="position-absolute end-0 top-0 p-3">
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="mb-3">
+                                <label for="nameControlInput" class="form-label">Name</label>
+                                <input type="text" class="form-control" id="nameControlInput" placeholder="Enter your name">
+                            </div>
+                            <div class="mb-3">
+                                <label for="emailControlInput2" class="form-label">Email Address</label>
+                                <input type="email" class="form-control" id="emailControlInput2" placeholder="Enter your email">
+                            </div>
+                            <div class="mb-3">
+                                <label for="message" class="form-label">Message</label>
+                                <textarea class="form-control" id="message" rows="4" placeholder="Enter your message"></textarea>
+                            </div>
+                            <div class="mb-4">
+                                <label class="form-label" for="inputGroupFile01">Resume Upload</label>
+                                <input type="file" class="form-control" id="inputGroupFile01">
+                            </div>
+                            <button onclick="apply()" data-bs-dismiss="modal" type="submit" class="btn btn-primary w-100">Send Application</button>
+                        </div>
+                    </div>
+                </div>
+            </div><!-- END APPLY MODAL -->
+
+        </div>
+        <!-- End Page-content -->
+
+        <div th:insert="~{fragments :: footer}">
+
+        <!--start back-to-top-->
+        <button onclick="topFunction()" id="back-to-top">
+            <i class="mdi mdi-arrow-up"></i>
+        </button>
+        <!--end back-to-top-->
+    </div>
+    <!-- end main content-->
+
+</div>
+<!-- END layout-wrapper -->
+
+<!-- JAVASCRIPT -->
+<script src="/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="https://unicons.iconscout.com/release/v4.0.0/script/monochrome/bundle.js"></script>
+
+
+<!-- Choice Js -->
+<script src="/libs/choices.js/public/assets/scripts/choices.min.js"></script>
+
+<!-- Nouislider Js -->
+<script src="/libs/nouislider/nouislider.min.js"></script>
+<script src="/js/pages/area-filter-range.init.js"></script>
+
+<!-- Checkbox Init Js -->
+<script src="/js/pages/checkbox.init.js"></script>
+
+<!-- Job Init Js -->
+<script src="/js/pages/job-list.init.js"></script>
+
+<!-- Switcher Js -->
+<script src="/js/pages/switcher.init.js"></script>
+
+<script src="/js/app.js"></script>
+<script src="/js/formsSubmitter.js"></script>
+
+</body>
+
+</html>

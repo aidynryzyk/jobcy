@@ -1,0 +1,367 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+
+
+<head>
+        
+        <title>Manage Jobs Post | Jobcy - Job Listing Template | Themesdesign</title>
+
+    <div th:insert="~{fragments :: meta}"></div>
+</head>
+
+<body >
+<div th:insert="~{fragments :: preloader}"></div>
+<div>
+    <div th:insert="~{fragments :: top-bar}"></div>
+    <div th:insert="~{fragments :: navbar}"></div>
+            <div class="main-content">
+
+                <div class="page-content">
+
+                    <script>
+                        function saveFilter(method, id, name, user, description, categoryId, type, salary, qualification, keywords, experience, location, postDate) {
+                            let httpRequest = new XMLHttpRequest();
+                            httpRequest.open(method, "/api/v1/users/user/jobs", true);
+                            httpRequest.setRequestHeader("Content-Type", "application/json");
+                            let body;
+                            httpRequest.onreadystatechange = function () {
+                                if (httpRequest.readyState === XMLHttpRequest.DONE && httpRequest.status === 200) {
+                                    console.log(body);
+                                }
+                            }
+                            let words = "[";
+                            for (let i = 0; i < keywords.length; i++) {
+                                console.log(keywords[i].value);
+                                if (keywords[i].checked) {
+                                    words += "{\"id\" : " + keywords[i].value + "},";
+                                }
+                            }
+                            if (words.length > 1) {
+                                words = words.substring(0, words.length - 1);
+                            }
+                            words += "]";
+                            body = {
+                                "id" : id == null ? null : id.value,
+                                "name": name.value,
+                                "userId" : user.value,
+                                "description": description.value,
+                                "location": location.value,
+                                "categoryId": categoryId.value,
+                                "qualification": qualification.value,
+                                "experienceId": experience.value,
+                                "type": type.value,
+                                "salary": salary.value,
+                                "postDate": postDate.value,
+                                "keywords": JSON.parse(words)
+                            };
+                            body = JSON.stringify(body);
+                            console.log(body);
+                            httpRequest.send(body);
+                            window.location.href = "/manage-jobs";
+                        }
+
+                        function loadUser(user) {
+                            const httpRequest = new XMLHttpRequest();
+                            httpRequest.open("GET", "/api/v1/users/" + user, true);
+                            let jobs;
+                            httpRequest.onreadystatechange = function () {
+                                if (httpRequest.readyState === XMLHttpRequest.DONE && httpRequest.status === 200) {
+                                    jobs = JSON.parse(httpRequest.responseText);
+                                }
+                            }
+                            httpRequest.send();
+                            return jobs;
+                        }
+                    </script>
+
+                    <!-- Start home -->
+                    <section class="page-title-box">
+                        <div class="container">
+                            <div class="row justify-content-center">
+                                <div class="col-md-6">
+                                    <div class="text-center text-white">
+                                        <h3 class="mb-4">Manage Job Post</h3>
+                                        <div class="page-next">
+                                            <nav class="d-inline-block" aria-label="breadcrumb text-center">
+                                                <ol class="breadcrumb justify-content-center">
+                                                    <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                                                    <li class="breadcrumb-item"><a href="javascript:void(0)">Manage Jobs</a></li>
+                                                    <li class="breadcrumb-item active" aria-current="page"> Manage Job Post </li>
+                                                </ol>
+                                            </nav>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--end col-->
+                            </div>
+                            <!--end row-->
+                        </div>
+                        <!--end container-->
+                    </section>
+                    <!-- end home -->
+
+                    <!-- START SHAPE -->
+                    <div class="position-relative" style="z-index: 1">
+                        <div class="shape">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 250">
+                                <path fill="" fill-opacity="1"
+                                    d="M0,192L120,202.7C240,213,480,235,720,234.7C960,235,1200,213,1320,202.7L1440,192L1440,320L1320,320C1200,320,960,320,720,320C480,320,240,320,120,320L0,320Z"></path>
+                            </svg>
+                        </div>
+                    </div>
+                    <!-- END SHAPE -->
+
+
+                        <!-- START JOBS-POST-EDIT -->
+                        <section th:if="${job != null}" class="section">
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <div class="primary-bg-subtle p-3">
+                                                <h5 class="mb-0 fs-17">Post a New Job!</h5>
+                                        </div>
+                                    </div><!--end col-->
+                                </div><!--end row-->
+                                <form id="postForm">
+                                    <div class="job-post-content box-shadow-md rounded-3 p-4"> 
+                                        <div class="row">
+                                            <input id="id" type="hidden" th:value="${job.id()}">
+                                            <input id="userId" type="hidden" th:value="${job.user().getId()}">
+                                            <div class="col-lg-12">
+                                                <div class="mb-4">
+                                                    <label for="name" class="form-label">Job Title</label>
+                                                    <input id="name" type="text" th:value="${job.name()}" class="form-control" placeholder="Title">
+                                                </div>
+                                            </div><!--end col-->
+                                            <div class="col-lg-12">
+                                                <div class="mb-4">
+                                                    <label for="description" class="form-label">Job Description</label>
+                                                    <textarea id="description" class="form-control" th:text="${job.description()}" rows="3" placeholder="Enter Job Description"></textarea>
+                                                </div>
+                                            </div><!--end col-->
+                                            <div class="col-lg-6">
+                                                <div class="mb-4">
+                                                    <label for="choices-single-categories" class="form-label">Categories</label>
+                                                    <select name="category" class="form-select" data-trigger="" id="choices-single-categories" aria-label="Default select example">
+                                                        <option th:each="category : ${categories}" th:value="${category.id()}" th:text="${category.name()}" th:selected="${category.id() == job.category().getId()}">Digital & Creative</option>
+                                                    </select>
+                                                </div>
+                                            </div><!--end col-->
+                                            <div class="col-lg-6">
+                                                <div class="mb-4">
+                                                    <label for="jobtype" class="form-label">Job Type</label>
+                                                    <select name="type" class="form-select" data-trigger="" id="jobtype" aria-label="Default select example">
+                                                        <option th:each="type : ${types}" th:value="${type.name()}" th:text="${type.name()}" th:selected="${type.name() == job.type().name()}">Digital & Creative</option>
+                                                    </select>
+                                                </div>
+                                            </div><!--end col-->
+                                            <div class="col-lg-6">
+                                                <div class="mb-4">
+                                                    <label for="salary" class="form-label">Salary($)</label>
+                                                    <input type="number" class="form-control" th:value="${job.salary()}" id="salary" placeholder="Salary">
+                                                </div>
+                                            </div><!--end col-->
+                                            <div class="col-lg-6">
+                                                <div class="mb-4">
+                                                    <label for="qualification" class="form-label">Qualification</label>
+                                                    <input type="text" class="form-control" th:value="${job.qualification()}" id="qualification" placeholder="Qualification">
+                                                </div>
+                                            </div><!--end col-->
+                                            <div class="col-lg-6">
+                                                <div class="mb-4">
+                                                    <label for="experience" class="form-label">Experience</label>
+                                                    <select class="form-select" name="location" id="experience" aria-label="Default select example">
+                                                        <option disabled selected value="">Select experience</option>
+                                                        <option th:each="experience : ${experiences}" th:selected="${job.experience().getId() == experience.getId()}" th:value="${experience.getId()}" th:text="${experience.getLevel()}">exp</option>
+                                                    </select>
+                                                </div>
+                                            </div><!--end col-->
+                                            <div class="col-lg-6">
+                                                <div class="mb-4">
+                                                    <label for="keywordsDiv" class="form-label">Keywords</label>
+                                                    <div id="keywordsDiv" class="form-check mt-2" th:each="keyword : ${keywords}">
+                                                        <input class="form-check-input" type="checkbox" id="keywords" name="keywords" th:value="${keyword.getId()}" th:id="keywords" th:checked="${job.keywords() != null && job.keywords().contains(keyword)}" />
+                                                        <label class="form-check-label ms-2 text-muted" th:for="keywords" th:text="${keyword.getName()}">
+                                                            Keyword
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div><!--end col-->
+                                            <div class="col-lg-6">
+                                                <div class="mb-4">
+                                                    <label for="choices-single-location" class="form-label">City</label>
+                                                    <select class="form-select" name="location" id="choices-single-location" aria-label="Default select example">
+                                                        <option disabled selected value="">Select city</option>
+                                                        <option th:each="city : ${cities}" th:selected="${city.name() == job.location()}" th:text="${city.name()}" th:value="${city.name()}">City</option>
+                                                    </select>
+                                                </div>
+                                            </div><!--end col-->
+                                            <input type="hidden" id="postDate" th:value="${job.postDate()}">
+                                        </div><!--end row-->
+                                    </div><!--end job-post-content-->
+                                </form>
+                                <div class="col-lg-12">
+                                    <div class="text-end">
+                                        <a href="/manage-jobs" class="btn btn-success">Back</a>
+                                        <button type="submit" class="btn btn-primary" onclick="saveFilter('PUT',
+                                                        document.getElementById('id'),
+                                                        document.getElementById('name'),
+                                                        document.getElementById('userId'),
+                                                        document.getElementById('description'),
+                                                        document.getElementById('choices-single-categories'),
+                                                        document.forms.postForm.elements.type,
+                                                        document.getElementById('salary'),
+                                                        document.getElementById('qualification'),
+                                                        document.getElementsByName('keywords'),
+                                                        document.getElementById('experience'),
+                                                        document.getElementById('choices-single-location'),
+                                                        document.getElementById('postDate')
+                                                    )">Post Now<i class="mdi mdi-send"></i>
+                                        </button>
+                                    </div>
+                                </div><!--end col-->
+                            </div><!--end container-->
+                        </section>
+                        <!-- END JOBS-POST-EDIT -->
+
+                    <section th:if="${job == null}" class="section">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="primary-bg-subtle p-3">
+                                        <h5 class="mb-0 fs-17">Post a New Job!</h5>
+                                    </div>
+                                </div><!--end col-->
+                            </div><!--end row-->
+                            <form id="postForm">
+                                <div class="job-post-content box-shadow-md rounded-3 p-4">
+                                    <div class="row">
+                                        <input id="userId" type="hidden" th:value="${userId}">
+                                        <div class="col-lg-12">
+                                            <div class="mb-4">
+                                                <label for="name" class="form-label">Job Title</label>
+                                                <input id="name" type="text" class="form-control" placeholder="Title">
+                                            </div>
+                                        </div><!--end col-->
+                                        <div class="col-lg-12">
+                                            <div class="mb-4">
+                                                <label for="description" class="form-label">Job Description</label>
+                                                <textarea id="description" class="form-control" rows="3" placeholder="Enter Job Description"></textarea>
+                                            </div>
+                                        </div><!--end col-->
+                                        <div class="col-lg-6">
+                                            <div class="mb-4">
+                                                <label for="choices-single-categories" class="form-label">Categories</label>
+                                                <select name="category" class="form-select" data-trigger="" id="choices-single-categories" aria-label="Default select example">
+                                                    <option th:each="category : ${categories}" th:value="${category.id()}" th:text="${category.name()}">Digital & Creative</option>
+                                                </select>
+                                            </div>
+                                        </div><!--end col-->
+                                        <div class="col-lg-6">
+                                            <div class="mb-4">
+                                                <label for="jobtype" class="form-label">Job Type</label>
+                                                <select name="type" class="form-select" data-trigger="" id="jobtype" aria-label="Default select example">
+                                                    <option th:each="type : ${types}" th:value="${type.name()}" th:text="${type.name()}">Digital & Creative</option>
+                                                </select>
+                                            </div>
+                                        </div><!--end col-->
+                                        <div class="col-lg-6">
+                                            <div class="mb-4">
+                                                <label for="salary" class="form-label">Salary($)</label>
+                                                <input type="number" class="form-control"id="salary" placeholder="Salary">
+                                            </div>
+                                        </div><!--end col-->
+                                        <div class="col-lg-6">
+                                            <div class="mb-4">
+                                                <label for="qualification" class="form-label">Qualification</label>
+                                                <input type="text" class="form-control" id="qualification" placeholder="Qualification">
+                                            </div>
+                                        </div><!--end col-->
+                                        <div class="col-lg-6">
+                                            <div class="mb-4">
+                                                <label for="experience" class="form-label">Experience</label>
+                                                <select class="form-select" name="location" id="experience" aria-label="Default select example">
+                                                    <option disabled selected value="">Select experience</option>
+                                                    <option th:each="experience : ${experiences}" th:value="${experience.getId()}" th:text="${experience.getLevel()}">exp</option>
+                                                </select>
+                                            </div>
+                                        </div><!--end col-->
+                                        <div class="col-lg-6">
+                                            <div class="mb-4">
+                                                <label for="keywordsDiv" class="form-label">Keywords</label>
+                                                <div id="keywordsDiv" class="form-check mt-2" th:each="keyword : ${keywords}">
+                                                    <input class="form-check-input" type="checkbox" id="keywords" name="keywords" th:value="${keyword.getId()}" th:id="keywords" />
+                                                    <label class="form-check-label ms-2 text-muted" th:for="keywords" th:text="${keyword.getName()}">
+                                                        Keyword
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div><!--end col-->
+                                        <div class="col-lg-6">
+                                            <div class="mb-4">
+                                                <label for="choices-single-location" class="form-label">City</label>
+                                                <select class="form-select" name="location" id="choices-single-location" aria-label="Default select example">
+                                                    <option disabled selected value="">Select city</option>
+                                                    <option th:each="city : ${cities}" th:text="${city.name()}" th:value="${city.name()}">City</option>
+                                                </select>
+                                            </div>
+                                        </div><!--end col-->
+                                        <input type="hidden" id="postDate" th:value="${#temporals.createNow()}">
+                                    </div><!--end row-->
+                                </div><!--end job-post-content-->
+                            </form>
+                            <div class="col-lg-12">
+                                <div class="text-end">
+                                    <a href="/manage-jobs" class="btn btn-success">Back</a>
+                                    <button type="submit" class="btn btn-primary" onclick="saveFilter('POST',
+                                                        null,
+                                                        document.getElementById('name'),
+                                                        document.getElementById('userId'),
+                                                        document.getElementById('description'),
+                                                        document.getElementById('choices-single-categories'),
+                                                        document.forms.postForm.elements.type,
+                                                        document.getElementById('salary'),
+                                                        document.getElementById('qualification'),
+                                                        document.getElementsByName('keywords'),
+                                                        document.getElementById('experience'),
+                                                        document.getElementById('choices-single-location'),
+                                                        document.getElementById('postDate')
+                                                    )">Post Now<i class="mdi mdi-send"></i>
+                                    </button>
+                                </div>
+                            </div><!--end col-->
+                        </div><!--end container-->
+                    </section>
+
+                </div>
+                <!-- End Page-content -->
+
+                <div th:insert="~{fragments :: footer}">
+
+                <!--start back-to-top-->
+                <button onclick="topFunction()" id="back-to-top">
+                    <i class="mdi mdi-arrow-up"></i>
+                </button>
+                <!--end back-to-top-->
+            </div>
+            <!-- end main content-->
+
+        </div>
+        <!-- END layout-wrapper -->
+
+        <!-- JAVASCRIPT -->
+        <script src="/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
+        <script src="https://unicons.iconscout.com/release/v4.0.0/script/monochrome/bundle.js"></script>
+
+
+        <!-- Choice Js -->
+        <script src="/libs/choices.js/public/assets/scripts/choices.min.js"></script>
+
+        <!-- Switcher Js -->
+        <script src="/js/pages/switcher.init.js"></script>
+
+        <script src="/js/app.js"></script>
+
+    </body>
+</html>

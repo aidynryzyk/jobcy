@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+
+
+<head>
+        
+        <title>Manage Jobs | Jobcy - Job Listing Template | Themesdesign</title>
+
+        <div th:insert="~{fragments :: meta}"></div>
+    </head>
+
+    <body >
+    <div th:insert="~{fragments :: preloader}"></div>
+        <div>
+            <div th:insert="~{fragments :: top-bar}"></div>
+            <div th:insert="~{fragments :: navbar}"></div>
+            <div class="main-content">
+
+                <div class="page-content">
+
+                    <!-- Start home -->
+                    <section class="page-title-box">
+                        <div class="container">
+                            <div class="row justify-content-center">
+                                <div class="col-md-6">
+                                    <div class="text-center text-white">
+                                        <h3 class="mb-4">Manage Jobs</h3>
+                                        <div class="page-next">
+                                            <nav class="d-inline-block" aria-label="breadcrumb text-center">
+                                                <ol class="breadcrumb justify-content-center">
+                                                    <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                                                    <li class="breadcrumb-item"><a href="javascript:void(0)">Profile</a></li>
+                                                    <li class="breadcrumb-item active" aria-current="page"> Manage Jobs </li>
+                                                </ol>
+                                            </nav>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--end col-->
+                            </div>
+                            <!--end row-->
+                        </div>
+                        <!--end container-->
+                    </section>
+                    <!-- end home -->
+
+                    <!-- START SHAPE -->
+                    <div class="position-relative" style="z-index: 1">
+                        <div class="shape">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 250">
+                                <path fill="" fill-opacity="1"
+                                    d="M0,192L120,202.7C240,213,480,235,720,234.7C960,235,1200,213,1320,202.7L1440,192L1440,320L1320,320C1200,320,960,320,720,320C480,320,240,320,120,320L0,320Z"></path>
+                            </svg>
+                        </div>
+                    </div>
+                    <!-- END SHAPE -->
+
+
+                    <!-- START MANAGE-JOBS -->
+                    <section class="section">
+                        <div class="container">
+                            <div class="row align-items-center">
+                                <div class="col-lg-8">
+                                    <div class="mb-4 mb-lg-0">
+                                        <h6 class="mb-0"> My Job Listings </h6>
+                                    </div>
+                                </div><!--end col-->
+                            </div><!--end row-->
+                            <div class="row">
+                                <input type="hidden" id="userId" th:value="${userId}">
+
+                                <script>
+                                    function loadJobs() {
+                                        const httpRequest = new XMLHttpRequest();
+                                        httpRequest.open("GET", "/api/v1/jobs-users/user/" + document.getElementById("userId").value, true);
+                                        httpRequest.onreadystatechange = function () {
+                                            if (httpRequest.readyState === XMLHttpRequest.DONE && httpRequest.status === 200) {
+                                                let jobs = JSON.parse(httpRequest.responseText);
+                                                let content = "";
+                                                for (let i = 0; i < jobs.length; i++) {
+                                                    content += "<div class=\"job-box card mt-4\">\n" +
+                                                        "                                        <div class=\"card-body p-4\">\n" +
+                                                        "                                            <div class=\"row\">\n" +
+                                                        "                                                <div class=\"col-lg-1\">\n" +
+                                                        "                                                    <a href=\"company-details.html\"><img src=\"/api/v1/users/" + jobs[i].job.user.id + "/image\" alt=\"\" class=\"img-fluid rounded-3\"></a>\n" +
+                                                        "                                                </div><!--end col-->\n" +
+                                                        "                                                <div class=\"col-lg-9\">\n" +
+                                                        "                                                    <div class=\"mt-3 mt-lg-0\">\n" +
+                                                        "                                                        <h5 class=\"fs-17 mb-1\"><a href=\"/jobs/" + jobs[i].job.id + "\" class=\"text-dark\">" + jobs[i].job.name + "</a> <small class=\"text-muted fw-normal\">(" + jobs[i].job.experience.level + " Exp.)</small></h5>\n" +
+                                                        "                                                        <ul class=\"list-inline mb-0\">\n" +
+                                                        "                                                            <li class=\"list-inline-item\">\n" +
+                                                        "                                                                <p class=\"text-muted fs-14 mb-0\">" + jobs[i].job.user.username + "</p>\n" +
+                                                        "                                                            </li>\n" +
+                                                        "                                                            <li class=\"list-inline-item\">\n" +
+                                                        "                                                                <p class=\"text-muted fs-14 mb-0\"><i class=\"mdi mdi-map-marker\"></i>" + jobs[i].job.location + "</p>\n" +
+                                                        "                                                            </li>\n" +
+                                                        "                                                            <li class=\"list-inline-item\">\n" +
+                                                        "                                                                <p class=\"text-muted fs-14 mb-0\"><i class=\"uil uil-wallet\"></i> " + jobs[i].job.salary + " / month</p>\n" +
+                                                        "                                                            </li>\n" +
+                                                        "                                                        </ul>\n" +
+                                                        "                                                        <div class=\"mt-2\">\n" +
+                                                        "                                                            <span class=\"badge danger-bg-subtle mt-1\">" + jobs[i].job.type + "</span>\n" +
+                                                        "                                                            <span class=\"badge info-bg-subtle mt-1\">" + jobs[i].job.industry + "</span>\n" +
+                                                        "                                                        </div>\n" +
+                                                        "                                                    </div>\n" +
+                                                        "                                                </div><!--end col-->\n" +
+                                                        "                                            </div><!--end row-->\n" +
+                                                        "                                        </div>\n" +
+                                                        "                                    </div><!--end job-box-->";
+                                                }
+                                                document.getElementById("jobs-list").innerHTML = content;
+                                            }
+                                        }
+                                        httpRequest.send();
+                                    }
+
+                                </script>
+
+                                <div class="col-lg-12" id="jobs-list">
+
+                                    <script>
+                                        loadJobs();
+                                    </script>
+
+                                </div><!--end col-->
+                            </div><!--end row-->
+                        </div><!--end container-->
+                    </section>
+                    <!-- END MANAGE-JOBS -->
+
+                    <!-- DELETE Modal -->
+                    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModal" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="staticBackdropLabel">Delete Jobs ?</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <div>
+                                        <h6 class="text-danger"><i class="uil uil-exclamation-triangle"></i> Warning: Are you sure you want to delete job Post ?</h6>
+                                        <p class="text-muted"> Your jobs post will be permenently removed and you won't be able to see them again, including the once you're shared with your friends.</p>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-primary btn-sm" data-bs-dismiss="modal">Cancel</button>
+                                    <button type="button" class="btn btn-danger btn-sm">Yes, delete</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- END DELETE MODAL -->
+
+                </div>
+                <!-- End Page-content -->
+
+                <div th:insert="~{fragments :: footer}"></div>
+                <!--start back-to-top-->
+                <button onclick="topFunction()" id="back-to-top">
+                    <i class="mdi mdi-arrow-up"></i>
+                </button>
+                <!--end back-to-top-->
+            </div>
+            <!-- end main content-->
+
+        </div>
+        <!-- END layout-wrapper -->
+
+        <!-- JAVASCRIPT -->
+        <script src="/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
+        <script src="https://unicons.iconscout.com/release/v4.0.0/script/monochrome/bundle.js"></script>
+
+
+        <!-- Choice Js -->
+        <script src="/libs/choices.js/public/assets/scripts/choices.min.js"></script>
+
+        <!-- Candidate Init Js -->
+        <script src="/js/pages/candidate.init.js"></script>
+
+        <!-- Switcher Js -->
+        <script src="/js/pages/switcher.init.js"></script>
+
+        <script src="/js/app.js"></script>
+
+    </body>
+</html>

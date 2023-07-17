@@ -1,0 +1,324 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+
+<head>
+
+    <title>Manage Jobs Post | Jobcy - Job Listing Template | Themesdesign</title>
+
+    <div th:insert="~{fragments :: meta}"></div>
+</head>
+
+<body >
+<div th:insert="~{fragments :: preloader}"></div>
+<div>
+    <div th:insert="~{fragments :: top-bar}"></div>
+    <div th:insert="~{fragments :: navbar}"></div>
+
+            <div class="main-content">
+
+                <div class="page-content">
+
+                    <!-- Start home -->
+                    <section class="page-title-box">
+                        <div class="container">
+                            <div class="row justify-content-center">
+                                <div class="col-md-6">
+                                    <div class="text-center text-white">
+                                        <h3 class="mb-4">Job Details</h3>
+                                        <div class="page-next">
+                                            <nav class="d-inline-block" aria-label="breadcrumb text-center">
+                                                <ol class="breadcrumb justify-content-center">
+                                                    <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                                                    <li class="breadcrumb-item"><a href="javascript:void(0)">Pages</a></li>
+                                                    <li class="breadcrumb-item active" aria-current="page"> Job Details </li>
+                                                </ol>
+                                            </nav>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--end col-->
+                            </div>
+                            <!--end row-->
+                        </div>
+                        <!--end container-->
+                    </section>
+                    <!-- end home -->
+
+                    <!-- START SHAPE -->
+                    <div class="position-relative" style="z-index: 1">
+                        <div class="shape">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 250">
+                                <path fill="" fill-opacity="1"
+                                    d="M0,192L120,202.7C240,213,480,235,720,234.7C960,235,1200,213,1320,202.7L1440,192L1440,320L1320,320C1200,320,960,320,720,320C480,320,240,320,120,320L0,320Z"></path>
+                            </svg>
+                        </div>
+                    </div>
+                    <!-- END SHAPE -->
+                    <input type="hidden" id="jobId" th:value="${jobId}">
+                    <input type="hidden" id="userId" th:value="${userId}">
+
+                    <div id="details">
+
+                    </div>
+
+                    <script>
+                        loadDetails();
+                        function loadDetails() {
+                            const httpRequest = new XMLHttpRequest();
+                            httpRequest.open("GET", "/api/v1/jobs/" + document.getElementById("jobId").value, true);
+                            httpRequest.onreadystatechange = function () {
+                                if (httpRequest.readyState === XMLHttpRequest.DONE && httpRequest.status === 200) {
+                                    let job = JSON.parse(httpRequest.responseText);
+                                    let content = "<section class=\"section\">\n" +
+                                        "                        <div class=\"container\">\n" +
+                                        "                            <div class=\"row\">\n" +
+                                        "                                <div class=\"col-lg-8\">\n" +
+                                        "                                    <div class=\"card job-detail overflow-hidden\">\n" +
+                                        "                                        <div class=\"card-body p-4\">\n" +
+                                        "                                            <div>\n" +
+                                        "                                                <div class=\"row\">\n" +
+                                        "                                                    <div class=\"col-md-8\">\n" +
+                                        "                                                        <h5 class=\"mb-1\">" + job.name + "</h5>\n" +
+                                        "                                                    </div><!--end col-->\n" +
+                                        "                                                </div><!--end row-->\n" +
+                                        "                                            </div>\n" +
+                                        "\n" +
+                                        "                                            <div class=\"mt-4\">\n" +
+                                        "                                                <div class=\"row g-2\">\n" +
+                                        "                                                    <div class=\"col-lg-3\">\n" +
+                                        "                                                        <div class=\"border rounded-start p-3\">\n" +
+                                        "                                                            <p class=\"text-muted mb-0 fs-13\">Experience</p>\n" +
+                                        "                                                            <p class=\"fw-medium fs-15 mb-0\">" + job.experience.level + "</p>\n" +
+                                        "                                                        </div>\n" +
+                                        "                                                    </div>\n" +
+                                        "                                                    <div class=\"col-lg-3\">\n" +
+                                        "                                                        <div class=\"border p-3\">\n" +
+                                        "                                                            <p class=\"text-muted fs-13 mb-0\">Employee type</p>\n" +
+                                        "                                                            <p class=\"fw-medium mb-0\">" + job.type + "</p>\n" +
+                                        "                                                        </div>\n" +
+                                        "                                                    </div>\n" +
+                                        "                                                    <div class=\"col-lg-3\">\n" +
+                                        "                                                        <div class=\"border rounded-end p-3\">\n" +
+                                        "                                                            <p class=\"text-muted fs-13 mb-0\">Offer Salary</p>\n" +
+                                        "                                                            <p class=\"fw-medium mb-0\">$" + job.salary + "/ Month</p>\n" +
+                                        "                                                        </div>\n" +
+                                        "                                                    </div>\n" +
+                                        "                                                </div>\n" +
+                                        "                                            </div><!--end Experience-->\n" +
+                                        "\n" +
+                                        "                                            <div class=\"mt-4\">\n" +
+                                        "                                                <h5 class=\"mb-3\">Job Description</h5>\n" +
+                                        "                                                <div class=\"job-detail-desc\">\n" +
+                                        "                                                    <p class=\"text-muted mb-0\">" + job.description + "</p>\n" +
+                                        "                                                </div>\n" +
+                                        "                                            </div>\n" +
+                                        "\n" +
+                                        "                                        </div><!--end card-body-->\n" +
+                                        "                                    </div><!--end job-detail-->\n" +
+                                        "\n" +
+                                        "                                </div><!--end col-->\n" +
+                                        "\n" +
+                                        "                                <div class=\"col-lg-4 mt-4 mt-lg-0\">\n" +
+                                        "                                    <!--start side-bar-->\n" +
+                                        "                                    <div class=\"side-bar ms-lg-4\">\n" +
+                                        "                                        <div class=\"card job-overview\">\n" +
+                                        "                                            <div class=\"card-body p-4\">\n" +
+                                        "                                                <h6 class=\"fs-17\">Job Overview</h6>\n" +
+                                        "                                                <ul class=\"list-unstyled mt-4 mb-0\">\n" +
+                                        "                                                    <li>\n" +
+                                        "                                                        <div class=\"d-flex mt-4\">\n" +
+                                        "                                                            <i class=\"uil uil-user icon bg-primary-subtle text-primary\"></i>\n" +
+                                        "                                                            <div class=\"ms-3\">\n" +
+                                        "                                                                <h6 class=\"fs-14 mb-2\">Job Title</h6>\n" +
+                                        "                                                                <p class=\"text-muted mb-0\">" + job.name + "</p> \n" +
+                                        "                                                            </div>\n" +
+                                        "                                                        </div>\n" +
+                                        "                                                    </li>\n" +
+                                        "                                                    <li>\n" +
+                                        "                                                        <div class=\"d-flex mt-4\">\n" +
+                                        "                                                            <i class=\"uil uil-star-half-alt icon bg-primary-subtle text-primary\"></i>\n" +
+                                        "                                                            <div class=\"ms-3\">\n" +
+                                        "                                                                <h6 class=\"fs-14 mb-2\">Experience</h6>\n" +
+                                        "                                                                <p class=\"text-muted mb-0\">" + job.experience.level + "</p> \n" +
+                                        "                                                            </div>\n" +
+                                        "                                                        </div>\n" +
+                                        "                                                    </li>\n" +
+                                        "                                                    <li>\n" +
+                                        "                                                        <div class=\"d-flex mt-4\">\n" +
+                                        "                                                            <i class=\"uil uil-location-point icon bg-primary-subtle text-primary\"></i>\n" +
+                                        "                                                            <div class=\"ms-3\">\n" +
+                                        "                                                                <h6 class=\"fs-14 mb-2\">Location</h6>\n" +
+                                        "                                                                <p class=\"text-muted mb-0\">" + job.location + "</p> \n" +
+                                        "                                                            </div>\n" +
+                                        "                                                        </div>\n" +
+                                        "                                                    </li>\n" +
+                                        "                                                    <li>\n" +
+                                        "                                                        <div class=\"d-flex mt-4\">\n" +
+                                        "                                                            <i class=\"uil uil-usd-circle icon bg-primary-subtle text-primary\"></i>\n" +
+                                        "                                                            <div class=\"ms-3\">\n" +
+                                        "                                                                <h6 class=\"fs-14 mb-2\">Offered Salary</h6>\n" +
+                                        "                                                                <p class=\"text-muted mb-0\">$" + job.salary + "</p> \n" +
+                                        "                                                            </div>\n" +
+                                        "                                                        </div>\n" +
+                                        "                                                    </li>\n" +
+                                        "                                                    <li>\n" +
+                                        "                                                        <div class=\"d-flex mt-4\">\n" +
+                                        "                                                            <i class=\"uil uil-graduation-cap icon bg-primary-subtle text-primary\"></i>\n" +
+                                        "                                                            <div class=\"ms-3\">\n" +
+                                        "                                                                <h6 class=\"fs-14 mb-2\">Qualification</h6>\n" +
+                                        "                                                                <p class=\"text-muted mb-0\">" + job.qualification + "</p> \n" +
+                                        "                                                            </div>\n" +
+                                        "                                                        </div>\n" +
+                                        "                                                    </li>\n" +
+                                        "                                                    <li>\n" +
+                                        "                                                        <div class=\"d-flex mt-4\">\n" +
+                                        "                                                            <i class=\"uil uil-building icon bg-primary-subtle text-primary\"></i>\n" +
+                                        "                                                            <div class=\"ms-3\">\n" +
+                                        "                                                                <h6 class=\"fs-14 mb-2\">Industry</h6>\n" +
+                                        "                                                                <p class=\"text-muted mb-0\">" + job.industry + "</p> \n" +
+                                        "                                                            </div>\n" +
+                                        "                                                        </div>\n" +
+                                        "                                                    </li>\n" +
+                                        "                                                    <li>\n" +
+                                        "                                                        <div class=\"d-flex mt-4\">\n" +
+                                        "                                                            <i class=\"uil uil-history icon bg-primary-subtle text-primary\"></i>\n" +
+                                        "                                                            <div class=\"ms-3\">\n" +
+                                        "                                                                <h6 class=\"fs-14 mb-2\">Date Posted</h6>\n" +
+                                        "                                                                <p class=\"text-muted mb-0\">" + job.postDate + "</p> \n" +
+                                        "                                                            </div>\n" +
+                                        "                                                        </div>\n" +
+                                        "                                                    </li>\n" +
+                                        "                                                </ul>\n" +
+                                        "                                                <div class=\"mt-3\">\n" +
+                                        "                                                    <a onclick='document.getElementById(\"jobId\").value = " + job.id + "' href=\"#applyNow\" data-bs-toggle=\"modal\" class=\"btn btn-primary btn-hover w-100 mt-2\">Apply Now <i class=\"uil uil-arrow-right\"></i></a>\n" +
+                                        "                                                    <a href=\"bookmark-jobs.html\" class=\"btn btn-soft-warning btn-hover w-100 mt-2\"><i class=\"uil uil-bookmark\"></i> Add Bookmark</a>\n" +
+                                        "                                                </div>\n" +
+                                        "                                            </div><!--end card-body-->\n" +
+                                        "                                        </div><!--end job-overview-->\n" +
+                                        "\n" +
+                                        "                                        <div class=\"card company-profile mt-4\">\n" +
+                                        "                                            <div class=\"card-body p-4\">\n" +
+                                        "                                                <div class=\"text-center\">\n" +
+                                        "                                                <img src=\"/api/v1/users/" + job.user.id + "/image\" alt=\"\" class=\"img-fluid rounded-3\">\n" +
+                                        "\n" +
+                                        "                                                    <div class=\"mt-4\">\n" +
+                                        "                                                        <h6 class=\"fs-17 mb-1\">" + job.user.username + "</h6>\n" +
+                                        "                                                    </div>\n" +
+                                        "                                                </div>\n" +
+                                        "                                                <ul class=\"list-unstyled mt-4\">\n" +
+                                        "                                                    <li class=\"mt-3\">\n" +
+                                        "                                                        <div class=\"d-flex\">\n" +
+                                        "                                                            <i class=\"uil uil-envelope text-primary fs-4\"></i>\n" +
+                                        "                                                            <div class=\"ms-3\">\n" +
+                                        "                                                                <h6 class=\"fs-14 mb-2\">Email</h6>\n" +
+                                        "                                                                <p class=\"text-muted fs-14 mb-0\">" + job.user.email + "</p>\n" +
+                                        "                                                            </div>\n" +
+                                        "                                                        </div>\n" +
+                                        "                                                    </li>\n" +
+                                        "                                                </ul>\n" +
+                                        "                                                <div class=\"mt-4\">\n" +
+                                        "                                                    <a href=\"/profile/" + job.user.id + "\" class=\"btn btn-primary btn-hover w-100 rounded\"><i class=\"mdi mdi-eye\"></i> View Profile</a>\n" +
+                                        "                                                </div>\n" +
+                                        "                                            </div>\n" +
+                                        "                                        </div>\n" +
+                                        "                                    </div>\n" +
+                                        "                                    <!--end side-bar-->\n" +
+                                        "                                </div><!--end col-->\n" +
+                                        "                            </div><!--end row-->\n" +
+                                        "                        </div><!--end container-->\n" +
+                                        "                    </section>";
+                                    document.getElementById("details").innerHTML = content;
+                                }
+                            }
+                            httpRequest.send();
+                        }
+
+                        function apply() {
+                            let httpRequest = new XMLHttpRequest();
+                            httpRequest.open("POST", "/api/v1/jobs-users/apply", true);
+                            httpRequest.setRequestHeader("Content-Type", "application/json");
+                            let body;
+                            httpRequest.onreadystatechange = function () {
+                                if (httpRequest.readyState === XMLHttpRequest.DONE && httpRequest.status === 200) {
+                                    console.log(body);
+                                }
+                            }
+                            body = {
+                                "jobId" : document.getElementById("jobId").value,
+                                "userId" : document.getElementById("userId").value,
+                                "message" : document.getElementById("message").value
+                            };
+                            body = JSON.stringify(body);
+                            console.log(body);
+                            httpRequest.send(body);
+                            // window.location.href = '/jobs';
+                        }
+
+                    </script>
+
+
+                    <!-- START APPLY MODAL -->
+                    <div class="modal fade" id="applyNow" tabindex="-1" aria-labelledby="applyNow" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-body p-5">
+                                    <form>
+                                        <div class="text-center mb-4">
+                                            <h5 class="modal-title" id="staticBackdropLabel">Apply For This Job</h5>
+                                        </div>
+                                        <div class="position-absolute end-0 top-0 p-3">
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="nameControlInput" class="form-label">Name</label>
+                                            <input type="text" class="form-control" id="nameControlInput" placeholder="Enter your name">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="emailControlInput2" class="form-label">Email Address</label>
+                                            <input type="email" class="form-control" id="emailControlInput2" placeholder="Enter your email">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="message" class="form-label">Message</label>
+                                            <textarea class="form-control" id="message" rows="4" placeholder="Enter your message"></textarea>
+                                        </div>
+                                        <div class="mb-4">
+                                            <label class="form-label" for="inputGroupFile01">Resume Upload</label>
+                                            <input type="file" class="form-control" id="inputGroupFile01">
+                                        </div>
+                                    </form>
+                                    <button onclick="apply()" data-bs-dismiss="modal" type="submit" class="btn btn-primary w-100">Send Application</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div><!-- END APPLY MODAL -->
+
+                </div>
+                <!-- End Page-content -->
+
+                <div th:insert="~{fragments :: footer}">
+
+                <!--start back-to-top-->
+                <button onclick="topFunction()" id="back-to-top">
+                    <i class="mdi mdi-arrow-up"></i>
+                </button>
+                <!--end back-to-top-->
+            </div>
+            <!-- end main content-->
+
+        </div>
+        <!-- END layout-wrapper -->
+
+        <!-- JAVASCRIPT -->
+        <script src="/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
+        <script src="https://unicons.iconscout.com/release/v4.0.0/script/monochrome/bundle.js"></script>
+
+
+        <!-- Switcher Js -->
+        <script src="/js/pages/switcher.init.js"></script>
+
+        <!-- App Js -->
+        <script src="/js/app.js"></script>
+
+    </body>
+</html>

@@ -1,0 +1,797 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Home | Jobcy - Job Listing Template | Themesdesign</title>
+    <div th:insert="~{fragments :: meta}"></div>
+</head>
+
+<body>
+<div th:insert="~{fragments :: preloader}"></div>
+<div>
+    <div th:insert="~{fragments :: top-bar}"></div>
+    <div th:insert="~{fragments :: navbar}"></div>
+
+    <div class="main-content">
+
+        <div class="page-content">
+
+            <!-- START HOME -->
+            <section class="bg-home2" id="home">
+                <div class="container">
+                    <div class="row align-items-center">
+                        <div class="col-lg-7">
+                            <div class="mb-4 pb-3 me-lg-5">
+                                <h6 class="sub-title">We have 150,000+ live jobs</h6>
+                                <h1 class="display-5 fw-semibold mb-3">Find your dream jobs with <span
+                                        class="text-primary fw-bold">Jobcy</span></h1>
+                                <p class="lead text-muted mb-0">Find jobs, create trackable resumes and enrich your
+                                    applications.Carefully crafted after analyzing the needs of different
+                                    industries.</p>
+                            </div>
+                            <form action="/jobs/filter" method="post">
+                                <div class="registration-form">
+                                    <div class="row g-0">
+                                        <div class="col-md-4">
+                                            <div class="filter-search-form filter-border mt-3 mt-md-0">
+                                                <i class="uil uil-briefcase-alt"></i>
+                                                <!--                                                        <input type="search" id="job-title" class="form-control filter-input-box" placeholder="Job, Company name...">-->
+                                                <input class="form-control filter-input-box" id="job-search"
+                                                       name="name" placeholder="Job, company... " type="search">
+                                            </div>
+                                        </div><!--end col-->
+                                        <div class="col-md-4">
+                                            <div class="filter-search-form mt-3 mt-md-0">
+                                                <i class="uil uil-map-marker"></i>
+                                                <select class="form-select filter-input-box bg-white text-secondary"
+                                                        id="location-drop-down">
+                                                    <script>
+                                                        loadCities();
+
+                                                        function loadCities() {
+                                                            const httpRequest = new XMLHttpRequest();
+                                                            httpRequest.open("GET", "/api/v1/cities", true);
+                                                            httpRequest.onreadystatechange = function () {
+                                                                if (httpRequest.status === 200) {
+                                                                    let cities = JSON.parse(httpRequest.response);
+                                                                    let content = "<option disabled selected value=''>Select city</option>";
+                                                                    for (let i = 0; i < cities.length; i++) {
+                                                                        content += "<option>" + cities[i] + "";
+                                                                    }
+                                                                    document.getElementById("location-drop-down").innerHTML = content;
+                                                                }
+                                                            }
+                                                            httpRequest.send();
+                                                        }
+
+                                                    </script>
+                                                </select>
+                                            </div>
+                                        </div><!--end col-->
+                                        <div class="col-md-4">
+                                            <div class="mt-3 mt-md-0 h-100">
+                                                <button class="btn btn-primary submit-btn w-100 h-100"
+                                                        onclick="saveFilterNameAndLocation(document.getElementById('job-search').value, document.getElementById('location-drop-down').value)"
+                                                        type="submit">
+                                                    <i
+                                                            class="uil uil-search me-1"></i> Find Job
+                                                </button>
+                                            </div>
+                                        </div><!--end col-->
+                                    </div><!--end row-->
+                                </div>
+                            </form>
+                        </div>
+                        <!--end col-->
+                        <div class="col-lg-5">
+                            <div class="mt-5 mt-md-0">
+                                <img alt="" class="home-img" src="/images/process-02.png"/>
+                            </div>
+                        </div><!--end col-->
+                    </div>
+                    <!--end row-->
+                </div>
+                <!--end container-->
+            </section>
+            <!-- End Home -->
+
+            <!-- START SHAPE -->
+            <div class="position-relative">
+                <div class="shape">
+                    <svg height="150" preserveAspectRatio="none" version="1.1" viewBox="0 0 1440 220"
+                         width="1440" xmlns="http://www.w3.org/2000/svg">
+                        <g fill="none" mask="url(&quot;#SvgjsMask1004&quot;)">
+                            <path d="M 0,213 C 288,186.4 1152,106.6 1440,80L1440 250L0 250z"
+                                  fill="rgba(255, 255, 255, 1)"></path>
+                        </g>
+                        <defs>
+                            <mask id="SvgjsMask1004">
+                                <rect fill="#ffffff" height="250" width="1440"></rect>
+                            </mask>
+                        </defs>
+                    </svg>
+                </div>
+            </div>
+            <!-- END SHAPE -->
+
+            <!-- START CATEGORY -->
+            <section class="section">
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col-lg-6">
+                            <div class="section-title text-center">
+                                <h3 class="title">Browser Jobs Categories </h3>
+                                <p class="text-muted">Post a job to tell us about your project. We'll quickly match you
+                                    with the
+                                    right freelancers.</p>
+                            </div>
+                        </div>
+                        <!--end col-->
+                    </div>
+
+                    <input id="jobId" type="hidden" value="dummy">
+                    <input id="userId" th:value="${userId}" type="hidden">
+
+                    <!--end row-->
+                    <div class="row" id="category-preview">
+                        <script>
+                            loadCategories();
+
+                            function loadCategories() {
+                                const httpRequest = new XMLHttpRequest();
+                                httpRequest.open("GET", "/api/v1/categories", true);
+                                console.log(httpRequest.status);
+                                console.log(httpRequest.onreadystatechange);
+                                httpRequest.onreadystatechange = function () {
+                                    if (httpRequest.readyState === XMLHttpRequest.DONE && httpRequest.status === 200) {
+                                        let categories = JSON.parse(httpRequest.responseText);
+                                        let content = "";
+                                        for (let i = 0; i < 8; i++) {
+                                            content += "<div class=\"col-lg-3 col-md-6 mt-4 pt-2\">\n" +
+                                                "                            <div class=\"popu-category-box rounded text-center\">\n" +
+                                                "                                <div class=\"popu-category-icon icons-md\">\n" +
+                                                "                                    <i class=\"" + categories[i].icon + "\"></i>\n" +
+                                                "                                </div>\n" +
+                                                "                                <div class=\"popu-category-content mt-4\">\n" +
+                                                "                                            <a onclick='saveFilter(" + categories[i].id + ")' class=\"text-dark stretched-link\">\n" +
+                                                "                                                <h5 class=\"fs-18\">" + categories[i].name + "</h5>\n" +
+                                                "                                            </a>\n" +
+                                                "                                    <p class=\"text-muted mb-0\">" + categories[i].jobsCount + " jobs</p>\n" +
+                                                "                                </div>\n" +
+                                                "                            </div><!--end popu-category-box-->\n" +
+                                                "                        </div>";
+                                        }
+                                        document.getElementById("category-preview").innerHTML = content;
+                                    }
+                                }
+                                httpRequest.send();
+                            }
+
+                            function saveFilter(id) {
+                                let httpRequest = new XMLHttpRequest();
+                                httpRequest.open("POST", "/api/v1/jobs/filter", true);
+                                httpRequest.setRequestHeader("Content-Type", "application/json");
+                                let body;
+                                httpRequest.onreadystatechange = function () {
+                                    if (httpRequest.readyState === XMLHttpRequest.DONE && httpRequest.status === 200) {
+                                        console.log(body);
+                                    }
+                                }
+                                body = {
+                                    "name": null,
+                                    "location": null,
+                                    "categoryId": id,
+                                    "experience": null,
+                                    "type": null,
+                                    "postDate": null,
+                                    "keywords": null
+                                };
+                                body = JSON.stringify(body);
+                                console.log(body);
+                                httpRequest.send(body);
+                                window.location.href = '/jobs';
+                            }
+
+                            function saveFilterNameAndLocation(name, location) {
+                                let httpRequest = new XMLHttpRequest();
+                                httpRequest.open("POST", "/api/v1/jobs/filter", true);
+                                httpRequest.setRequestHeader("Content-Type", "application/json");
+                                let body;
+                                httpRequest.onreadystatechange = function () {
+                                    if (httpRequest.readyState === XMLHttpRequest.DONE && httpRequest.status === 200) {
+                                        console.log(body);
+                                    }
+                                }
+                                body = {
+                                    "name": name,
+                                    "location": location,
+                                    "categoryId": null,
+                                    "experience": null,
+                                    "type": null,
+                                    "postDate": null,
+                                    "keywords": null
+                                };
+                                body = JSON.stringify(body);
+                                console.log(body);
+                                httpRequest.send(body);
+                            }
+
+                            function apply() {
+                                let httpRequest = new XMLHttpRequest();
+                                httpRequest.open("POST", "/api/v1/jobs-users/apply", true);
+                                httpRequest.setRequestHeader("Content-Type", "application/json");
+                                let body;
+                                httpRequest.onreadystatechange = function () {
+                                    if (httpRequest.readyState === XMLHttpRequest.DONE && httpRequest.status === 200) {
+                                        console.log(body);
+                                    }
+                                }
+                                body = {
+                                    "jobId": document.getElementById("jobId").value,
+                                    "userId": document.getElementById("userId").value,
+                                    "message": document.getElementById("message").value
+                                };
+                                body = JSON.stringify(body);
+                                console.log(body);
+                                httpRequest.send(body);
+                                // window.location.href = '/jobs';
+                            }
+
+                            function test() {
+                                alert("asdfasdf");
+                            }
+                        </script>
+                        <!--                        <div class="col-lg-3 col-md-6 mt-4 pt-2" th:each="category : ${categories.subList(0, 8)}">-->
+                        <!--                            <div class="popu-category-box rounded text-center">-->
+                        <!--                                <div class="popu-category-icon icons-md">-->
+                        <!--                                    <i th:class="${category.icon()}"></i>-->
+                        <!--                                </div>-->
+                        <!--                                <div class="popu-category-content mt-4">-->
+                        <!--                                    <form action="/jobs/filter" id="category_form" method="post">-->
+                        <!--                                        <input name="categoryId" th:value="${category.id()}" type="hidden">-->
+                        <!--                                        <button class="btn bg-transparent btn-hover" type="submit">-->
+                        <!--                                            <a href="#" class="text-dark stretched-link">-->
+                        <!--                                                <h5 class="fs-18" th:text="${category.name()}">Category name</h5>-->
+                        <!--                                            </a>-->
+                        <!--                                        </button>-->
+                        <!--                                    </form>-->
+                        <!--                                    <p class="text-muted mb-0" th:text="|${category.jobsCount()} jobs|">Number of-->
+                        <!--                                        jobs</p>-->
+                        <!--                                </div>-->
+                        <!--                            </div>&lt;!&ndash;end popu-category-box&ndash;&gt;-->
+                        <!--                        </div>-->
+                        <!--                        &lt;!&ndash;end col&ndash;&gt;-->
+                        <!--end row-->
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="mt-5 text-center">
+                                    <a class="btn btn-primary btn-hover" href="/job-categories">Browse All Categories <i
+                                            class="uil uil-arrow-right ms-1"></i></a>
+                                </div>
+                            </div><!--end col-->
+                        </div><!--end row-->
+                    </div>
+                    <!--end container-->
+                </div>
+            </section>
+            <!-- END CATEGORY -->
+
+            <!-- START JOB-LIST -->
+            <section class="section bg-light">
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col-lg-6">
+                            <div class="section-title text-center mb-4 pb-2">
+                                <h4 class="title">New & Random Jobs</h4>
+                                <p class="text-muted mb-1">Post a job to tell us about your project. We'll quickly match
+                                    you
+                                    with the right freelancers.</p>
+                            </div>
+                        </div><!--end col-->
+                    </div><!--end row-->
+                    <div class="row justify-content-center">
+                        <div class="col-lg-8">
+                            <ul class="job-list-menu nav nav-pills nav-justified flex-column flex-sm-row mb-4"
+                                id="pills-tab"
+                                role="tablist">
+                                <script>
+                                    loadTypes();
+
+                                    function loadTypes() {
+                                        const httpRequest = new XMLHttpRequest();
+                                        httpRequest.open("GET", "/api/v1/types", true);
+                                        console.log(httpRequest.status);
+                                        console.log(httpRequest.onreadystatechange);
+                                        httpRequest.onreadystatechange = function () {
+                                            if (httpRequest.readyState === XMLHttpRequest.DONE && httpRequest.status === 200) {
+                                                let types = JSON.parse(httpRequest.responseText);
+                                                let content = "";
+                                                for (let i = 0; i < types.length; i++) {
+                                                    content += "<li class=\"nav-item\" role=\"presentation\"> \n" +
+                                                        "                                    <button onclick='loadJobsByType(\"" + types[i] + "\")' aria-selected=\"false\" class=\"nav-link\" data-bs-toggle=\"pill\"\n" +
+                                                        "                                            role=\"tab\"\n" +
+                                                        "                                            data-bs-target='preview' aria-controls='preview' id='preview-jobs-tab'\n" +
+                                                        "                                            type=\"button\">" + types[i] + "\n" +
+                                                        "                                    </button>\n" +
+                                                        "                                </li>";
+                                                }
+                                                document.getElementById("pills-tab").innerHTML = content;
+                                            }
+                                        }
+                                        httpRequest.send();
+                                    }
+                                </script>
+
+                            </ul>
+                        </div>
+                        <!--end col-->
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="tab-content" id="pills-tabContent">
+                                <div id="preview"
+                                >
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <script>
+                        function loadJobsByType(type) {
+                            const httpRequest = new XMLHttpRequest();
+                            httpRequest.open("GET", "/api/v1/jobs/previews?type=" + type, true);
+                            console.log(httpRequest.status);
+                            console.log(httpRequest.onreadystatechange);
+                            httpRequest.onreadystatechange = function () {
+                                if (httpRequest.readyState === XMLHttpRequest.DONE && httpRequest.status === 200) {
+                                    let jobs = JSON.parse(httpRequest.responseText);
+                                    let content = "";
+                                    for (let i = 0; i < jobs.length; i++) {
+                                        content += "                            <div class=\"job-box bookmark-post card mt-4\">\n" +
+                                            "                                        <div class=\"p-4\">\n" +
+                                            "                                            <div class=\"row align-items-center\">\n" +
+                                            "                                                <div class=\"col-md-2\">\n" +
+                                            "                                                    <div class=\"text-center mb-4 mb-md-0\">\n" +
+                                            "                                                        <a href=\"company-details.html\"><img\n" +
+                                            "                                                                alt=\"\" class=\"img-fluid rounded-3\"\n" +
+                                            "                                                                src=\"/api/v1/users/" + jobs[i].user.id + "/image\"></a>\n" +
+                                            "                                                    </div>\n" +
+                                            "                                                </div>\n" +
+                                            "                                                <!--end col-->\n" +
+                                            "                                                <div class=\"col-md-3\">\n" +
+                                            "                                                    <div class=\"mb-2 mb-md-0\">\n" +
+                                            "                                                        <h5 class=\"fs-18 mb-1\"><a class=\"text-dark\"\n" +
+                                            "                                                                                  href=\"/jobs/" + jobs[i].id + "\"\n" +
+                                            "                                                                                  >" + jobs[i].name + "</a>\n" +
+                                            "                                                        </h5>\n" +
+                                            "                                                        <p class=\"text-muted fs-14 mb-0\">\n" + jobs[i].user.username +
+                                            "                                                            </p>\n" +
+                                            "                                                    </div>\n" +
+                                            "                                                </div>\n" +
+                                            "                                                <!--end col-->\n" +
+                                            "                                                <div class=\"col-md-3\">\n" +
+                                            "                                                    <div class=\"d-flex mb-2\">\n" +
+                                            "                                                        <div class=\"flex-shrink-0\">\n" +
+                                            "                                                            <i class=\"mdi mdi-map-marker text-primary me-1\"></i>\n" +
+                                            "                                                        </div>\n" +
+                                            "                                                        <p class=\"text-muted mb-0\">\n" + jobs[i].location +
+                                            "                                                            </p>\n" +
+                                            "                                                    </div>\n" +
+                                            "                                                </div>\n" +
+                                            "                                                <!--end col-->\n" +
+                                            "                                                <div class=\"col-md-2\">\n" +
+                                            "                                                    <div>\n" +
+                                            "                                                        <p class=\"text-muted mb-2\">\n" +
+                                            "                                                            <span class=\"text-primary\">$</span>\n" +
+                                            "                                                            <span>" + jobs[i].salary + "</span>/m</p>\n" +
+                                            "                                                    </div>\n" +
+                                            "                                                </div>\n" +
+                                            "                                                <!--end col-->\n" +
+                                            "                                                <div class=\"col-md-2\">\n" +
+                                            "                                                    <div>\n" +
+                                            "                                                        <span class=\"badge bg-success-subtle text-success fs-13 mt-1\"\n" +
+                                            "                                                              th:text=>" + jobs[i].type + "</span>\n" +
+                                            "                                                    </div>\n" +
+                                            "                                                </div>\n" +
+                                            "                                                <!--end col-->\n" +
+                                            "                                            </div>\n" +
+                                            "                                            <!--end row-->\n" +
+                                            "                                        </div>\n" +
+                                            "                                        <div class=\"p-3 bg-light\">\n" +
+                                            "                                            <div class=\"row\">\n" +
+                                            "                                                <div class=\"col-md-4\">\n" +
+                                            "                                                    <div>\n" +
+                                            "                                                        <p class=\"text-muted mb-0\">\n" +
+                                            "                                                            <span class=\"text-dark\">Experience :</span>\n" +
+                                            "                                                            <span>" + jobs[i].experience.level + "</span>\n" +
+                                            "                                                        </p>\n" +
+                                            "                                                    </div>\n" +
+                                            "                                                </div>\n" +
+                                            "                                                <!--end col-->\n" +
+                                            "                                                <div class=\"col-lg-2 col-md-3\">\n" +
+                                            "                                                    <div class=\"text-start text-md-end\">\n" +
+                                            "                                                        <a onclick='document.getElementById(\"jobId\").value = " + jobs[i].id + "' class=\"primary-link\" data-bs-toggle=\"modal\" href=\"#applyNow\">Apply\n" +
+                                            "                                                            Now <i\n" +
+                                            "                                                                    class=\"mdi mdi-chevron-double-right\"></i></a>\n" +
+                                            "                                                    </div>\n" +
+                                            "                                                </div>\n" +
+                                            "                                                <!--end col-->\n" +
+                                            "                                            </div>\n" +
+                                            "                                            <!--end row-->\n" +
+                                            "                                        </div>\n" +
+                                            "                                    </div>";
+                                    }
+                                    document.getElementById("preview").innerHTML = content;
+                                }
+                            }
+                            httpRequest.send();
+                        }
+                    </script>
+
+                </div>
+            </section>
+            <!-- END JOB-LIST -->
+
+            <!-- START PROCESS -->
+            <section class="section">
+                <div class="container">
+                    <div class="row align-items-center">
+                        <div class="col-lg-6">
+                            <div class="section-title me-5">
+                                <h3 class="title">How It Work</h3>
+                                <p class="text-muted">Post a job to tell us about your project. We'll quickly match you
+                                    with the
+                                    right freelancers.</p>
+                                <div aria-orientation="vertical" class="process-menu nav flex-column nav-pills"
+                                     id="v-pills-tab"
+                                     role="tablist">
+                                    <a aria-controls="v-pills-home" aria-selected="true" class="nav-link active"
+                                       data-bs-toggle="pill" href="#v-pills-home" id="v-pills-home-tab"
+                                       role="tab">
+                                        <div class="d-flex">
+                                            <div class="number flex-shrink-0">
+                                                1
+                                            </div>
+                                            <div class="flex-grow-1 text-start ms-3">
+                                                <h5 class="fs-18">Register an account</h5>
+                                                <p class="text-muted mb-0">Due to its widespread use as filler text for
+                                                    layouts, non-readability
+                                                    is of great importance.</p>
+                                            </div>
+                                        </div>
+                                    </a>
+                                    <a aria-controls="v-pills-profile" aria-selected="false" class="nav-link"
+                                       data-bs-toggle="pill" href="#v-pills-profile" id="v-pills-profile-tab"
+                                       role="tab">
+                                        <div class="d-flex">
+                                            <div class="number flex-shrink-0">
+                                                2
+                                            </div>
+                                            <div class="flex-grow-1 text-start ms-3">
+                                                <h5 class="fs-18">Find your job</h5>
+                                                <p class="text-muted mb-0">There are many variations of passages of
+                                                    avaibookmark-label, but the majority
+                                                    alteration in some form.</p>
+                                            </div>
+                                        </div>
+                                    </a>
+                                    <a aria-controls="v-pills-messages" aria-selected="false" class="nav-link"
+                                       data-bs-toggle="pill" href="#v-pills-messages" id="v-pills-messages-tab"
+                                       role="tab">
+                                        <div class=" d-flex">
+                                            <div class="number flex-shrink-0">
+                                                3
+                                            </div>
+                                            <div class="flex-grow-1 text-start ms-3">
+                                                <h5 class="fs-18">Apply for job</h5>
+                                                <p class="text-muted mb-0">It is a long established fact that a reader
+                                                    will be distracted by the
+                                                    readable content of a page.</p>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                        </div><!--end col-->
+                        <div class="col-lg-6">
+                            <div class="tab-content" id="v-pills-tabContent">
+                                <div aria-labelledby="v-pills-home-tab" class="tab-pane fade show active"
+                                     id="v-pills-home"
+                                     role="tabpanel">
+                                    <img alt="" class="img-fluid" src="/images/process-01.png">
+                                </div>
+                                <div aria-labelledby="v-pills-profile-tab" class="tab-pane fade" id="v-pills-profile"
+                                     role="tabpanel">
+                                    <img alt="" class="img-fluid" src="/images/process-02.png">
+                                </div>
+                                <div aria-labelledby="v-pills-messages-tab" class="tab-pane fade" id="v-pills-messages"
+                                     role="tabpanel">
+                                    <img alt="" class="img-fluid" src="/images/process-03.png">
+                                </div>
+                            </div>
+                        </div>
+                    </div> <!--end row-->
+                </div><!--end container-->
+            </section>
+            <!-- END PROCESS -->
+
+
+            <!-- START BLOG -->
+            <section class="section bg-light">
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col-lg-6">
+                            <div class="section-title text-center mb-5">
+                                <h3 class="title mb-3">Quick Career Tips</h3>
+                                <p class="text-muted">Post a job to tell us about your project. We'll quickly match you
+                                    with the
+                                    right freelancers.</p>
+                            </div>
+                        </div>
+                        <!--end col-->
+                    </div>
+                    <!--end row-->
+                    <div class="row">
+                        <div class="col-lg-4 col-md-6">
+                            <div class="blog-box card p-2 mt-3">
+                                <div class="blog-img position-relative overflow-hidden">
+                                    <img alt="" class="img-fluid" src="/images/blog/img-01.jpg">
+                                    <div class="bg-overlay"></div>
+                                    <div class="author">
+                                        <p class=" mb-0"><i class="mdi mdi-account text-light"></i> <a
+                                                class="text-light user"
+                                                href="javascript:void(0)">Dirio Walls</a></p>
+                                        <p class="text-light mb-0 date"><i class="mdi mdi-calendar-check"></i> 01 July,
+                                            2021</p>
+                                    </div>
+                                    <div class="likes">
+                                        <ul class="list-unstyled mb-0">
+                                            <li class="list-inline-item"><a class="text-white"
+                                                                            href="javascript:void(0)"><i
+                                                    class="mdi mdi-heart-outline me-1"></i> 33</a></li>
+                                            <li class="list-inline-item"><a class="text-white"
+                                                                            href="javascript:void(0)"><i
+                                                    class="mdi mdi-comment-outline me-1"></i> 08</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <a class="primary-link" href="blog-details.html">
+                                        <h5 class="fs-17">How apps is the IT world ?</h5>
+                                    </a>
+                                    <p class="text-muted">The final text is not yet avaibookmark-label. Dummy texts have
+                                        Internet tend
+                                        been in use by typesetters.</p>
+                                    <a class="form-text text-primary" href="blog-details.html">Read more <i
+                                            class="mdi mdi-chevron-right align-middle"></i></a>
+                                </div>
+                            </div><!--end blog-box-->
+                        </div><!--end col-->
+
+                        <div class="col-lg-4 col-md-6">
+                            <div class="blog-box card p-2 mt-3">
+                                <div class="blog-img position-relative overflow-hidden">
+                                    <img alt="" class="img-fluid" src="/images/blog/img-02.jpg">
+                                    <div class="bg-overlay"></div>
+                                    <div class="author">
+                                        <p class=" mb-0"><i class="mdi mdi-account text-light"></i> <a
+                                                class="text-light user"
+                                                href="javascript:void(0)">Brandon Carney</a></p>
+                                        <p class="text-light mb-0 date"><i class="mdi mdi-calendar-check"></i> 25 June,
+                                            2021</p>
+                                    </div>
+                                    <div class="likes">
+                                        <ul class="list-unstyled mb-0">
+                                            <li class="list-inline-item"><a class="text-white"
+                                                                            href="javascript:void(0)"><i
+                                                    class="mdi mdi-heart-outline me-1"></i> 44</a></li>
+                                            <li class="list-inline-item"><a class="text-white"
+                                                                            href="javascript:void(0)"><i
+                                                    class="mdi mdi-comment-outline me-1"></i> 25</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <a class="primary-link" href="blog-details.html">
+                                        <h5 class="fs-17">Smartest Applications for Business ?</h5>
+                                    </a>
+                                    <p class="text-muted">Due to its widespread use as filler text for layouts,
+                                        non-readability
+                                        is of great importance: human perception.</p>
+                                    <a class="form-text text-primary" href="blog-details.html">Read more <i
+                                            class="mdi mdi-chevron-right align-middle"></i></a>
+                                </div>
+                            </div><!--end blog-box-->
+                        </div><!--end col-->
+
+                        <div class="col-lg-4 col-md-6">
+                            <div class="blog-box card p-2 mt-3">
+                                <div class="blog-img position-relative overflow-hidden">
+                                    <img alt="" class="img-fluid" src="/images/blog/img-03.jpg">
+                                    <div class="bg-overlay"></div>
+                                    <div class="author">
+                                        <p class=" mb-0"><i class="mdi mdi-account text-light"></i> <a
+                                                class="text-light user"
+                                                href="javascript:void(0)">William Mooneyhan</a></p>
+                                        <p class="text-light mb-0 date"><i class="mdi mdi-calendar-check"></i> 16 March,
+                                            2021
+                                        </p>
+                                    </div>
+                                    <div class="likes">
+                                        <ul class="list-unstyled mb-0">
+                                            <li class="list-inline-item"><a class="text-white"
+                                                                            href="javascript:void(0)"><i
+                                                    class="mdi mdi-heart-outline me-1"></i> 68</a></li>
+                                            <li class="list-inline-item"><a class="text-white"
+                                                                            href="javascript:void(0)"><i
+                                                    class="mdi mdi-comment-outline me-1"></i> 20</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <a class="primary-link" href="blog-details.html">
+                                        <h5 class="fs-17">Design your apps in your own way ?</h5>
+                                    </a>
+                                    <p class="text-muted">One disadvantage of Lorum Ipsum is that in Latin certain
+                                        letters
+                                        appear more frequently than others.</p>
+                                    <a class="form-text text-primary" href="blog-details.html">Read more <i
+                                            class="mdi mdi-chevron-right align-middle"></i></a>
+                                </div>
+                            </div><!--end blog-box-->
+                        </div><!--end col-->
+                    </div>
+                    <!--end row-->
+                </div>
+                <!--end container-->
+            </section>
+            <!-- END BLOG -->
+
+            <!-- START CLIENT -->
+            <div class="py-4">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-2">
+                            <div class="text-center p-3">
+                                <a data-bs-original-title="Woocommerce" data-bs-placement="top" data-bs-toggle="tooltip"
+                                   href="javascript:void(0)"
+                                   title="">
+                                    <img alt="" class="img-fluid" src="/images/logo/logo-01.png">
+                                </a>
+                            </div>
+                        </div>
+                        <!--end col-->
+                        <div class="col-lg-2">
+                            <div class="text-center p-3">
+                                <a data-bs-original-title="Envato" data-bs-placement="top" data-bs-toggle="tooltip"
+                                   href="javascript:void(0)"
+                                   title="">
+                                    <img alt="" class="img-fluid" src="/images/logo/logo-02.png">
+                                </a>
+                            </div>
+                        </div>
+                        <!--end col-->
+                        <div class="col-lg-2">
+                            <div class="text-center p-3">
+                                <a data-bs-original-title="Magento" data-bs-placement="top" data-bs-toggle="tooltip"
+                                   href="javascript:void(0)"
+                                   title="">
+                                    <img alt="" class="img-fluid" src="/images/logo/logo-03.png">
+                                </a>
+                            </div>
+                        </div>
+                        <!--end col-->
+                        <div class="col-lg-2">
+                            <div class="text-center p-3">
+                                <a data-bs-original-title="Wordpress" data-bs-placement="top" data-bs-toggle="tooltip"
+                                   href="javascript:void(0)"
+                                   title="">
+                                    <img alt="" class="img-fluid" src="/images/logo/logo-04.png">
+                                </a>
+                            </div>
+                        </div>
+                        <!--end col-->
+                        <div class="col-lg-2">
+                            <div class="text-center p-3">
+                                <a data-bs-original-title="Generic" data-bs-placement="top" data-bs-toggle="tooltip"
+                                   href="javascript:void(0)"
+                                   title="">
+                                    <img alt="" class="img-fluid" src="/images/logo/logo-05.png">
+                                </a>
+                            </div>
+                        </div>
+                        <div class="col-lg-2">
+                            <div class="text-center p-3">
+                                <a data-bs-original-title="Reveal" data-bs-placement="top" data-bs-toggle="tooltip"
+                                   href="javascript:void(0)"
+                                   title="">
+                                    <img alt="" class="img-fluid" src="/images/logo/logo-06.png">
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <!--end row-->
+                </div>
+                <!--end container-->
+            </div>
+            <!-- END CLIENT -->
+
+            <!-- START APPLY MODAL -->
+            <div aria-hidden="true" aria-labelledby="applyNow" class="modal fade" id="applyNow" tabindex="-1">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-body p-5">
+                            <div class="text-center mb-4">
+                                <h5 class="modal-title" id="staticBackdropLabel">Apply For This Job</h5>
+                            </div>
+                            <div class="position-absolute end-0 top-0 p-3">
+                                <button aria-label="Close" class="btn-close" data-bs-dismiss="modal"
+                                        type="button"></button>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label" for="nameControlInput">Name</label>
+                                <input class="form-control" id="nameControlInput" placeholder="Enter your name"
+                                       type="text">
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label" for="emailControlInput2">Email Address</label>
+                                <input class="form-control" id="emailControlInput2" placeholder="Enter your email"
+                                       type="email">
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label" for="message">Message</label>
+                                <textarea class="form-control" id="message" placeholder="Enter your message"
+                                          rows="4"></textarea>
+                            </div>
+                            <div class="mb-4">
+                                <label class="form-label" for="inputGroupFile01">Resume Upload</label>
+                                <input class="form-control" id="inputGroupFile01" type="file">
+                            </div>
+                            <button class="btn btn-primary w-100" data-bs-dismiss="modal" onclick="apply()"
+                                    type="submit">Send Application
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div><!-- END APPLY MODAL -->
+
+        </div>
+        <!-- End Page-content -->
+
+        <div th:insert="~{fragments :: footer}">
+
+        </div>
+        <!--start back-to-top-->
+        <button id="back-to-top" onclick="topFunction()">
+            <i class="mdi mdi-arrow-up"></i>
+        </button>
+        <!--end back-to-top-->
+    </div>
+    <!-- end main content-->
+
+</div>
+<!-- END layout-wrapper -->
+
+<!-- JAVASCRIPT -->
+<script src="/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="https://unicons.iconscout.com/release/v4.0.0/script/monochrome/bundle.js"></script>
+
+
+<!-- Choice Js -->
+<script src="/libs/choices.js/public/assets/scripts/choices.min.js"></script>
+
+<!-- Index Js -->
+<script src="/js/pages/job-list.init.js"></script>
+
+<!-- Switcher Js -->
+<script src="/js/pages/switcher.init.js"></script>
+
+<script src="/js/pages/index.init.js"></script>
+
+<!-- App Js -->
+<script src="/js/app.js"></script>
+
+</body>
+</html>

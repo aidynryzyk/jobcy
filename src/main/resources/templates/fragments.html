@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<head>
+    <meta charset="UTF-8">
+    <title>Fragments</title>
+</head>
+<body>
+<div th:fragment="meta">
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content=" " name="description"/>
+    <meta content="" name="keywords"/>
+    <meta content="Themesdesign" name="author"/>
+
+    <!-- App favicon -->
+    <!--        <link rel="shortcut icon" href="/images/favicon.ico">-->
+    <link href="/images/favicon.ico" rel="shortcut icon">
+
+    <!-- Choise Css -->
+    <link href="/libs/choices.js/public/assets/styles/choices.min.css" rel="stylesheet">
+
+    <!-- Swiper Css -->
+    <link href="/libs/swiper/swiper-bundle.min.css" rel="stylesheet">
+
+    <!-- Bootstrap Css -->
+    <link href="/css/bootstrap.min.css" id="bootstrap-style" rel="stylesheet"/>
+    <!-- Icons Css -->
+    <link href="/css/icons.min.css" rel="stylesheet"/>
+    <!-- App Css-->
+    <link href="/css/app.min.css" id="app-style" rel="stylesheet"/>
+    <!--Custom Css-->
+
+
+</div>
+<div th:fragment="preloader">
+<!--  start page Loader-->
+<!--  <div id="preloader">-->
+<!--    <div id="status">-->
+<!--      <ul>-->
+<!--        <li></li>-->
+<!--        <li></li>-->
+<!--        <li></li>-->
+<!--        <li></li>-->
+<!--        <li></li>-->
+<!--        <li></li>-->
+<!--      </ul>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--  end page Loader-->
+</div>
+<div th:fragment="top-bar">
+    <!-- START TOP-BAR -->
+    <div class="top-bar">
+        <div class="container-fluid custom-container">
+            <div class="row g-0 align-items-center">
+                <div class="col-md-7">
+                    <ul class="list-inline mb-0 text-center text-md-start">
+                        <li class="list-inline-item">
+                            <ul class="topbar-social-menu list-inline mb-0">
+                                <li class="list-inline-item"><a href="javascript:void(0)" class="social-link"><i
+                                        class="uil uil-whatsapp"></i></a></li>
+                                <li class="list-inline-item"><a href="javascript:void(0)" class="social-link"><i
+                                        class="uil uil-instagram"></i></a></li>
+                        </li>
+                    </ul>
+                </div>
+                <!--end col-->
+                <div class="col-md-5">
+                    <ul class="list-inline mb-0 text-center text-md-end">
+                        <li class="list-inline-item align-middle">
+                            <div class="dropdown d-inline-block language-switch">
+                                <button type="button" class="btn" data-bs-toggle="dropdown" aria-haspopup="true"
+                                        aria-expanded="false">
+                                    <img id="header-lang-img" src="/images/flags/us.jpg" alt="Header Language" height="16" />
+                                </button>
+                                <div class="dropdown-menu dropdown-menu-end">
+                                    <!-- item-->
+                                    <a href="javascript:void(0);" class="dropdown-item notify-item language" data-lang="eng">
+                                        <img src="/images/flags/us.jpg" alt="user-image" class="me-1" height="12" />
+                                        <span class="align-middle">English</span>
+                                    </a>
+                                    <a href="javascript:void(0);" class="dropdown-item notify-item language" data-lang="ru">
+                                        <img src="/images/flags/russia.jpg" alt="user-image" class="me-1" height="12" />
+                                        <span class="align-middle">Russian</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <!--end col-->
+            </div>
+            <!--end row-->
+        </div>
+        <!--end container-->
+    </div>
+    <!-- END TOP-BAR -->
+</div>
+<div th:fragment="navbar">
+    <!--Navbar Start-->
+    <nav class="navbar navbar-expand-lg fixed-top sticky" id="navbar">
+        <div class="container-fluid custom-container">
+            <a class="navbar-brand text-dark fw-bold me-auto" href="index.html">
+                <img src="/images/logo-dark.png" height="22" alt="" class="logo-dark" />
+                <img src="/images/logo-light.png" height="22" alt="" class="logo-light" />
+            </a>
+            <div>
+                <button class="navbar-toggler me-3" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-label="Toggle navigation">
+                    <i class="mdi mdi-menu"></i>
+                </button>
+            </div>
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+                <ul class="navbar-nav mx-auto navbar-center">
+                    <a class="nav-link" href="/" id="homedrop">
+                        Home
+                    </a>
+<!--                    <li class="nav-item dropdown dropdown-hover">-->
+<!--                        <a class="nav-link" href="/" id="homedrop" role="button" data-bs-toggle="dropdown">-->
+<!--                            Home <div class="arrow-down"></div>-->
+<!--                        </a>-->
+<!--                        <ul class="dropdown-menu dropdown-menu-center" aria-labelledby="homedrop">-->
+<!--                            <li><a class="dropdown-item" href="index.html">Home 1</a></li>-->
+<!--                            <li><a class="dropdown-item" href="index-2.html">Home 2</a></li>-->
+<!--                            <li><a class="dropdown-item" href="index-3.html">Home 3</a></li>-->
+<!--                        </ul>-->
+<!--                    </li>-->
+                    <li class="nav-item dropdown dropdown-hover">
+                        <a class="nav-link" href="javascript:void(0)" id="jobsdropdown" role="button" data-bs-toggle="dropdown">
+                            Company <div class="arrow-down"></div>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-center" aria-labelledby="jobsdropdown">
+                            <li><a class="dropdown-item" href="/about">About Us</a></li>
+                            <li><a class="dropdown-item" href="/services">Services</a></li>
+                            <li><a class="dropdown-item" href="/team">Team</a></li>
+                            <li><a class="dropdown-item" href="/pricing">Pricing</a></li>
+                            <a class="dropdown-item" href="/privacy">Priacy & Policy</a>
+                            <li><a class="dropdown-item" href="/faq">Faqs</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown dropdown-hover">
+                        <a class="nav-link" href="javascript:void(0)" id="pagesdoropdown" role="button" data-bs-toggle="dropdown">
+                            Jobs
+                            <div class="arrow-down"></div>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-center" aria-labelledby="pagesdoropdown">
+                            <div class="row">
+                                <div sec:authorize="!isAuthenticated() || hasAuthority('USER')" class="col-lg-4">
+                                    <span class="dropdown-header">Jobs</span>
+                                    <div>
+                                        <a class="dropdown-item" href="/jobs">Job List</a>
+                                        <a class="dropdown-item" href="/job-categories">Jobs Categories</a>
+                                    </div>
+                                </div><!--end col-->
+                                <div sec:authorize="isAuthenticated() && hasAuthority('COMPANY')" class="col-lg-4">
+                                    <span class="dropdown-header">Candidates / Companys</span>
+                                    <div>
+                                        <a class="dropdown-item" href="/manage-jobs">Candidate List</a>
+                                    </div>
+                                </div><!--end col-->
+                            </div>
+                        </div>
+                    </li><!--end dropdown-->
+                    <li class="nav-item dropdown dropdown-hover">
+                        <a class="nav-link" href="/blog">
+                            Blog
+                        </a>
+                    </li><!--end dropdown-->
+                    <li class="nav-item">
+                        <a href="/contact" class="nav-link">Contact</a>
+                    </li>
+                </ul><!--end navbar-nav-->
+            </div>
+            <!--end navabar-collapse-->
+            <div sec:authorize="!isAuthenticated()">
+                <a th:href="@{/sign-in}" class="text-dark fw-medium fs-13"><i class="uil uil-lock"></i>
+                    Sign In</a>
+            </div>
+            <div id="user" sec:authorize="isAuthenticated()">
+                <ul class="header-menu list-inline d-flex align-items-center mb-0">
+                    <li class="list-inline-item dropdown">
+                        <a href="javascript:void(0)" class="header-item" id="userdropdown" data-bs-toggle="dropdown"
+                           aria-expanded="false">
+                            <img th:src="${session.userId != null ? '/api/v1/users/' + session.userId + '/image' : '/images/profile-default.jpg'}" alt="mdo" width="35" height="35" class="rounded-circle me-1"> <span class="d-none d-md-inline-block fw-medium">Hi, <span sec:authentication="name"></span></span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userdropdown">
+                            <li sec:authorize="hasAuthority('COMPANY')"><a class="dropdown-item" href="/manage-jobs">Manage Jobs</a></li>
+                            <li sec:authorize="hasAuthority('USER')"><a class="dropdown-item" href="/applied-jobs">Applied Jobs</a></li>
+                            <li><a class="dropdown-item" href="/profile">My Profile</a></li>
+                            <li>
+                                <form action="/sign-out">
+                                    <button class="dropdown-item btn" type="submit">Logout</button>
+                                </form>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!--end container-->
+    </nav>
+    <!-- Navbar End -->
+</div>
+<div th:fragment="footer">
+    <!-- START FOOTER -->
+    <section class="bg-footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4">
+                    <div class="footer-item mt-4 mt-lg-0 me-lg-5">
+                        <h4 class="text-white mb-4">Jobcy</h4>
+                        <p class="text-white-50">It is a long established fact that a reader will be of a page
+                            reader
+                            will be of at its layout.</p>
+                        <p class="text-white mt-3">Follow Us on:</p>
+                        <ul class="footer-social-menu list-inline mb-0">
+                            <li class="list-inline-item"><a href="#"><i class="uil uil-facebook-f"></i></a></li>
+                            <li class="list-inline-item"><a href="#"><i class="uil uil-linkedin-alt"></i></a></li>
+                            <li class="list-inline-item"><a href="#"><i class="uil uil-google"></i></a></li>
+                            <li class="list-inline-item"><a href="#"><i class="uil uil-twitter"></i></a></li>
+                        </ul>
+                    </div>
+                </div><!--end col-->
+                <div class="col-lg-2 col-6">
+                    <div class="footer-item mt-4 mt-lg-0">
+                        <p class="fs-16 text-white mb-4">Company</p>
+                        <ul class="list-unstyled footer-list mb-0">
+                            <li><a href="about.html"><i class="mdi mdi-chevron-right"></i> About Us</a></li>
+                            <li><a href="contact.html"><i class="mdi mdi-chevron-right"></i> Contact Us</a></li>
+                            <li><a href="services.html"><i class="mdi mdi-chevron-right"></i> Services</a></li>
+                            <li><a href="blog.html"><i class="mdi mdi-chevron-right"></i> Blog</a></li>
+                            <li><a href="team.html"><i class="mdi mdi-chevron-right"></i> Team</a></li>
+                            <li><a href="pricing.html"><i class="mdi mdi-chevron-right"></i> Pricing</a></li>
+                        </ul>
+                    </div>
+                </div><!--end col-->
+                <div class="col-lg-2 col-6">
+                    <div class="footer-item mt-4 mt-lg-0">
+                        <p class="fs-16 text-white mb-4">For Jobs</p>
+                        <ul class="list-unstyled footer-list mb-0">
+                            <li><a href="job-categories.html"><i class="mdi mdi-chevron-right"></i> Browser
+                                Categories</a></li>
+                            <li><a href="job-list.html"><i class="mdi mdi-chevron-right"></i> Browser Jobs</a></li>
+                            <li><a href="job-details.html"><i class="mdi mdi-chevron-right"></i> Job Details</a>
+                            </li>
+                            <li><a href="bookmark-jobs.html"><i class="mdi mdi-chevron-right"></i> Bookmark Jobs</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div><!--end col-->
+                <div class="col-lg-2 col-6">
+                    <div class="footer-item mt-4 mt-lg-0">
+                        <p class="text-white fs-16 mb-4">For Candidates</p>
+                        <ul class="list-unstyled footer-list mb-0">
+                            <li><a href="candidate-list.html"><i class="mdi mdi-chevron-right"></i> Candidate
+                                List</a></li>
+                            <li><a href="candidate-grid.html"><i class="mdi mdi-chevron-right"></i> Candidate
+                                Grid</a></li>
+                            <li><a href="candidate-details.html"><i class="mdi mdi-chevron-right"></i> Candidate
+                                Details</a></li>
+                        </ul>
+                    </div>
+                </div><!--end col-->
+                <div class="col-lg-2 col-6">
+                    <div class="footer-item mt-4 mt-lg-0">
+                        <p class="fs-16 text-white mb-4">Support</p>
+                        <ul class="list-unstyled footer-list mb-0">
+                            <li><a href="contact.html"><i class="mdi mdi-chevron-right"></i> Help Center</a></li>
+                            <li><a href="faqs.html"><i class="mdi mdi-chevron-right"></i> FAQ'S</a></li>
+                            <li><a href="privacy-policy.html"><i class="mdi mdi-chevron-right"></i> Privacy
+                                Policy</a></li>
+                        </ul>
+                    </div>
+                </div><!--end col-->
+            </div><!--end row-->
+        </div><!--end container-->
+    </section>
+    <!-- END FOOTER -->
+
+    <!-- START FOOTER-ALT -->
+    <div class="footer-alt">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <p class="text-white-50 text-center mb-0">
+                        <script>document.write(new Date().getFullYear())</script> &copy; Jobcy - Job Listing Page
+                        Template by <a class="text-reset text-decoration-underline" href="https://themeforest.net/search/themesdesign"
+                                       target="_blank">Themesdesign</a>
+                    </p>
+                </div><!--end col-->
+            </div><!--end row-->
+        </div><!--end container-->
+    </div>
+    <!-- END FOOTER -->
+</div>
+</body>
+</html>
