@@ -72,8 +72,8 @@
                                             <ul class="list-unstyled job-Categories-list mb-0">
                                                 <li th:each="category : ${categories}">
                                                     <a href="job-list.html" class="primary-link">
-                                                        <span th:text="${category.name()}">Category name</span>
-                                                        <span class="badge bg-info-subtle text-info float-end" th:text="${category.jobsCount()}">Job count</span>
+                                                        <span th:text="${category.getName()}">Category name</span>
+                                                        <span class="badge bg-info-subtle text-info float-end" th:text="${category.getJobsCount()}">Job count</span>
                                                     </a>
                                                 </li>
                                             </ul>

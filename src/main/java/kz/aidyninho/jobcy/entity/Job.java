@@ -3,6 +3,7 @@ package kz.aidyninho.jobcy.entity;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -21,6 +22,7 @@ public class Job implements BaseEntity<Long> {
     private String name;
     @ManyToOne
     @JoinColumn(name = "user_id")
+    @ToString.Exclude
     private User user;
     @ManyToOne
     private Experience experience;
@@ -38,6 +40,7 @@ public class Job implements BaseEntity<Long> {
     @ManyToMany
     private List<Keyword> keywords = new ArrayList<>();
     @OneToMany(mappedBy = "job", targetEntity = JobsUsers.class)
+    @ToString.Exclude
     private List<User> users = new ArrayList<>();
 
 }

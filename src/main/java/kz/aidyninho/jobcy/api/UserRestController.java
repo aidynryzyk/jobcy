@@ -1,9 +1,9 @@
 package kz.aidyninho.jobcy.api;
 
-import kz.aidyninho.jobcy.dto.JobDto;
-import kz.aidyninho.jobcy.dto.UserDto;
+import kz.aidyninho.jobcy.dto.JobReadDto;
 import kz.aidyninho.jobcy.dto.UserEditDto;
 import kz.aidyninho.jobcy.dto.UserImageDto;
+import kz.aidyninho.jobcy.dto.UserReadDto;
 import kz.aidyninho.jobcy.service.ImageService;
 import kz.aidyninho.jobcy.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+
+import static org.springframework.http.HttpStatus.*;
 
 @RestController
 @RequestMapping("/api/v1")
@@ -28,17 +30,17 @@ public class UserRestController {
     }
 
     @PostMapping("/users")
-    public void save(@RequestBody UserDto user) {
-        userService.save(user);
+    public void save(@RequestBody UserReadDto userReadDto) {
+        userService.save(userReadDto);
     }
 
     @GetMapping("/users/{id}")
-    public UserDto find(@PathVariable Long id) {
+    public UserReadDto find(@PathVariable Long id) {
         return userService.findById(id);
     }
 
     @GetMapping("/users/user")
-    public UserDto getUser(Authentication authentication) {
+    public UserReadDto getUser(Authentication authentication) {
         if (authentication == null) {
             return null;
         }
@@ -46,13 +48,13 @@ public class UserRestController {
     }
 
     @GetMapping("/users/user/jobs")
-    public List<JobDto> getJobs(Authentication authentication) {
+    public List<JobReadDto> getJobs(Authentication authentication) {
         return userService.findJobsByUser(getUser(authentication).getId());
     }
 
     @PutMapping("/users/update")
-    public void updateUser(@RequestBody UserEditDto userDto) {
-        userService.update(userDto);
+    public void updateUser(@RequestBody UserEditDto userEditDto) {
+        userService.update(userEditDto);
     }
 
     @PostMapping("/users/user/image")
@@ -62,10 +64,10 @@ public class UserRestController {
 
     @GetMapping("/users/{id}/image")
     public byte[] getImage(@PathVariable Long id) {
-        UserDto userDto = userService.findById(id);
-        if (userDto.getImage() != null) {
-            return imageService.get(userDto.getImage()).get();
+        UserReadDto userReadDto = userService.findById(id);
+        if (userReadDto.getImage() != null) {
+            return imageService.get(userReadDto.getImage()).get();
         }
-        throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        throw new ResponseStatusException(NOT_FOUND);
     }
 }

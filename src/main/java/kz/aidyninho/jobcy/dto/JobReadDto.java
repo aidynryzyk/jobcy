@@ -13,19 +13,19 @@ import java.util.List;
 @Setter
 @RequiredArgsConstructor
 @AllArgsConstructor
-public class JobCreateDto {
+public class JobReadDto {
 
     private Long id;
     private String name;
-    private Long userId;
-    private Long experienceId;
+    private UserReadDto user;
+    private Experience experience;
     private String location;
     private Integer salary;
     private String qualification;
     private LocalDateTime postDate;
     private String description;
     private JobType type;
-    private Long industryId;
-    private Long categoryId;
+    private Industry industry;
+    private Category category;
     private List<KeywordDto> keywords;
 }

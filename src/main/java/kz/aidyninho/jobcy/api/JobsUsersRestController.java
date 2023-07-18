@@ -1,8 +1,8 @@
 package kz.aidyninho.jobcy.api;
 
-import kz.aidyninho.jobcy.dto.JobsUsersDto;
-import kz.aidyninho.jobcy.dto.JobsUsersReadDto;
-import kz.aidyninho.jobcy.dto.JobsUsersReadForUserDto;
+import kz.aidyninho.jobcy.dto.JobsUsersCreateDto;
+import kz.aidyninho.jobcy.dto.JobsUsersReadJobDto;
+import kz.aidyninho.jobcy.dto.JobsUsersReadUserDto;
 import kz.aidyninho.jobcy.service.JobsUsersService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -21,17 +21,17 @@ public class JobsUsersRestController {
     }
 
     @PostMapping("/jobs-users/apply")
-    public void applyUserForJob(@RequestBody JobsUsersDto jobsUsersDto) {
-        jobsUsersService.save(jobsUsersDto);
+    public void applyUserForJob(@RequestBody JobsUsersCreateDto jobsUsersCreateDto) {
+        jobsUsersService.save(jobsUsersCreateDto);
     }
 
     @GetMapping("/jobs-users/job/{id}")
-    public List<JobsUsersReadDto> findByJob(@PathVariable Long id) {
+    public List<JobsUsersReadUserDto> findByJob(@PathVariable Long id) {
         return jobsUsersService.findAllByJobId(id);
     }
 
     @GetMapping("/jobs-users/user/{id}")
-    public List<JobsUsersReadForUserDto> findByUser(@PathVariable Long id) {
+    public List<JobsUsersReadJobDto> findByUser(@PathVariable Long id) {
         return jobsUsersService.findAllByUserId(id);
     }
 }

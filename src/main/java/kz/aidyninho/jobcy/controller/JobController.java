@@ -20,18 +20,20 @@ public class JobController {
     private CategoryService categoryService;
     private ExperienceService experienceService;
     private KeywordService keywordService;
+    private IndustryService industryService;
 
     @Autowired
     public JobController(JobService jobService,
                          UserService userService,
                          CategoryService categoryService,
                          ExperienceService experienceService,
-                         KeywordService keywordService) {
+                         KeywordService keywordService, IndustryService industryService) {
         this.jobService = jobService;
         this.userService = userService;
         this.categoryService = categoryService;
         this.experienceService = experienceService;
         this.keywordService = keywordService;
+        this.industryService = industryService;
     }
 
     @GetMapping
@@ -86,6 +88,7 @@ public class JobController {
             model.addAttribute("job", jobService.findById(id));
         }
         model.addAttribute("cities", City.values());
+        model.addAttribute("industries", industryService.findAll());
         model.addAttribute("categories", categoryService.findAllWithJobsCount());
         model.addAttribute("types", JobType.values());
         model.addAttribute("keywords", keywordService.findAll());

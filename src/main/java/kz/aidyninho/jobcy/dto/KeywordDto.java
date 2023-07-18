@@ -9,10 +9,8 @@ import lombok.Setter;
 @Setter
 @RequiredArgsConstructor
 @AllArgsConstructor
-public class CategoryDto {
+public class KeywordDto {
 
     private Long id;
     private String name;
-    private String icon;
-    private Integer jobsCount;
 }

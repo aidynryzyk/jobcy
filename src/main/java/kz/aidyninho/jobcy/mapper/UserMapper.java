@@ -1,84 +1,40 @@
 package kz.aidyninho.jobcy.mapper;
 
-import kz.aidyninho.jobcy.dto.JobDto;
-import kz.aidyninho.jobcy.dto.UserDto;
+import kz.aidyninho.jobcy.dto.*;
 import kz.aidyninho.jobcy.entity.Job;
 import kz.aidyninho.jobcy.entity.User;
-import lombok.RequiredArgsConstructor;
+import org.mapstruct.Mapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
 
-@Component
-@RequiredArgsConstructor
-public class UserMapper implements Mapper<UserDto, User> {
+@Mapper(componentModel = "spring")
+public interface UserMapper {
 
-    private final PasswordEncoder passwordEncoder;
+    UserReadDto toReadDto(User user);
 
-    @Override
-    public User mapFrom(UserDto object) {
-        User user = new User();
-        copy(user, object);
-        return user;
+    User toModel(UserReadDto userReadDto);
+
+    UserEditDto toEditDto(User user);
+
+    User toModel(UserEditDto userEditDto);
+
+    User toModel(UserImageDto userImageDto);
+
+    default String map(MultipartFile multipartFile) {
+        return multipartFile.getOriginalFilename();
     }
 
-    public UserDto mapTo(User object) {
-        UserDto userDto = new UserDto();
-        userDto.setUsername(object.getUsername());
-        userDto.setId(object.getId());
-        userDto.setEmail(object.getEmail());
-        userDto.setPassword(object.getPassword());
-        userDto.setRole(object.getRole());
-        userDto.setJobs(object.getJobs().stream().map(job -> new JobDto(
-                job.getId(),
-                job.getName(),
-                job.getUser(),
-                job.getExperience(),
-                job.getLocation(),
-                job.getSalary(),
-                job.getQualification(),
-                job.getPostDate(),
-                job.getDescription(),
-                job.getType(),
-                job.getIndustry(),
-                job.getCategory(),
-                job.getKeywords()
-        )).toList());
-        userDto.setFullName(object.getFullName());
-        userDto.setDescription(object.getDescription());
-        userDto.setPhone(object.getPhone());
-        userDto.setWhatsapp(object.getWhatsapp());
-        userDto.setInstagram(object.getInstagram());
-        userDto.setImage(object.getImage());
-        return userDto;
-    }
-
-    private void copy(User user, UserDto object) {
-        user.setUsername(object.getUsername());
-        user.setEmail(object.getEmail());
-        user.setPassword(passwordEncoder.encode(object.getPassword()));
-        user.setRole(object.getRole());
-        user.setJobs(object.getJobs().stream().map(jobDto -> {
-            Job job = new Job();
-            job.setId(jobDto.id());
-            job.setName(jobDto.name());
-            job.setUser(jobDto.user());
-            job.setExperience(jobDto.experience());
-            job.setLocation(jobDto.location());
-            job.setSalary(jobDto.salary());
-            job.setQualification(jobDto.qualification());
-            job.setPostDate(jobDto.postDate());
-            job.setDescription(jobDto.description());
-            job.setType(jobDto.type());
-            job.setIndustry(jobDto.industry());
-            job.setCategory(jobDto.category());
-            job.setKeywords(jobDto.keywords());
-            return job;
-        }).toList());
+    default void copy(User user, UserEditDto object, PasswordEncoder passwordEncoder) {
+        if (object.getRawPassword() != null && object.getNewPassword() != null) {
+            if (passwordEncoder.matches(object.getRawPassword(), user.getPassword())) {
+                user.setPassword(passwordEncoder.encode(object.getNewPassword()));
+            }
+        }
         user.setFullName(object.getFullName());
+        user.setEmail(object.getEmail());
         user.setDescription(object.getDescription());
         user.setPhone(object.getPhone());
         user.setWhatsapp(object.getWhatsapp());
         user.setInstagram(object.getInstagram());
-        user.setImage(object.getImage());
     }
 }

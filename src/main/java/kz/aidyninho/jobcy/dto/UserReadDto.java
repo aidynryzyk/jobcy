@@ -12,14 +12,14 @@ import java.util.List;
 @Setter
 @RequiredArgsConstructor
 @AllArgsConstructor
-public class UserDto {
+public class UserReadDto {
 
     private Long id;
     private String username;
     private String password;
     private String email;
     private UserRole role;
-    private List<JobDto> jobs;
+    private List<JobReadWithoutUserDto> jobs;
     private String fullName;
     private String description;
     private String phone;

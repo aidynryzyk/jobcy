@@ -65,7 +65,7 @@
                                     <div class="text-center pb-4 border-bottom">
                                         <img th:src="'/api/v1/users/' + ${profileId != null ? profileId : userId} + '/image'" alt=""
                                              class="avatar-lg img-thumbnail rounded-circle mb-4" />
-                                        <input type="hidden" id="userId" th:value="${userId}">
+                                        <input type="hidden" id="userId" th:value="${profileId != null ? profileId : userId}">
                                         <script>
                                             loadUsername();
                                             function loadUsername() {

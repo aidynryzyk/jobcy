@@ -2,7 +2,7 @@ package kz.aidyninho.jobcy.api;
 
 import kz.aidyninho.jobcy.dto.CategoryDto;
 import kz.aidyninho.jobcy.dto.JobCreateDto;
-import kz.aidyninho.jobcy.dto.JobDto;
+import kz.aidyninho.jobcy.dto.JobReadDto;
 import kz.aidyninho.jobcy.dto.JobFilter;
 import kz.aidyninho.jobcy.entity.City;
 import kz.aidyninho.jobcy.entity.JobType;
@@ -29,7 +29,7 @@ public class JobRestController {
     }
 
     @GetMapping("/jobs")
-    public Page<JobDto> findAll(Pageable pageable) {
+    public Page<JobReadDto> findAll(Pageable pageable) {
         JobFilter filter = jobService.getFilter();
         if (filter == null) {
             filter = new JobFilter();
@@ -38,7 +38,7 @@ public class JobRestController {
     }
 
     @GetMapping("/jobs/{id}")
-    public JobDto find(@PathVariable Long id) {
+    public JobReadDto find(@PathVariable Long id) {
         return jobService.findById(id);
     }
 
@@ -63,7 +63,7 @@ public class JobRestController {
     }
 
     @GetMapping("/jobs/previews")
-    public List<JobDto> findTop4JobsByTypeOrderedByPostDate(@RequestParam String type) {
+    public List<JobReadDto> findTop4JobsByTypeOrderedByPostDate(@RequestParam String type) {
         return jobService.findTop4ByTypeOrderByPostDateDesc(JobType.valueOf(type));
     }
 
@@ -78,13 +78,13 @@ public class JobRestController {
     }
 
     @PostMapping("/users/user/jobs")
-    public void saveJob(@RequestBody JobCreateDto job) {
-        jobService.saveJob(job);
+    public void saveJob(@RequestBody JobCreateDto jobCreateDto) {
+        jobService.saveJob(jobCreateDto);
     }
 
     @PutMapping("/users/user/jobs")
-    public void updateJob(@RequestBody JobCreateDto job) {
-        jobService.saveJob(job);
+    public void updateJob(@RequestBody JobCreateDto jobCreateDto) {
+        jobService.updateJob(jobCreateDto);
     }
 
 }

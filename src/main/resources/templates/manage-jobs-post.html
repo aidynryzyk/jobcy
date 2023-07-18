@@ -20,7 +20,7 @@
                 <div class="page-content">
 
                     <script>
-                        function saveFilter(method, id, name, user, description, categoryId, type, salary, qualification, keywords, experience, location, postDate) {
+                        function saveFilter(method, id, name, user, description, categoryId, type, salary, qualification, keywords, experience, location, postDate, industry) {
                             let httpRequest = new XMLHttpRequest();
                             httpRequest.open(method, "/api/v1/users/user/jobs", true);
                             httpRequest.setRequestHeader("Content-Type", "application/json");
@@ -53,7 +53,8 @@
                                 "type": type.value,
                                 "salary": salary.value,
                                 "postDate": postDate.value,
-                                "keywords": JSON.parse(words)
+                                "keywords": JSON.parse(words),
+                                "industryId" : industry.value
                             };
                             body = JSON.stringify(body);
                             console.log(body);
@@ -126,25 +127,25 @@
                                 <form id="postForm">
                                     <div class="job-post-content box-shadow-md rounded-3 p-4"> 
                                         <div class="row">
-                                            <input id="id" type="hidden" th:value="${job.id()}">
-                                            <input id="userId" type="hidden" th:value="${job.user().getId()}">
+                                            <input id="id" type="hidden" th:value="${job.getId()}">
+                                            <input id="userId" type="hidden" th:value="${job.getUser().getId()}">
                                             <div class="col-lg-12">
                                                 <div class="mb-4">
                                                     <label for="name" class="form-label">Job Title</label>
-                                                    <input id="name" type="text" th:value="${job.name()}" class="form-control" placeholder="Title">
+                                                    <input id="name" type="text" th:value="${job.getName()}" class="form-control" placeholder="Title">
                                                 </div>
                                             </div><!--end col-->
                                             <div class="col-lg-12">
                                                 <div class="mb-4">
                                                     <label for="description" class="form-label">Job Description</label>
-                                                    <textarea id="description" class="form-control" th:text="${job.description()}" rows="3" placeholder="Enter Job Description"></textarea>
+                                                    <textarea id="description" class="form-control" th:text="${job.getDescription()}" rows="3" placeholder="Enter Job Description"></textarea>
                                                 </div>
                                             </div><!--end col-->
                                             <div class="col-lg-6">
                                                 <div class="mb-4">
                                                     <label for="choices-single-categories" class="form-label">Categories</label>
                                                     <select name="category" class="form-select" data-trigger="" id="choices-single-categories" aria-label="Default select example">
-                                                        <option th:each="category : ${categories}" th:value="${category.id()}" th:text="${category.name()}" th:selected="${category.id() == job.category().getId()}">Digital & Creative</option>
+                                                        <option th:each="category : ${categories}" th:value="${category.getId()}" th:text="${category.getName()}" th:selected="${category.getId() == job.getCategory().getId()}">Digital & Creative</option>
                                                     </select>
                                                 </div>
                                             </div><!--end col-->
@@ -152,20 +153,28 @@
                                                 <div class="mb-4">
                                                     <label for="jobtype" class="form-label">Job Type</label>
                                                     <select name="type" class="form-select" data-trigger="" id="jobtype" aria-label="Default select example">
-                                                        <option th:each="type : ${types}" th:value="${type.name()}" th:text="${type.name()}" th:selected="${type.name() == job.type().name()}">Digital & Creative</option>
+                                                        <option th:each="type : ${types}" th:value="${type.name()}" th:text="${type.name()}" th:selected="${type.name() == job.getType().name()}">Digital & Creative</option>
+                                                    </select>
+                                                </div>
+                                            </div><!--end col-->
+                                            <div class="col-lg-6">
+                                                <div class="mb-4">
+                                                    <label for="industry" class="form-label">Industry</label>
+                                                    <select name="industry" class="form-select" data-trigger="" id="industry" aria-label="Default select example">
+                                                        <option th:each="industry : ${industries}" th:value="${industry.getId()}" th:text="${industry.getName()}" th:selected="${job.getIndustry().getId() == industry.getId()}">Digital & Creative</option>
                                                     </select>
                                                 </div>
                                             </div><!--end col-->
                                             <div class="col-lg-6">
                                                 <div class="mb-4">
                                                     <label for="salary" class="form-label">Salary($)</label>
-                                                    <input type="number" class="form-control" th:value="${job.salary()}" id="salary" placeholder="Salary">
+                                                    <input type="number" class="form-control" th:value="${job.getSalary()}" id="salary" placeholder="Salary">
                                                 </div>
                                             </div><!--end col-->
                                             <div class="col-lg-6">
                                                 <div class="mb-4">
                                                     <label for="qualification" class="form-label">Qualification</label>
-                                                    <input type="text" class="form-control" th:value="${job.qualification()}" id="qualification" placeholder="Qualification">
+                                                    <input type="text" class="form-control" th:value="${job.getQualification()}" id="qualification" placeholder="Qualification">
                                                 </div>
                                             </div><!--end col-->
                                             <div class="col-lg-6">
@@ -173,7 +182,7 @@
                                                     <label for="experience" class="form-label">Experience</label>
                                                     <select class="form-select" name="location" id="experience" aria-label="Default select example">
                                                         <option disabled selected value="">Select experience</option>
-                                                        <option th:each="experience : ${experiences}" th:selected="${job.experience().getId() == experience.getId()}" th:value="${experience.getId()}" th:text="${experience.getLevel()}">exp</option>
+                                                        <option th:each="experience : ${experiences}" th:selected="${job.getExperience().getId() == experience.getId()}" th:value="${experience.getId()}" th:text="${experience.getLevel()}">exp</option>
                                                     </select>
                                                 </div>
                                             </div><!--end col-->
@@ -181,7 +190,7 @@
                                                 <div class="mb-4">
                                                     <label for="keywordsDiv" class="form-label">Keywords</label>
                                                     <div id="keywordsDiv" class="form-check mt-2" th:each="keyword : ${keywords}">
-                                                        <input class="form-check-input" type="checkbox" id="keywords" name="keywords" th:value="${keyword.getId()}" th:id="keywords" th:checked="${job.keywords() != null && job.keywords().contains(keyword)}" />
+                                                        <input class="form-check-input" type="checkbox" id="keywords" name="keywords" th:value="${keyword.getId()}" th:id="keywords" th:checked="${job.getKeywords() != null && job.getKeywords().contains(keyword)}" />
                                                         <label class="form-check-label ms-2 text-muted" th:for="keywords" th:text="${keyword.getName()}">
                                                             Keyword
                                                         </label>
@@ -193,11 +202,11 @@
                                                     <label for="choices-single-location" class="form-label">City</label>
                                                     <select class="form-select" name="location" id="choices-single-location" aria-label="Default select example">
                                                         <option disabled selected value="">Select city</option>
-                                                        <option th:each="city : ${cities}" th:selected="${city.name() == job.location()}" th:text="${city.name()}" th:value="${city.name()}">City</option>
+                                                        <option th:each="city : ${cities}" th:selected="${city.name() == job.getLocation()}" th:text="${city.name()}" th:value="${city.name()}">City</option>
                                                     </select>
                                                 </div>
                                             </div><!--end col-->
-                                            <input type="hidden" id="postDate" th:value="${job.postDate()}">
+                                            <input type="hidden" id="postDate" th:value="${job.getPostDate()}">
                                         </div><!--end row-->
                                     </div><!--end job-post-content-->
                                 </form>
@@ -216,7 +225,8 @@
                                                         document.getElementsByName('keywords'),
                                                         document.getElementById('experience'),
                                                         document.getElementById('choices-single-location'),
-                                                        document.getElementById('postDate')
+                                                        document.getElementById('postDate'),
+                                                        document.getElementById('industry')
                                                     )">Post Now<i class="mdi mdi-send"></i>
                                         </button>
                                     </div>
@@ -254,7 +264,7 @@
                                             <div class="mb-4">
                                                 <label for="choices-single-categories" class="form-label">Categories</label>
                                                 <select name="category" class="form-select" data-trigger="" id="choices-single-categories" aria-label="Default select example">
-                                                    <option th:each="category : ${categories}" th:value="${category.id()}" th:text="${category.name()}">Digital & Creative</option>
+                                                    <option th:each="category : ${categories}" th:value="${category.getId()}" th:text="${category.getName()}">Digital & Creative</option>
                                                 </select>
                                             </div>
                                         </div><!--end col-->
@@ -263,6 +273,14 @@
                                                 <label for="jobtype" class="form-label">Job Type</label>
                                                 <select name="type" class="form-select" data-trigger="" id="jobtype" aria-label="Default select example">
                                                     <option th:each="type : ${types}" th:value="${type.name()}" th:text="${type.name()}">Digital & Creative</option>
+                                                </select>
+                                            </div>
+                                        </div><!--end col-->
+                                        <div class="col-lg-6">
+                                            <div class="mb-4">
+                                                <label for="industry" class="form-label">Industry</label>
+                                                <select name="industry" class="form-select" data-trigger="" id="industry" aria-label="Default select example">
+                                                    <option th:each="industry : ${industries}" th:value="${industry.getId()}" th:text="${industry.getName()}">Digital & Creative</option>
                                                 </select>
                                             </div>
                                         </div><!--end col-->
@@ -326,7 +344,8 @@
                                                         document.getElementsByName('keywords'),
                                                         document.getElementById('experience'),
                                                         document.getElementById('choices-single-location'),
-                                                        document.getElementById('postDate')
+                                                        document.getElementById('postDate'),
+                                                        document.getElementById('industry')
                                                     )">Post Now<i class="mdi mdi-send"></i>
                                     </button>
                                 </div>

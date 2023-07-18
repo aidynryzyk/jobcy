@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +24,7 @@ public class User implements BaseEntity<Long> {
     private UserRole role;
     @OneToMany(mappedBy = "user")
     @JsonIgnore
+    @ToString.Exclude
     List<Job> jobs = new ArrayList<>();
     @Column(name = "full_name")
     private String fullName;

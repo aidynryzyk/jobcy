@@ -1,6 +1,6 @@
 package kz.aidyninho.jobcy.dto;
 
-import kz.aidyninho.jobcy.entity.*;
+import kz.aidyninho.jobcy.entity.JobType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -13,19 +13,18 @@ import java.util.List;
 @Setter
 @RequiredArgsConstructor
 @AllArgsConstructor
-public class JobCreateDto {
+public class JobEditDto {
 
     private Long id;
     private String name;
-    private Long userId;
-    private Long experienceId;
+    private ExperienceDto experience;
     private String location;
     private Integer salary;
     private String qualification;
     private LocalDateTime postDate;
     private String description;
     private JobType type;
-    private Long industryId;
-    private Long categoryId;
+    private IndustryDto industry;
+    private CategoryDto category;
     private List<KeywordDto> keywords;
 }

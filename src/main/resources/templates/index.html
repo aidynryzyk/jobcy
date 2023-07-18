@@ -35,7 +35,7 @@
                                         <div class="col-md-4">
                                             <div class="filter-search-form filter-border mt-3 mt-md-0">
                                                 <i class="uil uil-briefcase-alt"></i>
-                                                <!--                                                        <input type="search" id="job-title" class="form-control filter-input-box" placeholder="Job, Company name...">-->
+<!--                                                                                                        <input type="search" id="job-title" class="form-control filter-input-box" placeholder="Job, Company name...">-->
                                                 <input class="form-control filter-input-box" id="job-search"
                                                        name="name" placeholder="Job, company... " type="search">
                                             </div>
@@ -53,6 +53,7 @@
                                                             httpRequest.open("GET", "/api/v1/cities", true);
                                                             httpRequest.onreadystatechange = function () {
                                                                 if (httpRequest.status === 200) {
+                                                                    console.log(httpRequest.response);
                                                                     let cities = JSON.parse(httpRequest.response);
                                                                     let content = "<option disabled selected value=''>Select city</option>";
                                                                     for (let i = 0; i < cities.length; i++) {

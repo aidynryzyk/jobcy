@@ -1,20 +1,24 @@
 package kz.aidyninho.jobcy.service;
 
 import kz.aidyninho.jobcy.dto.JobCreateDto;
-import kz.aidyninho.jobcy.dto.JobDto;
+import kz.aidyninho.jobcy.dto.JobEditDto;
+import kz.aidyninho.jobcy.dto.JobReadDto;
 import kz.aidyninho.jobcy.dto.JobFilter;
 import kz.aidyninho.jobcy.entity.Job;
 import kz.aidyninho.jobcy.entity.JobType;
+import kz.aidyninho.jobcy.mapper.*;
 import kz.aidyninho.jobcy.repository.*;
 import kz.aidyninho.jobcy.specification.JobSpecification;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
+@Transactional(readOnly = true)
 public class JobService {
 
     private JobRepository jobRepository;
@@ -22,6 +26,11 @@ public class JobService {
     private CategoryRepository categoryRepository;
     private ExperienceRepository experienceRepository;
     private IndustryRepository industryRepository;
+    private JobMapper jobMapper;
+    private ExperienceMapper experienceMapper;
+    private CategoryMapper categoryMapper;
+    private IndustryMapper industryMapper;
+    private KeywordMapper keywordMapper;
     private JobFilter jobFilter = new JobFilter();
 
     @Autowired
@@ -29,15 +38,20 @@ public class JobService {
                       UserRepository userRepository,
                       CategoryRepository categoryRepository,
                       ExperienceRepository experienceRepository,
-                      IndustryRepository industryRepository) {
+                      IndustryRepository industryRepository, JobMapper jobMapper, ExperienceMapper experienceMapper, CategoryMapper categoryMapper, IndustryMapper industryMapper, KeywordMapper keywordMapper) {
         this.jobRepository = jobRepository;
         this.userRepository = userRepository;
         this.categoryRepository = categoryRepository;
         this.experienceRepository = experienceRepository;
         this.industryRepository = industryRepository;
+        this.jobMapper = jobMapper;
+        this.experienceMapper = experienceMapper;
+        this.categoryMapper = categoryMapper;
+        this.industryMapper = industryMapper;
+        this.keywordMapper = keywordMapper;
     }
 
-    public Page<JobDto> findAllByFilter(JobFilter filter, Pageable pageable) {
+    public Page<JobReadDto> findAllByFilter(JobFilter filter, Pageable pageable) {
 
         return jobRepository.findAll(JobSpecification.getJobs(
                 filter.getName(),
@@ -48,42 +62,14 @@ public class JobService {
                 filter.getPostDate(),
                 filter.getKeywords()
         ), pageable).map(
-                job -> new JobDto(
-                        job.getId(),
-                        job.getName(),
-                        job.getUser(),
-                        job.getExperience(),
-                        job.getLocation(),
-                        job.getSalary(),
-                        job.getQualification(),
-                        job.getPostDate(),
-                        job.getDescription(),
-                        job.getType(),
-                        job.getIndustry(),
-                        job.getCategory(),
-                        job.getKeywords()
-                )
+                job -> jobMapper.toReadDto(job)
         );
     }
 
-    public List<JobDto> findTop4ByTypeOrderByPostDateDesc(JobType type) {
+    public List<JobReadDto> findTop4ByTypeOrderByPostDateDesc(JobType type) {
         return jobRepository.findTop4ByTypeOrderByPostDateDesc(type).stream()
                 .map(
-                        job -> new JobDto(
-                                job.getId(),
-                                job.getName(),
-                                job.getUser(),
-                                job.getExperience(),
-                                job.getLocation(),
-                                job.getSalary(),
-                                job.getQualification(),
-                                job.getPostDate(),
-                                job.getDescription(),
-                                job.getType(),
-                                job.getIndustry(),
-                                job.getCategory(),
-                                job.getKeywords()
-                        )
+                        job -> jobMapper.toReadDto(job)
                 ).toList();
     }
 
@@ -91,51 +77,53 @@ public class JobService {
         return jobFilter;
     }
 
+    @Transactional
     public void saveFilter(JobFilter jobFilter) {
         this.jobFilter = jobFilter;
     }
 
-    public void saveJob(JobCreateDto jobDto) {
-        Job job = new Job();
-        job.setId(jobDto.id());
-        job.setName(jobDto.name());
-        job.setUser(userRepository.findById(jobDto.userId()).get());
-        job.setExperience(experienceRepository.findById(jobDto.experienceId()).get());
-        job.setLocation(jobDto.location());
-        job.setSalary(jobDto.salary());
-        job.setQualification(jobDto.qualification());
-        job.setPostDate(jobDto.postDate());
-        job.setDescription(jobDto.description());
-        job.setType(jobDto.type());
-        job.setCategory(categoryRepository.findById(jobDto.categoryId()).get());
-        job.setKeywords(jobDto.keywords());
+    @Transactional
+    public void saveJob(JobCreateDto jobCreateDto) {
+        Job job = jobMapper.toModel(jobCreateDto);
+        job.setUser(userRepository.findById(jobCreateDto.getUserId()).get());
+        job.setExperience(experienceRepository.findById(jobCreateDto.getExperienceId()).get());
+        job.setIndustry(industryRepository.findById(jobCreateDto.getIndustryId()).get());
+        job.setCategory(categoryRepository.findById(jobCreateDto.getCategoryId()).get());
         jobRepository.saveAndFlush(job);
     }
 
+    @Transactional
     public void deleteJob(Long id) {
         jobRepository.deleteById(id);
         jobRepository.flush();
     }
 
-    public JobDto findById(Long id) {
+    public JobReadDto findById(Long id) {
         return jobRepository.findById(id)
                 .map(
-                        job -> new JobDto(
-                                job.getId(),
-                                job.getName(),
-                                job.getUser(),
-                                job.getExperience(),
-                                job.getLocation(),
-                                job.getSalary(),
-                                job.getQualification(),
-                                job.getPostDate(),
-                                job.getDescription(),
-                                job.getType(),
-                                job.getIndustry(),
-                                job.getCategory(),
-                                job.getKeywords()
-                        )
+                        job -> jobMapper.toReadDto(job)
                 ).get();
     }
 
+    @Transactional
+    public void updateJob(JobCreateDto jobCreateDto) {
+        Job job = jobRepository.findById(jobCreateDto.getId()).get();
+        job.setName(jobCreateDto.getName());
+        job.setExperience(experienceRepository.findById(jobCreateDto.getExperienceId()).get());
+        job.setLocation(jobCreateDto.getLocation());
+        job.setSalary(jobCreateDto.getSalary());
+        job.setQualification(jobCreateDto.getQualification());
+        job.setPostDate(jobCreateDto.getPostDate());
+        job.setDescription(jobCreateDto.getDescription());
+        job.setType(jobCreateDto.getType());
+        job.setIndustry(industryRepository.findById(jobCreateDto.getIndustryId()).get());
+        job.setCategory(categoryRepository.findById(jobCreateDto.getCategoryId()).get());
+        if (!jobCreateDto.getKeywords().isEmpty()) {
+            job.setKeywords(jobCreateDto.getKeywords().stream()
+                    .map(
+                            keywordDto -> keywordMapper.toModel(keywordDto)
+                    ).toList());
+        }
+        jobRepository.save(job);
+    }
 }

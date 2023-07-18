@@ -72,7 +72,7 @@ public class UserController {
     @PostMapping("/users/image")
     public String uploadImage(UserImageDto userImageDto) {
         userService.updateImage(userImageDto);
-        return "redirect:/profile/" + userImageDto.getId();
+        return "redirect:/profile";
     }
 
 }

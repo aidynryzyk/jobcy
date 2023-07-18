@@ -1,6 +1,7 @@
 package kz.aidyninho.jobcy.service;
 
 import kz.aidyninho.jobcy.dto.CategoryDto;
+import kz.aidyninho.jobcy.mapper.CategoryMapper;
 import kz.aidyninho.jobcy.repository.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,21 +13,25 @@ import java.util.List;
 public class CategoryService {
 
     private CategoryRepository categoryRepository;
+    private CategoryMapper categoryMapper;
 
     @Autowired
-    public CategoryService(CategoryRepository categoryRepository) {
+    public CategoryService(CategoryRepository categoryRepository, CategoryMapper categoryMapper) {
         this.categoryRepository = categoryRepository;
+        this.categoryMapper = categoryMapper;
     }
 
     public List<CategoryDto> findAllWithJobsCount() {
         return categoryRepository.findAll().stream()
                 .map(
-                        category -> new CategoryDto(
-                                category.getId(),
-                                category.getName(),
-                                category.getIcon(),
-                                categoryRepository.countJobsByCategory(category.getId())
-                        )
-                ).sorted(Comparator.comparingInt(CategoryDto::jobsCount).reversed()).toList();
+                        category -> {
+                            CategoryDto categoryDto = categoryMapper.toDto(category);
+                            categoryDto.setJobsCount(categoryRepository.countJobsByCategory(categoryDto.getId()));
+                            return categoryDto;
+                        }
+                ).sorted(
+                        Comparator.comparingInt(CategoryDto::getJobsCount)
+                                .reversed()
+                ).toList();
     }
 }

@@ -227,7 +227,7 @@
                                             <div class="col mt-4">
                                                 <div class="filler-job-form">
                                                     <i class="uil uil-briefcase-alt"></i>
-                                                    <input type="search" th:value="${filter.getName()}" class="form-control filter-job-input-box" id="exampleFormControlInput1" name="name" placeholder="Job, company... ">
+                                                    <input type="search" id="exampleFormControlInput1" class="form-control filter-input-box" placeholder="Job, Company name...">
                                                 </div>
                                             </div>
                                         </div>
@@ -250,7 +250,7 @@
                                                     <i class="uil uil-clipboard-notes"></i>
                                                     <select class="form-select" name="categoryId" id="choices-single-categories" aria-label="Default select example">
                                                         <option disabled selected value="">Select category</option>
-                                                        <option th:each="category : ${categories}" th:value="${category.id()}" th:selected="${filter.getCategoryId() == category.id()}" th:text="${category.name()}">Category name</option>
+                                                        <option th:each="category : ${categories}" th:value="${category.getId()}" th:selected="${filter.getCategoryId() == category.getId()}" th:text="${category.getName()}">Category name</option>
                                                     </select>
                                                 </div>
                                             </div>
