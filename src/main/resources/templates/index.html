@@ -719,45 +719,7 @@
             </div>
             <!-- END CLIENT -->
 
-            <!-- START APPLY MODAL -->
-            <div aria-hidden="true" aria-labelledby="applyNow" class="modal fade" id="applyNow" tabindex="-1">
-                <div class="modal-dialog modal-dialog-centered">
-                    <div class="modal-content">
-                        <div class="modal-body p-5">
-                            <div class="text-center mb-4">
-                                <h5 class="modal-title" id="staticBackdropLabel">Apply For This Job</h5>
-                            </div>
-                            <div class="position-absolute end-0 top-0 p-3">
-                                <button aria-label="Close" class="btn-close" data-bs-dismiss="modal"
-                                        type="button"></button>
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label" for="nameControlInput">Name</label>
-                                <input class="form-control" id="nameControlInput" placeholder="Enter your name"
-                                       type="text">
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label" for="emailControlInput2">Email Address</label>
-                                <input class="form-control" id="emailControlInput2" placeholder="Enter your email"
-                                       type="email">
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label" for="message">Message</label>
-                                <textarea class="form-control" id="message" placeholder="Enter your message"
-                                          rows="4"></textarea>
-                            </div>
-                            <div class="mb-4">
-                                <label class="form-label" for="inputGroupFile01">Resume Upload</label>
-                                <input class="form-control" id="inputGroupFile01" type="file">
-                            </div>
-                            <button class="btn btn-primary w-100" data-bs-dismiss="modal" onclick="apply()"
-                                    type="submit">Send Application
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div><!-- END APPLY MODAL -->
-
+        <div th:insert="~{fragments :: applyModal}"></div>
         </div>
         <!-- End Page-content -->
 

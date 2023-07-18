@@ -64,6 +64,7 @@ public class UserService implements UserDetailsService {
     @Transactional
     public void save(UserReadDto userReadDto) {
         User user = userMapper.toModel(userReadDto);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
     }
 

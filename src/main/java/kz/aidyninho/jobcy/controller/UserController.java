@@ -17,7 +17,7 @@ import java.security.Principal;
 @SessionAttributes(value = {"userId"})
 public class UserController {
 
-    private UserService userService;
+    private final UserService userService;
 
     @Autowired
     public UserController(UserService userService) {

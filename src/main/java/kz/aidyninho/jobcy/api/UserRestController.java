@@ -20,8 +20,8 @@ import static org.springframework.http.HttpStatus.*;
 @RequestMapping("/api/v1")
 public class UserRestController {
 
-    private UserService userService;
-    private ImageService imageService;
+    private final UserService userService;
+    private final ImageService imageService;
 
     @Autowired
     public UserRestController(UserService userService, ImageService imageService) {

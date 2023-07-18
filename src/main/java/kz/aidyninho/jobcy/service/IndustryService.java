@@ -11,8 +11,8 @@ import java.util.List;
 @Service
 public class IndustryService {
 
-    private IndustryRepository industryRepository;
-    private IndustryMapper industryMapper;
+    private final IndustryRepository industryRepository;
+    private final IndustryMapper industryMapper;
 
     @Autowired
     public IndustryService(IndustryRepository industryRepository, IndustryMapper industryMapper) {

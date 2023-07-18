@@ -19,8 +19,8 @@ import java.util.List;
 @RequestMapping("api/v1/")
 public class JobRestController {
 
-    private JobService jobService;
-    private CategoryService categoryService;
+    private final JobService jobService;
+    private final CategoryService categoryService;
 
     @Autowired
     public JobRestController(JobService jobService, CategoryService categoryService) {

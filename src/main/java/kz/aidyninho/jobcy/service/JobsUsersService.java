@@ -18,10 +18,10 @@ import java.util.List;
 @Transactional(readOnly = true)
 public class JobsUsersService {
 
-    private JobsUsersRepository jobsUsersRepository;
-    private JobRepository jobRepository;
-    private UserRepository userRepository;
-    private JobsUsersMapper jobsUsersMapper;
+    private final JobsUsersRepository jobsUsersRepository;
+    private final JobRepository jobRepository;
+    private final UserRepository userRepository;
+    private final JobsUsersMapper jobsUsersMapper;
 
     @Autowired
     public JobsUsersService(JobsUsersRepository jobsUsersRepository, JobRepository jobRepository, UserRepository userRepository, JobsUsersMapper jobsUsersMapper) {
@@ -33,13 +33,13 @@ public class JobsUsersService {
 
     public List<JobsUsersReadUserDto> findAllByJobId(Long jobId) {
         return jobsUsersRepository.findAllByJob_Id(jobId).stream().map(
-                jobsUsers -> jobsUsersMapper.toReadUserDto(jobsUsers)
+                jobsUsersMapper::toReadUserDto
         ).toList();
     }
 
     public List<JobsUsersReadJobDto> findAllByUserId(Long userId) {
         return jobsUsersRepository.findAllByUser_Id(userId).stream().map(
-                jobsUsers -> jobsUsersMapper.toReadJobDto(jobsUsers)
+                jobsUsersMapper::toReadJobDto
         ).toList();
     }
 

@@ -12,8 +12,8 @@ import java.util.List;
 @Service
 public class CategoryService {
 
-    private CategoryRepository categoryRepository;
-    private CategoryMapper categoryMapper;
+    private final CategoryRepository categoryRepository;
+    private final CategoryMapper categoryMapper;
 
     @Autowired
     public CategoryService(CategoryRepository categoryRepository, CategoryMapper categoryMapper) {

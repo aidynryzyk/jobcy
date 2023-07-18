@@ -15,12 +15,12 @@ import org.springframework.web.bind.annotation.*;
 @SessionAttributes(value = {"userId"})
 public class JobController {
 
-    private JobService jobService;
-    private UserService userService;
-    private CategoryService categoryService;
-    private ExperienceService experienceService;
-    private KeywordService keywordService;
-    private IndustryService industryService;
+    private final JobService jobService;
+    private final UserService userService;
+    private final CategoryService categoryService;
+    private final ExperienceService experienceService;
+    private final KeywordService keywordService;
+    private final IndustryService industryService;
 
     @Autowired
     public JobController(JobService jobService,

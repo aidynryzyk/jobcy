@@ -11,8 +11,8 @@ import java.util.List;
 @Service
 public class KeywordService {
 
-    private KeywordRepository keywordRepository;
-    private KeywordMapper keywordMapper;
+    private final KeywordRepository keywordRepository;
+    private final KeywordMapper keywordMapper;
 
     @Autowired
     public KeywordService(KeywordRepository keywordRepository, KeywordMapper keywordMapper) {
@@ -22,7 +22,7 @@ public class KeywordService {
 
     public List<KeywordDto> findAll() {
         return keywordRepository.findAll().stream().map(
-                keyword -> keywordMapper.toDto(keyword)
+                keywordMapper::toDto
         ).toList();
     }
 }

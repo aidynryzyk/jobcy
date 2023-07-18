@@ -11,8 +11,8 @@ import java.util.List;
 @Service
 public class ExperienceService {
 
-    private ExperienceRepository experienceRepository;
-    private ExperienceMapper experienceMapper;
+    private final ExperienceRepository experienceRepository;
+    private final ExperienceMapper experienceMapper;
 
     @Autowired
     public ExperienceService(ExperienceRepository experienceRepository, ExperienceMapper experienceMapper) {

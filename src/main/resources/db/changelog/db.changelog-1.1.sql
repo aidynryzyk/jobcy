@@ -58,13 +58,13 @@ VALUES ('Golang');
 --changeset aidyninho:5
 INSERT INTO users (username, email, password, role, full_name, description, phone, whatsapp, instagram,
                    image)
-VALUES ('kaspibank', 'kaspibank@kaspi.kz', '$2a$10$39Yx1i2EIbLbTqYZxZ7T3.aOOxyGy6BdAjrIqpV0Mk2TfgHlrXUPO', 'COMPANY', NULL, NULL, NULL,
-        NULL, NULL, 'channels4_profile.jpg');
+VALUES ('kaspibank', 'kaspibank@kaspi.kz', '$2a$12$CSMnV8407MYRa.hOf7nrie0l60We9TXn.W8f52tTzknl7cv0RjbPu', 'COMPANY', NULL, NULL, NULL,
+        NULL, NULL, '800px-Logo_of_Kaspi_bank.png');
 INSERT INTO users (username, email, password, role, full_name, description, phone, whatsapp, instagram,
                    image)
-VALUES ('aidyninho', 'aidyninho@gmail.com', '$2a$10$UuMFiv33k6WcGJFpHRdOheag68MSOJnGPRk0b/jEYpLVYCbIAzGN.', 'USER',
-        'Aidyn Ryzyk', 'Unemployed, motivated Java developer looking for a job', '87475328299', 'https://www.whatsapp.com',
-        'https://www.instagram.com', 'Kitagawa-Marin-Cosplay-Contact-Lenses.jpg');
+VALUES ('welcome', 'welcome@gmail.com', '$2a$12$ygHYBC1oLJ1CNJLVoN0ub.h3fAeV2yXZikdmxgIwtHEV6TLVr3nZu', 'USER',
+        'Welcome User', 'Unemployed, motivated Java developer looking for a job', null, 'https://www.whatsapp.com',
+        'https://www.instagram.com', 'channels4_profile.jpg');
 
 
 --changeset aidyninho:6
