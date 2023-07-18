@@ -1,4 +1,6 @@
 spring:
+  liquibase:
+    change-log: /db/changelog/db.changelog-master.yaml
   datasource:
     url: jdbc:postgresql://localhost:5432/jobcy
     username: postgres
@@ -8,6 +10,6 @@ spring:
     hibernate:
       ddl-auto: none
     show-sql: true
-  app:
-    image:
-      bucket: /Users/admin/Desktop/jobcy/images
+app:
+  image:
+    bucket: images

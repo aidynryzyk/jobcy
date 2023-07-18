@@ -1,6 +1,9 @@
 package kz.aidyninho.jobcy.service;
 
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.InputStream;
@@ -12,7 +15,8 @@ import java.util.Optional;
 @Service
 public class ImageService {
 
-    private final String bucket = "/Users/admin/Desktop/jobcy/images";
+    @Value("${app.image.bucket}")
+    private String bucket;
 
     @SneakyThrows
     public void upload(String imagePath, InputStream content) {
