@@ -1,12 +1,12 @@
 package kz.aidyninho.jobcy.service;
 
 import kz.aidyninho.jobcy.dto.JobCreateDto;
-import kz.aidyninho.jobcy.dto.JobEditDto;
-import kz.aidyninho.jobcy.dto.JobReadDto;
 import kz.aidyninho.jobcy.dto.JobFilter;
+import kz.aidyninho.jobcy.dto.JobReadDto;
 import kz.aidyninho.jobcy.entity.Job;
 import kz.aidyninho.jobcy.entity.JobType;
-import kz.aidyninho.jobcy.mapper.*;
+import kz.aidyninho.jobcy.mapper.JobMapper;
+import kz.aidyninho.jobcy.mapper.KeywordMapper;
 import kz.aidyninho.jobcy.repository.*;
 import kz.aidyninho.jobcy.specification.JobSpecification;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,16 +21,13 @@ import java.util.List;
 @Transactional(readOnly = true)
 public class JobService {
 
-    private JobRepository jobRepository;
-    private UserRepository userRepository;
-    private CategoryRepository categoryRepository;
-    private ExperienceRepository experienceRepository;
-    private IndustryRepository industryRepository;
-    private JobMapper jobMapper;
-    private ExperienceMapper experienceMapper;
-    private CategoryMapper categoryMapper;
-    private IndustryMapper industryMapper;
-    private KeywordMapper keywordMapper;
+    private final JobRepository jobRepository;
+    private final UserRepository userRepository;
+    private final CategoryRepository categoryRepository;
+    private final ExperienceRepository experienceRepository;
+    private final IndustryRepository industryRepository;
+    private final JobMapper jobMapper;
+    private final KeywordMapper keywordMapper;
     private JobFilter jobFilter = new JobFilter();
 
     @Autowired
@@ -38,16 +35,15 @@ public class JobService {
                       UserRepository userRepository,
                       CategoryRepository categoryRepository,
                       ExperienceRepository experienceRepository,
-                      IndustryRepository industryRepository, JobMapper jobMapper, ExperienceMapper experienceMapper, CategoryMapper categoryMapper, IndustryMapper industryMapper, KeywordMapper keywordMapper) {
+                      IndustryRepository industryRepository,
+                      JobMapper jobMapper,
+                      KeywordMapper keywordMapper) {
         this.jobRepository = jobRepository;
         this.userRepository = userRepository;
         this.categoryRepository = categoryRepository;
         this.experienceRepository = experienceRepository;
         this.industryRepository = industryRepository;
         this.jobMapper = jobMapper;
-        this.experienceMapper = experienceMapper;
-        this.categoryMapper = categoryMapper;
-        this.industryMapper = industryMapper;
         this.keywordMapper = keywordMapper;
     }
 
@@ -62,14 +58,14 @@ public class JobService {
                 filter.getPostDate(),
                 filter.getKeywords()
         ), pageable).map(
-                job -> jobMapper.toReadDto(job)
+                jobMapper::toReadDto
         );
     }
 
     public List<JobReadDto> findTop4ByTypeOrderByPostDateDesc(JobType type) {
         return jobRepository.findTop4ByTypeOrderByPostDateDesc(type).stream()
                 .map(
-                        job -> jobMapper.toReadDto(job)
+                        jobMapper::toReadDto
                 ).toList();
     }
 
@@ -98,10 +94,16 @@ public class JobService {
         jobRepository.flush();
     }
 
+    public List<JobReadDto> findAll() {
+        return jobRepository.findAll().stream().map(
+                jobMapper::toReadDto
+        ).toList();
+    }
+
     public JobReadDto findById(Long id) {
         return jobRepository.findById(id)
                 .map(
-                        job -> jobMapper.toReadDto(job)
+                        jobMapper::toReadDto
                 ).get();
     }
 
@@ -121,7 +123,7 @@ public class JobService {
         if (!jobCreateDto.getKeywords().isEmpty()) {
             job.setKeywords(jobCreateDto.getKeywords().stream()
                     .map(
-                            keywordDto -> keywordMapper.toModel(keywordDto)
+                            keywordMapper::toModel
                     ).toList());
         }
         jobRepository.save(job);

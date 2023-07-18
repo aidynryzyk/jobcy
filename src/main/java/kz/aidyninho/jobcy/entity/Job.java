@@ -33,7 +33,7 @@ public class Job implements BaseEntity<Long> {
     private String description;
     @Enumerated(value = EnumType.STRING)
     private JobType type;
-    @OneToOne
+    @ManyToOne
     private Industry industry;
     @ManyToOne
     private Category category;

@@ -6,7 +6,6 @@ import kz.aidyninho.jobcy.dto.UserImageDto;
 import kz.aidyninho.jobcy.dto.UserReadDto;
 import kz.aidyninho.jobcy.entity.User;
 import kz.aidyninho.jobcy.mapper.JobMapper;
-import kz.aidyninho.jobcy.mapper.UserEditMapper;
 import kz.aidyninho.jobcy.mapper.UserMapper;
 import kz.aidyninho.jobcy.repository.UserRepository;
 import lombok.SneakyThrows;
@@ -14,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -25,18 +25,22 @@ import java.util.List;
 @Transactional(readOnly = true)
 public class UserService implements UserDetailsService {
 
-    private UserRepository userRepository;
-    private ImageService imageService;
-    private UserEditMapper userEditMapper;
-    private UserMapper userMapper;
-    private JobMapper jobMapper;
+    private final UserRepository userRepository;
+    private final ImageService imageService;
+    private final UserMapper userMapper;
+    private final JobMapper jobMapper;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserService(UserRepository userRepository, UserMapper userMapper, ImageService imageService, UserEditMapper userEditMapper, JobMapper jobMapper) {
+    public UserService(UserRepository userRepository,
+                       UserMapper userMapper,
+                       ImageService imageService,
+                       JobMapper jobMapper,
+                       PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.userMapper = userMapper;
         this.imageService = imageService;
-        this.userEditMapper = userEditMapper;
+        this.passwordEncoder = passwordEncoder;
         this.jobMapper = jobMapper;
     }
 
@@ -51,6 +55,12 @@ public class UserService implements UserDetailsService {
         ).orElseThrow(() -> new UsernameNotFoundException("Failed to retrieve user " + username));
     }
 
+    public List<UserReadDto> findAll() {
+        return userRepository.findAll().stream().map(
+                userMapper::toReadDto
+        ).toList();
+    }
+
     @Transactional
     public void save(UserReadDto userReadDto) {
         User user = userMapper.toModel(userReadDto);
@@ -60,7 +70,7 @@ public class UserService implements UserDetailsService {
     @Transactional
     public void update(UserEditDto userEditDto) {
         User user = userRepository.findById(userEditDto.getId()).get();
-        userEditMapper.copy(user, userEditDto);
+        userMapper.copy(user, userEditDto, passwordEncoder);
         userRepository.saveAndFlush(user);
     }
 
@@ -87,7 +97,7 @@ public class UserService implements UserDetailsService {
 
     public List<JobReadDto> findJobsByUser(Long userId) {
         return userRepository.findById(userId).get().getJobs().stream().map(
-                job -> jobMapper.toReadDto(job)
+                jobMapper::toReadDto
         ).toList();
     }
 }
