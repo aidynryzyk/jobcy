@@ -9,7 +9,7 @@ import java.util.List;
 @Repository
 public interface JobsUsersRepository extends JpaRepository<JobsUsers, Long> {
 
-    List<JobsUsers> findAllByJob_Id(Long jobId);
+    List<JobsUsers> findAllByJob_IdOrderByIdAsc(Long jobId);
 
     List<JobsUsers> findAllByUser_Id(Long userId);
 }

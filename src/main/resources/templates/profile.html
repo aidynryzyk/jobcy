@@ -67,8 +67,7 @@
                                              class="avatar-lg img-thumbnail rounded-circle mb-4" />
                                         <input type="hidden" id="userId" th:value="${profileId != null ? profileId : userId}">
                                         <script>
-                                            loadUsername();
-                                            function loadUsername() {
+                                            function loadUsername(isAnother) {
                                                 const httpRequest = new XMLHttpRequest();
                                                 httpRequest.open("GET", "/api/v1/users/" + document.getElementById("userId").value, true);
                                                 httpRequest.onreadystatechange = function () {
@@ -80,31 +79,39 @@
                                                         document.getElementById("title2").innerHTML = user.username;
                                                         document.getElementById("title3").innerHTML = user.username;
                                                         document.getElementById("email").innerHTML = user.email;
-                                                        document.getElementById("emailInput").value = user.email;
                                                         if (user.phone != null) {
-                                                            document.getElementById("phoneInput").value = user.phone;
+                                                            if (isAnother === 0) {
+                                                                document.getElementById("phoneInput").value = user.phone;
+                                                            }
                                                             document.getElementById("phone").innerHTML = "<label>Phone Number</label>\n" +
                                                                 "                                                        <div>\n" +
                                                                 "                                                            <p id=\"phone\" class=\"text-muted mb-0\">" + user.phone + "</p>\n" +
                                                                 "                                                        </div>";
                                                         }
                                                         if (user.whatsapp != null) {
-                                                            document.getElementById("whatsappInput").value = user.whatsapp;
+                                                            if (isAnother === 0) {
+                                                                document.getElementById("whatsappInput").value = user.phone;
+                                                            }
                                                             document.getElementById("whatsapp").innerHTML = "<a href=\"" + user.whatsapp + "\" class=\"social-link rounded-3 btn-soft-success\"><i\n" +
                                                                 "                                                class=\"uil uil-whatsapp\"></i></a>";
                                                         }
                                                         if (user.instagram != null) {
-                                                            document.getElementById("instagramInput").value = user.instagram;
+                                                            if (isAnother === 0) {
+                                                                document.getElementById("instagramInput").value = user.phone;
+                                                            }
                                                             document.getElementById("instagram").innerHTML = "<a href=\"" + user.instagram + "\" class=\"social-link rounded-3 btn-soft-success\"><i\n" +
                                                                 "                                                class=\"uil uil-instagram\"></i></a>";
                                                         }
                                                         if (user.fullName != null) {
-                                                            document.getElementById("fullNameInput").value = user.fullName;
+                                                            if (isAnother === 0) {
+                                                                document.getElementById("fullNameInput").value = user.phone;
+                                                            }
                                                         }
                                                         if (user.description != null) {
                                                             document.getElementById("description").innerHTML = user.description;
-                                                            document.getElementById("descriptionInput").value = user.description;
-                                                        }
+                                                            if (isAnother === 0) {
+                                                                document.getElementById("descriptionInput").value = user.phone;
+                                                            }                                                        }
                                                     }
                                                 }
                                                 httpRequest.send();
@@ -138,6 +145,12 @@
                                                 httpRequest.send(body);
                                                 loadUsername();
                                             }
+                                        </script>
+                                        <script th:if="${profileId != null}">
+                                            loadUsername(1);
+                                        </script>
+                                        <script th:if="${profileId == null}">
+                                            loadUsername(0);
                                         </script>
                                         <h5 class="mb-0" id="username"></h5>
                                         <ul class="candidate-detail-social-menu list-inline mb-0">

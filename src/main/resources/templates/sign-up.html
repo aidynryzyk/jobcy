@@ -117,6 +117,7 @@
                                                                 httpRequest.onreadystatechange = function () {
                                                                     if (httpRequest.readyState === XMLHttpRequest.DONE && httpRequest.status === 200) {
                                                                         console.log(body);
+                                                                        window.location.href = "/sign-in";
                                                                     }
                                                                 }
                                                                 body = {
@@ -127,7 +128,6 @@
                                                                 };
                                                                 body = JSON.stringify(body);
                                                                 httpRequest.send(body);
-                                                                window.location.href = "/sign-in";
                                                             }
                                                         </script>
                                                         <div class="mt-3 text-center">

@@ -27,6 +27,7 @@
                             let body;
                             httpRequest.onreadystatechange = function () {
                                 if (httpRequest.readyState === XMLHttpRequest.DONE && httpRequest.status === 200) {
+                                    window.location.href = "/manage-jobs";
                                     console.log(body);
                                 }
                             }
@@ -59,7 +60,6 @@
                             body = JSON.stringify(body);
                             console.log(body);
                             httpRequest.send(body);
-                            window.location.href = "/manage-jobs";
                         }
 
                         function loadUser(user) {

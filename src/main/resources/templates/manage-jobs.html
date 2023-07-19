@@ -147,13 +147,13 @@
                                         httpRequest.onreadystatechange = function () {
                                             if (httpRequest.readyState === XMLHttpRequest.DONE && httpRequest.status === 200) {
                                                 console.log(body);
+                                                loadJobs();
                                             }
                                         }
                                         body = {"id" : job};
                                         body = JSON.stringify(body);
                                         console.log(job);
                                         httpRequest.send(body);
-                                        loadJobs();
                                     }
                                 </script>
 

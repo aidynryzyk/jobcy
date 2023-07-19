@@ -27,7 +27,8 @@ public class JobController {
                          UserService userService,
                          CategoryService categoryService,
                          ExperienceService experienceService,
-                         KeywordService keywordService, IndustryService industryService) {
+                         KeywordService keywordService,
+                         IndustryService industryService) {
         this.jobService = jobService;
         this.userService = userService;
         this.categoryService = categoryService;
@@ -74,8 +75,8 @@ public class JobController {
     }
 
     @PostMapping("/jobs/filter")
-    public String setFilter(Model model, JobFilter filter) {
-        model.addAttribute("filter", filter);
+    public String setFilter(Model model) {
+        model.addAttribute("filter", jobService.getFilter());
         return "redirect:/jobs";
     }
 

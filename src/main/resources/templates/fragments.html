@@ -299,7 +299,7 @@
     <div class="modal fade" id="applyNow" tabindex="-1" aria-labelledby="applyNow" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
-                <div class="modal-body p-5">
+                <div class="modal-body p-5" sec:authorize="isAuthenticated()">
                     <form>
                         <div class="text-center mb-4">
                             <h5 class="modal-title" id="staticBackdropLabel">Apply For This Job</h5>
@@ -311,12 +311,23 @@
                             <label for="message" class="form-label">Message</label>
                             <textarea class="form-control" id="message" rows="4" placeholder="Enter your message"></textarea>
                         </div>
-                        <div class="mb-4">
-                            <label class="form-label" for="inputGroupFile01">Resume Upload</label>
-                            <input type="file" class="form-control" id="inputGroupFile01">
-                        </div>
+<!--                        <div class="mb-4">-->
+<!--                            <label class="form-label" for="inputGroupFile01">Resume Upload</label>-->
+<!--                            <input type="file" class="form-control" id="inputGroupFile01">-->
+<!--                        </div>-->
                     </form>
                     <button onclick="apply()" data-bs-dismiss="modal" type="submit" class="btn btn-primary w-100">Send Application</button>
+                </div>
+                <div class="modal-body p-5" sec:authorize="!isAuthenticated()">
+                    <form>
+                        <div class="text-center mb-4">
+                            <h5 class="modal-title" id="staticBackdropLabel">Sign in to apply</h5>
+                        </div>
+                        <div class="position-absolute end-0 top-0 p-3">
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                    </form>
+                    <a th:href="@{/sign-in}" class="btn btn-primary w-100">Sign In</a>
                 </div>
             </div>
         </div>

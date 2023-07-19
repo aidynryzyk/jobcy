@@ -37,7 +37,9 @@ public class UserController {
 
     @GetMapping("/profile/{id}")
     public String profileOfAnotherUser(Model model, @PathVariable Long id, Authentication authentication) {
-        model.addAttribute("userId", userService.findByUsername(authentication.getName()).getId());
+        if (authentication != null) {
+            model.addAttribute("userId", userService.findByUsername(authentication.getName()).getId());
+        }
         model.addAttribute("profileId", id);
         return "profile";
     }

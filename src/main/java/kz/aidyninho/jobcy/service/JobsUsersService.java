@@ -32,7 +32,7 @@ public class JobsUsersService {
     }
 
     public List<JobsUsersReadUserDto> findAllByJobId(Long jobId) {
-        return jobsUsersRepository.findAllByJob_Id(jobId).stream().map(
+        return jobsUsersRepository.findAllByJob_IdOrderByIdAsc(jobId).stream().map(
                 jobsUsersMapper::toReadUserDto
         ).toList();
     }
