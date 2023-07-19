@@ -79,6 +79,9 @@
                                                         document.getElementById("title2").innerHTML = user.username;
                                                         document.getElementById("title3").innerHTML = user.username;
                                                         document.getElementById("email").innerHTML = user.email;
+                                                        if (isAnother === 0) {
+                                                            document.getElementById("emailInput").value = user.email;
+                                                        }
                                                         if (user.phone != null) {
                                                             if (isAnother === 0) {
                                                                 document.getElementById("phoneInput").value = user.phone;
