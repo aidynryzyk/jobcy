@@ -39,9 +39,9 @@ public class JobController {
 
     @GetMapping
     public String index(Model model, Authentication authentication) {
-        if (authentication != null) {
-            model.addAttribute("userId", userService.findByUsername(authentication.getName()).getId());
-        }
+//        if (authentication != null) {
+//            model.addAttribute("userId", userService.findByUsername(authentication.getName()).getId());
+//        }
         return "index";
     }
 
@@ -59,18 +59,18 @@ public class JobController {
         model.addAttribute("types", JobType.values());
         model.addAttribute("keywords", keywordService.findAll());
         model.addAttribute("filter", jobService.getFilter());
-        if (authentication != null) {
-            model.addAttribute("userId", userService.findByUsername(authentication.getName()).getId());
-        }
+//        if (authentication != null) {
+//            model.addAttribute("userId", userService.findByUsername(authentication.getName()).getId());
+//        }
         return "job-list";
     }
 
     @GetMapping("/jobs/{id}")
     public String jobDetailsPage(Model model, @PathVariable Long id, Authentication authentication) {
         model.addAttribute("jobId", id);
-        if (authentication != null) {
-            model.addAttribute("userId", userService.findByUsername(authentication.getName()).getId());
-        }
+//        if (authentication != null) {
+//            model.addAttribute("userId", userService.findByUsername(authentication.getName()).getId());
+//        }
         return "job-details";
     }
 

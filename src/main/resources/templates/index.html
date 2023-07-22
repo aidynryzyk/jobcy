@@ -46,25 +46,15 @@
                                                 <select class="form-select filter-input-box bg-white text-secondary"
                                                         id="location-drop-down">
                                                     <script>
-                                                        loadCities();
-
-                                                        function loadCities() {
-                                                            const httpRequest = new XMLHttpRequest();
-                                                            httpRequest.open("GET", "/api/v1/cities", true);
-                                                            httpRequest.onreadystatechange = function () {
-                                                                if (httpRequest.status === 200) {
-                                                                    console.log(httpRequest.response);
-                                                                    let cities = JSON.parse(httpRequest.response);
-                                                                    let content = "<option disabled selected value=''>Select city</option>";
-                                                                    for (let i = 0; i < cities.length; i++) {
-                                                                        content += "<option>" + cities[i] + "";
-                                                                    }
-                                                                    document.getElementById("location-drop-down").innerHTML = content;
+                                                        $(document).ready(function () {
+                                                            $.get("/api/v1/cities", function (data) {
+                                                                let content = "<option disabled selected value=''>Select city</option>";
+                                                                for (let i = 0; i < data.length; i++) {
+                                                                    content += "<option>" + data[i] + "</option>";
                                                                 }
-                                                            }
-                                                            httpRequest.send();
-                                                        }
-
+                                                                $("#location-drop-down").html(content)
+                                                            })
+                                                        })
                                                     </script>
                                                 </select>
                                             </div>
@@ -133,39 +123,32 @@
 
                     <!--end row-->
                     <div class="row" id="category-preview">
+
                         <script>
-                            loadCategories();
-
-                            function loadCategories() {
-                                const httpRequest = new XMLHttpRequest();
-                                httpRequest.open("GET", "/api/v1/categories", true);
-                                console.log(httpRequest.status);
-                                console.log(httpRequest.onreadystatechange);
-                                httpRequest.onreadystatechange = function () {
-                                    if (httpRequest.readyState === XMLHttpRequest.DONE && httpRequest.status === 200) {
-                                        let categories = JSON.parse(httpRequest.responseText);
-                                        let content = "";
-                                        for (let i = 0; i < 8; i++) {
-                                            content += "<div class=\"col-lg-3 col-md-6 mt-4 pt-2\">\n" +
-                                                "                            <div class=\"popu-category-box rounded text-center\">\n" +
-                                                "                                <div class=\"popu-category-icon icons-md\">\n" +
-                                                "                                    <i class=\"" + categories[i].icon + "\"></i>\n" +
-                                                "                                </div>\n" +
-                                                "                                <div class=\"popu-category-content mt-4\">\n" +
-                                                "                                            <a onclick='saveFilter(" + categories[i].id + ")' class=\"text-dark stretched-link\">\n" +
-                                                "                                                <h5 class=\"fs-18\">" + categories[i].name + "</h5>\n" +
-                                                "                                            </a>\n" +
-                                                "                                    <p class=\"text-muted mb-0\">" + categories[i].jobsCount + " jobs</p>\n" +
-                                                "                                </div>\n" +
-                                                "                            </div><!--end popu-category-box-->\n" +
-                                                "                        </div>";
-                                        }
-                                        document.getElementById("category-preview").innerHTML = content;
+                            $(document).ready(function () {
+                                $.get("/api/v1/categories", function (data) {
+                                    let content = "";
+                                    for (let i = 0; i < 8; i++) {
+                                        content += "<div class=\"col-lg-3 col-md-6 mt-4 pt-2\">\n" +
+                                            "                            <div class=\"popu-category-box rounded text-center\">\n" +
+                                            "                                <div class=\"popu-category-icon icons-md\">\n" +
+                                            "                                    <i class=\"" + data[i].icon + "\"></i>\n" +
+                                            "                                </div>\n" +
+                                            "                                <div class=\"popu-category-content mt-4\">\n" +
+                                            "                                            <a onclick='saveFilter(" + data[i].id + ")' class=\"text-dark stretched-link\">\n" +
+                                            "                                                <h5 class=\"fs-18\">" + data[i].name + "</h5>\n" +
+                                            "                                            </a>\n" +
+                                            "                                    <p class=\"text-muted mb-0\">" + data[i].jobsCount + " jobs</p>\n" +
+                                            "                                </div>\n" +
+                                            "                            </div><!--end popu-category-box-->\n" +
+                                            "                        </div>";
                                     }
-                                }
-                                httpRequest.send();
-                            }
+                                    $("#category-preview").html(content);
+                                })
+                            })
+                        </script>
 
+                        <script>
                             function saveFilter(id) {
                                 let httpRequest = new XMLHttpRequest();
                                 httpRequest.open("POST", "/api/v1/jobs/filter", true);
@@ -192,6 +175,15 @@
                             }
 
                             function saveFilterNameAndLocation(name, location) {
+                                // $(document).ready(function () {
+                                //     $.get("/api/v1/cities", function (data) {
+                                //         let content = "<option disabled selected value=''>Select city</option>";
+                                //         for (let i = 0; i < data.length; i++) {
+                                //             content += "<option>" + data[i] + "</option>";
+                                //         }
+                                //         $("#location-drop-down").html(content)
+                                //     })
+                                // })
                                 let httpRequest = new XMLHttpRequest();
                                 httpRequest.open("POST", "/api/v1/jobs/filter", true);
                                 httpRequest.setRequestHeader("Content-Type", "application/json");
@@ -237,32 +229,7 @@
                                 httpRequest.send(body);
                                 // window.location.href = '/jobs';
                             }
-
-                            function test() {
-                                alert("asdfasdf");
-                            }
                         </script>
-                        <!--                        <div class="col-lg-3 col-md-6 mt-4 pt-2" th:each="category : ${categories.subList(0, 8)}">-->
-                        <!--                            <div class="popu-category-box rounded text-center">-->
-                        <!--                                <div class="popu-category-icon icons-md">-->
-                        <!--                                    <i th:class="${category.icon()}"></i>-->
-                        <!--                                </div>-->
-                        <!--                                <div class="popu-category-content mt-4">-->
-                        <!--                                    <form action="/jobs/filter" id="category_form" method="post">-->
-                        <!--                                        <input name="categoryId" th:value="${category.id()}" type="hidden">-->
-                        <!--                                        <button class="btn bg-transparent btn-hover" type="submit">-->
-                        <!--                                            <a href="#" class="text-dark stretched-link">-->
-                        <!--                                                <h5 class="fs-18" th:text="${category.name()}">Category name</h5>-->
-                        <!--                                            </a>-->
-                        <!--                                        </button>-->
-                        <!--                                    </form>-->
-                        <!--                                    <p class="text-muted mb-0" th:text="|${category.jobsCount()} jobs|">Number of-->
-                        <!--                                        jobs</p>-->
-                        <!--                                </div>-->
-                        <!--                            </div>&lt;!&ndash;end popu-category-box&ndash;&gt;-->
-                        <!--                        </div>-->
-                        <!--                        &lt;!&ndash;end col&ndash;&gt;-->
-                        <!--end row-->
                         <div class="row">
                             <div class="col-lg-12">
                                 <div class="mt-5 text-center">
@@ -296,33 +263,22 @@
                                 id="pills-tab"
                                 role="tablist">
                                 <script>
-                                    loadTypes();
-
-                                    function loadTypes() {
-                                        const httpRequest = new XMLHttpRequest();
-                                        httpRequest.open("GET", "/api/v1/types", true);
-                                        console.log(httpRequest.status);
-                                        console.log(httpRequest.onreadystatechange);
-                                        httpRequest.onreadystatechange = function () {
-                                            if (httpRequest.readyState === XMLHttpRequest.DONE && httpRequest.status === 200) {
-                                                let types = JSON.parse(httpRequest.responseText);
-                                                let content = "";
-                                                for (let i = 0; i < types.length; i++) {
-                                                    content += "<li class=\"nav-item\" role=\"presentation\"> \n" +
-                                                        "                                    <button onclick='loadJobsByType(\"" + types[i] + "\")' aria-selected=\"false\" class=\"nav-link\" data-bs-toggle=\"pill\"\n" +
-                                                        "                                            role=\"tab\"\n" +
-                                                        "                                            data-bs-target='preview' aria-controls='preview' id='preview-jobs-tab'\n" +
-                                                        "                                            type=\"button\">" + types[i] + "\n" +
-                                                        "                                    </button>\n" +
-                                                        "                                </li>";
-                                                }
-                                                document.getElementById("pills-tab").innerHTML = content;
+                                    $(document).ready(function () {
+                                        $.get("/api/v1/types", function (data) {
+                                            let content = "";
+                                            for (let i = 0; i < data.length; i++) {
+                                                content += "<li class=\"nav-item\" role=\"presentation\"> \n" +
+                                                    "                                    <button onclick='loadJobsByType(\"" + data[i] + "\")' aria-selected=\"false\" class=\"nav-link\" data-bs-toggle=\"pill\"\n" +
+                                                    "                                            role=\"tab\"\n" +
+                                                    "                                            data-bs-target='preview' aria-controls='preview' id='preview-jobs-tab'\n" +
+                                                    "                                            type=\"button\">" + data[i] + "\n" +
+                                                    "                                    </button>\n" +
+                                                    "                                </li>";
                                             }
-                                        }
-                                        httpRequest.send();
-                                    }
+                                            $("#pills-tab").html(content);
+                                        })
+                                    })
                                 </script>
-
                             </ul>
                         </div>
                         <!--end col-->
@@ -341,15 +297,10 @@
 
                     <script>
                         function loadJobsByType(type) {
-                            const httpRequest = new XMLHttpRequest();
-                            httpRequest.open("GET", "/api/v1/jobs/previews?type=" + type, true);
-                            console.log(httpRequest.status);
-                            console.log(httpRequest.onreadystatechange);
-                            httpRequest.onreadystatechange = function () {
-                                if (httpRequest.readyState === XMLHttpRequest.DONE && httpRequest.status === 200) {
-                                    let jobs = JSON.parse(httpRequest.responseText);
+                            $(document).ready(function () {
+                                $.get("/api/v1/jobs/previews?type=" + type, function (data) {
                                     let content = "";
-                                    for (let i = 0; i < jobs.length; i++) {
+                                    for (let i = 0; i < data.length; i++) {
                                         content += "                            <div class=\"job-box bookmark-post card mt-4\">\n" +
                                             "                                        <div class=\"p-4\">\n" +
                                             "                                            <div class=\"row align-items-center\">\n" +
@@ -357,17 +308,17 @@
                                             "                                                    <div class=\"text-center mb-4 mb-md-0\">\n" +
                                             "                                                        <a href=\"company-details.html\"><img\n" +
                                             "                                                                alt=\"\" class=\"img-fluid rounded-3\"\n" +
-                                            "                                                                src=\"/api/v1/users/" + jobs[i].user.id + "/image\"></a>\n" +
+                                            "                                                                src=\"/api/v1/users/" + data[i].user.id + "/image\"></a>\n" +
                                             "                                                    </div>\n" +
                                             "                                                </div>\n" +
                                             "                                                <!--end col-->\n" +
                                             "                                                <div class=\"col-md-3\">\n" +
                                             "                                                    <div class=\"mb-2 mb-md-0\">\n" +
                                             "                                                        <h5 class=\"fs-18 mb-1\"><a class=\"text-dark\"\n" +
-                                            "                                                                                  href=\"/jobs/" + jobs[i].id + "\"\n" +
-                                            "                                                                                  >" + jobs[i].name + "</a>\n" +
+                                            "                                                                                  href=\"/jobs/" + data[i].id + "\"\n" +
+                                            "                                                                                  >" + data[i].name + "</a>\n" +
                                             "                                                        </h5>\n" +
-                                            "                                                        <p class=\"text-muted fs-14 mb-0\">\n" + jobs[i].user.username +
+                                            "                                                        <p class=\"text-muted fs-14 mb-0\">\n" + data[i].user.username +
                                             "                                                            </p>\n" +
                                             "                                                    </div>\n" +
                                             "                                                </div>\n" +
@@ -377,7 +328,7 @@
                                             "                                                        <div class=\"flex-shrink-0\">\n" +
                                             "                                                            <i class=\"mdi mdi-map-marker text-primary me-1\"></i>\n" +
                                             "                                                        </div>\n" +
-                                            "                                                        <p class=\"text-muted mb-0\">\n" + jobs[i].location +
+                                            "                                                        <p class=\"text-muted mb-0\">\n" + data[i].location +
                                             "                                                            </p>\n" +
                                             "                                                    </div>\n" +
                                             "                                                </div>\n" +
@@ -386,14 +337,14 @@
                                             "                                                    <div>\n" +
                                             "                                                        <p class=\"text-muted mb-2\">\n" +
                                             "                                                            <span class=\"text-primary\">$</span>\n" +
-                                            "                                                            <span>" + jobs[i].salary + "</span>/m</p>\n" +
+                                            "                                                            <span>" + data[i].salary + "</span>/m</p>\n" +
                                             "                                                    </div>\n" +
                                             "                                                </div>\n" +
                                             "                                                <!--end col-->\n" +
                                             "                                                <div class=\"col-md-2\">\n" +
                                             "                                                    <div>\n" +
                                             "                                                        <span class=\"badge bg-success-subtle text-success fs-13 mt-1\"\n" +
-                                            "                                                              th:text=>" + jobs[i].type + "</span>\n" +
+                                            "                                                              th:text=>" + data[i].type + "</span>\n" +
                                             "                                                    </div>\n" +
                                             "                                                </div>\n" +
                                             "                                                <!--end col-->\n" +
@@ -406,14 +357,14 @@
                                             "                                                    <div>\n" +
                                             "                                                        <p class=\"text-muted mb-0\">\n" +
                                             "                                                            <span class=\"text-dark\">Experience :</span>\n" +
-                                            "                                                            <span>" + jobs[i].experience.level + "</span>\n" +
+                                            "                                                            <span>" + data[i].experience.level + "</span>\n" +
                                             "                                                        </p>\n" +
                                             "                                                    </div>\n" +
                                             "                                                </div>\n" +
                                             "                                                <!--end col-->\n" +
                                             "                                                <div class=\"col-lg-2 col-md-3\">\n" +
                                             "                                                    <div class=\"text-start text-md-end\">\n" +
-                                            "                                                        <a onclick='document.getElementById(\"jobId\").value = " + jobs[i].id + "' class=\"primary-link\" data-bs-toggle=\"modal\" href=\"#applyNow\">Apply\n" +
+                                            "                                                        <a onclick='document.getElementById(\"jobId\").value = " + data[i].id + "' class=\"primary-link\" data-bs-toggle=\"modal\" href=\"#applyNow\">Apply\n" +
                                             "                                                            Now <i\n" +
                                             "                                                                    class=\"mdi mdi-chevron-double-right\"></i></a>\n" +
                                             "                                                    </div>\n" +
@@ -424,13 +375,11 @@
                                             "                                        </div>\n" +
                                             "                                    </div>";
                                     }
-                                    document.getElementById("preview").innerHTML = content;
-                                }
-                            }
-                            httpRequest.send();
+                                    $("#preview").html(content);
+                                })
+                            })
                         }
                     </script>
-
                 </div>
             </section>
             <!-- END JOB-LIST -->

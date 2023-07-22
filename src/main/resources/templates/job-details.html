@@ -63,200 +63,169 @@
                     </div>
 
                     <script>
-                        loadDetails();
-                        function loadDetails() {
-                            const httpRequest = new XMLHttpRequest();
-                            httpRequest.open("GET", "/api/v1/jobs/" + document.getElementById("jobId").value, true);
-                            httpRequest.onreadystatechange = function () {
-                                if (httpRequest.readyState === XMLHttpRequest.DONE && httpRequest.status === 200) {
-                                    let job = JSON.parse(httpRequest.responseText);
-                                    let content = "<section class=\"section\">\n" +
-                                        "                        <div class=\"container\">\n" +
-                                        "                            <div class=\"row\">\n" +
-                                        "                                <div class=\"col-lg-8\">\n" +
-                                        "                                    <div class=\"card job-detail overflow-hidden\">\n" +
-                                        "                                        <div class=\"card-body p-4\">\n" +
-                                        "                                            <div>\n" +
-                                        "                                                <div class=\"row\">\n" +
-                                        "                                                    <div class=\"col-md-8\">\n" +
-                                        "                                                        <h5 class=\"mb-1\">" + job.name + "</h5>\n" +
-                                        "                                                    </div><!--end col-->\n" +
-                                        "                                                </div><!--end row-->\n" +
-                                        "                                            </div>\n" +
-                                        "\n" +
-                                        "                                            <div class=\"mt-4\">\n" +
-                                        "                                                <div class=\"row g-2\">\n" +
-                                        "                                                    <div class=\"col-lg-3\">\n" +
-                                        "                                                        <div class=\"border rounded-start p-3\">\n" +
-                                        "                                                            <p class=\"text-muted mb-0 fs-13\">Experience</p>\n" +
-                                        "                                                            <p class=\"fw-medium fs-15 mb-0\">" + job.experience.level + "</p>\n" +
-                                        "                                                        </div>\n" +
-                                        "                                                    </div>\n" +
-                                        "                                                    <div class=\"col-lg-3\">\n" +
-                                        "                                                        <div class=\"border p-3\">\n" +
-                                        "                                                            <p class=\"text-muted fs-13 mb-0\">Employee type</p>\n" +
-                                        "                                                            <p class=\"fw-medium mb-0\">" + job.type + "</p>\n" +
-                                        "                                                        </div>\n" +
-                                        "                                                    </div>\n" +
-                                        "                                                    <div class=\"col-lg-3\">\n" +
-                                        "                                                        <div class=\"border rounded-end p-3\">\n" +
-                                        "                                                            <p class=\"text-muted fs-13 mb-0\">Offer Salary</p>\n" +
-                                        "                                                            <p class=\"fw-medium mb-0\">$" + job.salary + "/ Month</p>\n" +
-                                        "                                                        </div>\n" +
-                                        "                                                    </div>\n" +
-                                        "                                                </div>\n" +
-                                        "                                            </div><!--end Experience-->\n" +
-                                        "\n" +
-                                        "                                            <div class=\"mt-4\">\n" +
-                                        "                                                <h5 class=\"mb-3\">Job Description</h5>\n" +
-                                        "                                                <div class=\"job-detail-desc\">\n" +
-                                        "                                                    <p class=\"text-muted mb-0\">" + job.description + "</p>\n" +
-                                        "                                                </div>\n" +
-                                        "                                            </div>\n" +
-                                        "\n" +
-                                        "                                        </div><!--end card-body-->\n" +
-                                        "                                    </div><!--end job-detail-->\n" +
-                                        "\n" +
-                                        "                                </div><!--end col-->\n" +
-                                        "\n" +
-                                        "                                <div class=\"col-lg-4 mt-4 mt-lg-0\">\n" +
-                                        "                                    <!--start side-bar-->\n" +
-                                        "                                    <div class=\"side-bar ms-lg-4\">\n" +
-                                        "                                        <div class=\"card job-overview\">\n" +
-                                        "                                            <div class=\"card-body p-4\">\n" +
-                                        "                                                <h6 class=\"fs-17\">Job Overview</h6>\n" +
-                                        "                                                <ul class=\"list-unstyled mt-4 mb-0\">\n" +
-                                        "                                                    <li>\n" +
-                                        "                                                        <div class=\"d-flex mt-4\">\n" +
-                                        "                                                            <i class=\"uil uil-user icon bg-primary-subtle text-primary\"></i>\n" +
-                                        "                                                            <div class=\"ms-3\">\n" +
-                                        "                                                                <h6 class=\"fs-14 mb-2\">Job Title</h6>\n" +
-                                        "                                                                <p class=\"text-muted mb-0\">" + job.name + "</p> \n" +
-                                        "                                                            </div>\n" +
-                                        "                                                        </div>\n" +
-                                        "                                                    </li>\n" +
-                                        "                                                    <li>\n" +
-                                        "                                                        <div class=\"d-flex mt-4\">\n" +
-                                        "                                                            <i class=\"uil uil-star-half-alt icon bg-primary-subtle text-primary\"></i>\n" +
-                                        "                                                            <div class=\"ms-3\">\n" +
-                                        "                                                                <h6 class=\"fs-14 mb-2\">Experience</h6>\n" +
-                                        "                                                                <p class=\"text-muted mb-0\">" + job.experience.level + "</p> \n" +
-                                        "                                                            </div>\n" +
-                                        "                                                        </div>\n" +
-                                        "                                                    </li>\n" +
-                                        "                                                    <li>\n" +
-                                        "                                                        <div class=\"d-flex mt-4\">\n" +
-                                        "                                                            <i class=\"uil uil-location-point icon bg-primary-subtle text-primary\"></i>\n" +
-                                        "                                                            <div class=\"ms-3\">\n" +
-                                        "                                                                <h6 class=\"fs-14 mb-2\">Location</h6>\n" +
-                                        "                                                                <p class=\"text-muted mb-0\">" + job.location + "</p> \n" +
-                                        "                                                            </div>\n" +
-                                        "                                                        </div>\n" +
-                                        "                                                    </li>\n" +
-                                        "                                                    <li>\n" +
-                                        "                                                        <div class=\"d-flex mt-4\">\n" +
-                                        "                                                            <i class=\"uil uil-usd-circle icon bg-primary-subtle text-primary\"></i>\n" +
-                                        "                                                            <div class=\"ms-3\">\n" +
-                                        "                                                                <h6 class=\"fs-14 mb-2\">Offered Salary</h6>\n" +
-                                        "                                                                <p class=\"text-muted mb-0\">$" + job.salary + "</p> \n" +
-                                        "                                                            </div>\n" +
-                                        "                                                        </div>\n" +
-                                        "                                                    </li>\n" +
-                                        "                                                    <li>\n" +
-                                        "                                                        <div class=\"d-flex mt-4\">\n" +
-                                        "                                                            <i class=\"uil uil-graduation-cap icon bg-primary-subtle text-primary\"></i>\n" +
-                                        "                                                            <div class=\"ms-3\">\n" +
-                                        "                                                                <h6 class=\"fs-14 mb-2\">Qualification</h6>\n" +
-                                        "                                                                <p class=\"text-muted mb-0\">" + job.qualification + "</p> \n" +
-                                        "                                                            </div>\n" +
-                                        "                                                        </div>\n" +
-                                        "                                                    </li>\n" +
-                                        "                                                    <li>\n" +
-                                        "                                                        <div class=\"d-flex mt-4\">\n" +
-                                        "                                                            <i class=\"uil uil-building icon bg-primary-subtle text-primary\"></i>\n" +
-                                        "                                                            <div class=\"ms-3\">\n" +
-                                        "                                                                <h6 class=\"fs-14 mb-2\">Industry</h6>\n" +
-                                        "                                                                <p class=\"text-muted mb-0\">" + job.industry.name + "</p> \n" +
-                                        "                                                            </div>\n" +
-                                        "                                                        </div>\n" +
-                                        "                                                    </li>\n" +
-                                        "                                                    <li>\n" +
-                                        "                                                        <div class=\"d-flex mt-4\">\n" +
-                                        "                                                            <i class=\"uil uil-history icon bg-primary-subtle text-primary\"></i>\n" +
-                                        "                                                            <div class=\"ms-3\">\n" +
-                                        "                                                                <h6 class=\"fs-14 mb-2\">Date Posted</h6>\n" +
-                                        "                                                                <p class=\"text-muted mb-0\">" + job.postDate + "</p> \n" +
-                                        "                                                            </div>\n" +
-                                        "                                                        </div>\n" +
-                                        "                                                    </li>\n" +
-                                        "                                                </ul>\n" +
-                                        "                                                <div class=\"mt-3\">\n" +
-                                        "                                                    <a onclick='document.getElementById(\"jobId\").value = " + job.id + "' href=\"#applyNow\" data-bs-toggle=\"modal\" class=\"btn btn-primary btn-hover w-100 mt-2\">Apply Now <i class=\"uil uil-arrow-right\"></i></a>\n" +
-                                        "                                                </div>\n" +
-                                        "                                            </div><!--end card-body-->\n" +
-                                        "                                        </div><!--end job-overview-->\n" +
-                                        "\n" +
-                                        "                                        <div class=\"card company-profile mt-4\">\n" +
-                                        "                                            <div class=\"card-body p-4\">\n" +
-                                        "                                                <div class=\"text-center\">\n" +
-                                        "                                                <img src=\"/api/v1/users/" + job.user.id + "/image\" alt=\"\" class=\"img-fluid rounded-3\">\n" +
-                                        "\n" +
-                                        "                                                    <div class=\"mt-4\">\n" +
-                                        "                                                        <h6 class=\"fs-17 mb-1\">" + job.user.username + "</h6>\n" +
-                                        "                                                    </div>\n" +
-                                        "                                                </div>\n" +
-                                        "                                                <ul class=\"list-unstyled mt-4\">\n" +
-                                        "                                                    <li class=\"mt-3\">\n" +
-                                        "                                                        <div class=\"d-flex\">\n" +
-                                        "                                                            <i class=\"uil uil-envelope text-primary fs-4\"></i>\n" +
-                                        "                                                            <div class=\"ms-3\">\n" +
-                                        "                                                                <h6 class=\"fs-14 mb-2\">Email</h6>\n" +
-                                        "                                                                <p class=\"text-muted fs-14 mb-0\">" + job.user.email + "</p>\n" +
-                                        "                                                            </div>\n" +
-                                        "                                                        </div>\n" +
-                                        "                                                    </li>\n" +
-                                        "                                                </ul>\n" +
-                                        "                                                <div class=\"mt-4\">\n" +
-                                        "                                                    <a href=\"/profile/" + job.user.id + "\" class=\"btn btn-primary btn-hover w-100 rounded\"><i class=\"mdi mdi-eye\"></i> View Profile</a>\n" +
-                                        "                                                </div>\n" +
-                                        "                                            </div>\n" +
-                                        "                                        </div>\n" +
-                                        "                                    </div>\n" +
-                                        "                                    <!--end side-bar-->\n" +
-                                        "                                </div><!--end col-->\n" +
-                                        "                            </div><!--end row-->\n" +
-                                        "                        </div><!--end container-->\n" +
-                                        "                    </section>";
-                                    document.getElementById("details").innerHTML = content;
-                                }
-                            }
-                            httpRequest.send();
-                        }
-
-                        function apply() {
-                            let httpRequest = new XMLHttpRequest();
-                            httpRequest.open("POST", "/api/v1/jobs-users/apply", true);
-                            httpRequest.setRequestHeader("Content-Type", "application/json");
-                            let body;
-                            httpRequest.onreadystatechange = function () {
-                                if (httpRequest.readyState === XMLHttpRequest.DONE && httpRequest.status === 200) {
-                                    console.log(body);
-                                }
-                            }
-                            body = {
-                                "jobId" : document.getElementById("jobId").value,
-                                "userId" : document.getElementById("userId").value,
-                                "message" : document.getElementById("message").value
-                            };
-                            body = JSON.stringify(body);
-                            console.log(body);
-                            httpRequest.send(body);
-                            // window.location.href = '/jobs';
-                        }
-
+                        $(document).ready(function () {
+                            $.get("/api/v1/jobs/" + document.getElementById("jobId").value, function (data) {
+                                let content = "<section class=\"section\">\n" +
+                                    "                        <div class=\"container\">\n" +
+                                    "                            <div class=\"row\">\n" +
+                                    "                                <div class=\"col-lg-8\">\n" +
+                                    "                                    <div class=\"card job-detail overflow-hidden\">\n" +
+                                    "                                        <div class=\"card-body p-4\">\n" +
+                                    "                                            <div>\n" +
+                                    "                                                <div class=\"row\">\n" +
+                                    "                                                    <div class=\"col-md-8\">\n" +
+                                    "                                                        <h5 class=\"mb-1\">" + data.name + "</h5>\n" +
+                                    "                                                    </div><!--end col-->\n" +
+                                    "                                                </div><!--end row-->\n" +
+                                    "                                            </div>\n" +
+                                    "\n" +
+                                    "                                            <div class=\"mt-4\">\n" +
+                                    "                                                <div class=\"row g-2\">\n" +
+                                    "                                                    <div class=\"col-lg-3\">\n" +
+                                    "                                                        <div class=\"border rounded-start p-3\">\n" +
+                                    "                                                            <p class=\"text-muted mb-0 fs-13\">Experience</p>\n" +
+                                    "                                                            <p class=\"fw-medium fs-15 mb-0\">" + data.experience.level + "</p>\n" +
+                                    "                                                        </div>\n" +
+                                    "                                                    </div>\n" +
+                                    "                                                    <div class=\"col-lg-3\">\n" +
+                                    "                                                        <div class=\"border p-3\">\n" +
+                                    "                                                            <p class=\"text-muted fs-13 mb-0\">Employee type</p>\n" +
+                                    "                                                            <p class=\"fw-medium mb-0\">" + data.type + "</p>\n" +
+                                    "                                                        </div>\n" +
+                                    "                                                    </div>\n" +
+                                    "                                                    <div class=\"col-lg-3\">\n" +
+                                    "                                                        <div class=\"border rounded-end p-3\">\n" +
+                                    "                                                            <p class=\"text-muted fs-13 mb-0\">Offer Salary</p>\n" +
+                                    "                                                            <p class=\"fw-medium mb-0\">$" + data.salary + "/ Month</p>\n" +
+                                    "                                                        </div>\n" +
+                                    "                                                    </div>\n" +
+                                    "                                                </div>\n" +
+                                    "                                            </div><!--end Experience-->\n" +
+                                    "\n" +
+                                    "                                            <div class=\"mt-4\">\n" +
+                                    "                                                <h5 class=\"mb-3\">Job Description</h5>\n" +
+                                    "                                                <div class=\"job-detail-desc\">\n" +
+                                    "                                                    <p class=\"text-muted mb-0\">" + data.description + "</p>\n" +
+                                    "                                                </div>\n" +
+                                    "                                            </div>\n" +
+                                    "\n" +
+                                    "                                        </div><!--end card-body-->\n" +
+                                    "                                    </div><!--end job-detail-->\n" +
+                                    "\n" +
+                                    "                                </div><!--end col-->\n" +
+                                    "\n" +
+                                    "                                <div class=\"col-lg-4 mt-4 mt-lg-0\">\n" +
+                                    "                                    <!--start side-bar-->\n" +
+                                    "                                    <div class=\"side-bar ms-lg-4\">\n" +
+                                    "                                        <div class=\"card job-overview\">\n" +
+                                    "                                            <div class=\"card-body p-4\">\n" +
+                                    "                                                <h6 class=\"fs-17\">Job Overview</h6>\n" +
+                                    "                                                <ul class=\"list-unstyled mt-4 mb-0\">\n" +
+                                    "                                                    <li>\n" +
+                                    "                                                        <div class=\"d-flex mt-4\">\n" +
+                                    "                                                            <i class=\"uil uil-user icon bg-primary-subtle text-primary\"></i>\n" +
+                                    "                                                            <div class=\"ms-3\">\n" +
+                                    "                                                                <h6 class=\"fs-14 mb-2\">Job Title</h6>\n" +
+                                    "                                                                <p class=\"text-muted mb-0\">" + data.name + "</p> \n" +
+                                    "                                                            </div>\n" +
+                                    "                                                        </div>\n" +
+                                    "                                                    </li>\n" +
+                                    "                                                    <li>\n" +
+                                    "                                                        <div class=\"d-flex mt-4\">\n" +
+                                    "                                                            <i class=\"uil uil-star-half-alt icon bg-primary-subtle text-primary\"></i>\n" +
+                                    "                                                            <div class=\"ms-3\">\n" +
+                                    "                                                                <h6 class=\"fs-14 mb-2\">Experience</h6>\n" +
+                                    "                                                                <p class=\"text-muted mb-0\">" + data.experience.level + "</p> \n" +
+                                    "                                                            </div>\n" +
+                                    "                                                        </div>\n" +
+                                    "                                                    </li>\n" +
+                                    "                                                    <li>\n" +
+                                    "                                                        <div class=\"d-flex mt-4\">\n" +
+                                    "                                                            <i class=\"uil uil-location-point icon bg-primary-subtle text-primary\"></i>\n" +
+                                    "                                                            <div class=\"ms-3\">\n" +
+                                    "                                                                <h6 class=\"fs-14 mb-2\">Location</h6>\n" +
+                                    "                                                                <p class=\"text-muted mb-0\">" + data.location + "</p> \n" +
+                                    "                                                            </div>\n" +
+                                    "                                                        </div>\n" +
+                                    "                                                    </li>\n" +
+                                    "                                                    <li>\n" +
+                                    "                                                        <div class=\"d-flex mt-4\">\n" +
+                                    "                                                            <i class=\"uil uil-usd-circle icon bg-primary-subtle text-primary\"></i>\n" +
+                                    "                                                            <div class=\"ms-3\">\n" +
+                                    "                                                                <h6 class=\"fs-14 mb-2\">Offered Salary</h6>\n" +
+                                    "                                                                <p class=\"text-muted mb-0\">$" + data.salary + "</p> \n" +
+                                    "                                                            </div>\n" +
+                                    "                                                        </div>\n" +
+                                    "                                                    </li>\n" +
+                                    "                                                    <li>\n" +
+                                    "                                                        <div class=\"d-flex mt-4\">\n" +
+                                    "                                                            <i class=\"uil uil-graduation-cap icon bg-primary-subtle text-primary\"></i>\n" +
+                                    "                                                            <div class=\"ms-3\">\n" +
+                                    "                                                                <h6 class=\"fs-14 mb-2\">Qualification</h6>\n" +
+                                    "                                                                <p class=\"text-muted mb-0\">" + data.qualification + "</p> \n" +
+                                    "                                                            </div>\n" +
+                                    "                                                        </div>\n" +
+                                    "                                                    </li>\n" +
+                                    "                                                    <li>\n" +
+                                    "                                                        <div class=\"d-flex mt-4\">\n" +
+                                    "                                                            <i class=\"uil uil-building icon bg-primary-subtle text-primary\"></i>\n" +
+                                    "                                                            <div class=\"ms-3\">\n" +
+                                    "                                                                <h6 class=\"fs-14 mb-2\">Industry</h6>\n" +
+                                    "                                                                <p class=\"text-muted mb-0\">" + data.industry.name + "</p> \n" +
+                                    "                                                            </div>\n" +
+                                    "                                                        </div>\n" +
+                                    "                                                    </li>\n" +
+                                    "                                                    <li>\n" +
+                                    "                                                        <div class=\"d-flex mt-4\">\n" +
+                                    "                                                            <i class=\"uil uil-history icon bg-primary-subtle text-primary\"></i>\n" +
+                                    "                                                            <div class=\"ms-3\">\n" +
+                                    "                                                                <h6 class=\"fs-14 mb-2\">Date Posted</h6>\n" +
+                                    "                                                                <p class=\"text-muted mb-0\">" + data.postDate + "</p> \n" +
+                                    "                                                            </div>\n" +
+                                    "                                                        </div>\n" +
+                                    "                                                    </li>\n" +
+                                    "                                                </ul>\n" +
+                                    "                                                <div class=\"mt-3\">\n" +
+                                    "                                                    <a onclick='document.getElementById(\"jobId\").value = " + data.id + "' href=\"#applyNow\" data-bs-toggle=\"modal\" class=\"btn btn-primary btn-hover w-100 mt-2\">Apply Now <i class=\"uil uil-arrow-right\"></i></a>\n" +
+                                    "                                                </div>\n" +
+                                    "                                            </div><!--end card-body-->\n" +
+                                    "                                        </div><!--end job-overview-->\n" +
+                                    "\n" +
+                                    "                                        <div class=\"card company-profile mt-4\">\n" +
+                                    "                                            <div class=\"card-body p-4\">\n" +
+                                    "                                                <div class=\"text-center\">\n" +
+                                    "                                                <img src=\"/api/v1/users/" + data.user.id + "/image\" alt=\"\" class=\"img-fluid rounded-3\">\n" +
+                                    "\n" +
+                                    "                                                    <div class=\"mt-4\">\n" +
+                                    "                                                        <h6 class=\"fs-17 mb-1\">" + data.user.username + "</h6>\n" +
+                                    "                                                    </div>\n" +
+                                    "                                                </div>\n" +
+                                    "                                                <ul class=\"list-unstyled mt-4\">\n" +
+                                    "                                                    <li class=\"mt-3\">\n" +
+                                    "                                                        <div class=\"d-flex\">\n" +
+                                    "                                                            <i class=\"uil uil-envelope text-primary fs-4\"></i>\n" +
+                                    "                                                            <div class=\"ms-3\">\n" +
+                                    "                                                                <h6 class=\"fs-14 mb-2\">Email</h6>\n" +
+                                    "                                                                <p class=\"text-muted fs-14 mb-0\">" + data.user.email + "</p>\n" +
+                                    "                                                            </div>\n" +
+                                    "                                                        </div>\n" +
+                                    "                                                    </li>\n" +
+                                    "                                                </ul>\n" +
+                                    "                                                <div class=\"mt-4\">\n" +
+                                    "                                                    <a href=\"/profile/" + data.user.id + "\" class=\"btn btn-primary btn-hover w-100 rounded\"><i class=\"mdi mdi-eye\"></i> View Profile</a>\n" +
+                                    "                                                </div>\n" +
+                                    "                                            </div>\n" +
+                                    "                                        </div>\n" +
+                                    "                                    </div>\n" +
+                                    "                                    <!--end side-bar-->\n" +
+                                    "                                </div><!--end col-->\n" +
+                                    "                            </div><!--end row-->\n" +
+                                    "                        </div><!--end container-->\n" +
+                                    "                    </section>";
+                                $("#details").html(content);
+                            })
+                        })
                     </script>
-
-
                     <div th:insert="~{fragments :: applyModal}"></div>
 
                 </div>

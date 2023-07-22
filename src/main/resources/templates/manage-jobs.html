@@ -77,53 +77,52 @@
                             <div class="row">
 
                                 <script>
-                                    function loadJobs() {
-                                        const httpRequest = new XMLHttpRequest();
-                                        httpRequest.open("GET", "/api/v1/users/user/jobs", true);
-                                        httpRequest.onreadystatechange = function () {
-                                            if (httpRequest.readyState === XMLHttpRequest.DONE && httpRequest.status === 200) {
-                                                let jobs = JSON.parse(httpRequest.responseText);
+                                    loadManagedJobs();
+
+                                    function loadManagedJobs() {
+                                        $(document).ready(function () {
+                                            $.get("/api/v1/users/user/jobs", function (data) {
                                                 let content = "";
-                                                for (let i = 0; i < jobs.length; i++) {
+                                                for (let i = 0; i < data.length; i++) {
                                                     content += "<div class=\"job-box card mt-4\">\n" +
                                                         "                                        <div class=\"card-body p-4\">\n" +
                                                         "                                            <div class=\"row\">\n" +
                                                         "                                                <div class=\"col-lg-1\">\n" +
-                                                        "                                                    <a href=\"company-details.html\"><img src=\"/api/v1/users/" + jobs[i].user.id + "/image\" alt=\"\" class=\"img-fluid rounded-3\"></a>\n" +
+                                                        "                                                    <a href=\"company-details.html\"><img src=\"/api/v1/users/" + data[i].user.id + "/image\" alt=\"\" class=\"img-fluid rounded-3\"></a>\n" +
                                                         "                                                </div><!--end col-->\n" +
                                                         "                                                <div class=\"col-lg-9\">\n" +
                                                         "                                                    <div class=\"mt-3 mt-lg-0\">\n" +
-                                                        "                                                        <h5 class=\"fs-17 mb-1\"><a href=\"/jobs/" + jobs[i].id + "\" class=\"text-dark\">" + jobs[i].name + "</a> <small class=\"text-muted fw-normal\">(" + jobs[i].experience.level + " Exp.)</small></h5>\n" +
+                                                        "                                                        <h5 class=\"fs-17 mb-1\"><a href=\"/jobs/" + data[i].id + "\" class=\"text-dark\">" + data[i].name + "</a> <small class=\"text-muted fw-normal\">(" + data[i].experience.level + " Exp.)</small></h5>\n" +
                                                         "                                                        <ul class=\"list-inline mb-0\">\n" +
                                                         "                                                            <li class=\"list-inline-item\">\n" +
-                                                        "                                                                <p class=\"text-muted fs-14 mb-0\">" + jobs[i].user.username + "</p>\n" +
+                                                        "                                                                <p class=\"text-muted fs-14 mb-0\">" + data[i].user.username + "</p>\n" +
                                                         "                                                            </li>\n" +
                                                         "                                                            <li class=\"list-inline-item\">\n" +
-                                                        "                                                                <p class=\"text-muted fs-14 mb-0\"><i class=\"mdi mdi-map-marker\"></i>" + jobs[i].location + "</p>\n" +
+                                                        "                                                                <p class=\"text-muted fs-14 mb-0\"><i class=\"mdi mdi-map-marker\"></i>" + data[i].location + "</p>\n" +
                                                         "                                                            </li>\n" +
                                                         "                                                            <li class=\"list-inline-item\">\n" +
-                                                        "                                                                <p class=\"text-muted fs-14 mb-0\"><i class=\"uil uil-wallet\"></i> " + jobs[i].salary + " / month</p>\n" +
+                                                        "                                                                <p class=\"text-muted fs-14 mb-0\"><i class=\"uil uil-wallet\"></i> " + data[i].salary + " / month</p>\n" +
                                                         "                                                            </li>\n" +
                                                         "                                                        </ul>\n" +
                                                         "                                                        <div class=\"mt-2\">\n" +
-                                                        "                                                            <span class=\"badge danger-bg-subtle mt-1\">" + jobs[i].type + "</span>\n" +
-                                                        "                                                            <span class=\"badge info-bg-subtle mt-1\">" + jobs[i].industry + "</span>\n" +
+                                                        "                                                            <span class=\"badge danger-bg-subtle mt-1\">" + data[i].type + "</span>\n" +
+                                                        "                                                            <span class=\"badge info-bg-subtle mt-1\">" + data[i].industry + "</span>\n" +
                                                         "                                                        </div>\n" +
                                                         "                                                    </div>\n" +
                                                         "                                                </div><!--end col-->\n" +
                                                         "                                                <div class=\"col-lg-2 align-self-center\">\n" +
                                                         "                                                    <ul class=\"list-inline mt-3 mb-0\">\n" +
                                                         "                                                        <li class=\"list-inline-item\">\n" +
-                                                        "                                                            <a href=\"/jobs/" + jobs[i].id + "/applications\" class=\"avatar-sm success-bg-subtle d-inline-block text-center rounded-circle fs-18\">\n" +
+                                                        "                                                            <a href=\"/jobs/" + data[i].id + "/applications\" class=\"avatar-sm success-bg-subtle d-inline-block text-center rounded-circle fs-18\">\n" +
                                                         "                                                                <i class=\"uil uil-align-left\"></i>\n" +
                                                         "                                                            </a>\n" +
                                                         "                                                        <li class=\"list-inline-item\" data-bs-toggle=\"tooltip\" data-bs-placement=\"top\" title=\"Edit\">\n" +
-                                                        "                                                            <a href=\"/users/user/jobs/post/" + jobs[i].id + "\" class=\"avatar-sm success-bg-subtle d-inline-block text-center rounded-circle fs-18\">\n" +
+                                                        "                                                            <a href=\"/users/user/jobs/post/" + data[i].id + "\" class=\"avatar-sm success-bg-subtle d-inline-block text-center rounded-circle fs-18\">\n" +
                                                         "                                                                <i class=\"uil uil-edit\"></i>\n" +
                                                         "                                                            </a>\n" +
                                                         "                                                        </li>\n" +
                                                         "                                                        <li class=\"list-inline-item\" data-bs-toggle=\"tooltip\" data-bs-placement=\"top\" title=\"Delete\">\n" +
-                                                        "                                                            <a onclick='deleteJob(" + jobs[i].id + ")' class=\"avatar-sm danger-bg-subtle d-inline-block text-center rounded-circle fs-18\">\n" +
+                                                        "                                                            <a onclick='deleteJob(" + data[i].id + ")' class=\"avatar-sm danger-bg-subtle d-inline-block text-center rounded-circle fs-18\">\n" +
                                                         "                                                                <i class=\"uil uil-trash-alt\"></i>\n" +
                                                         "                                                            </a>\n" +
                                                         "                                                        </li>\n" +
@@ -133,10 +132,9 @@
                                                         "                                        </div>\n" +
                                                         "                                    </div><!--end job-box-->";
                                                 }
-                                                document.getElementById("jobs-list").innerHTML = content;
-                                            }
-                                        }
-                                        httpRequest.send();
+                                                $("#managed-jobs-list").html(content);
+                                            })
+                                        })
                                     }
 
                                     function deleteJob(job) {
@@ -147,7 +145,7 @@
                                         httpRequest.onreadystatechange = function () {
                                             if (httpRequest.readyState === XMLHttpRequest.DONE && httpRequest.status === 200) {
                                                 console.log(body);
-                                                loadJobs();
+                                                loadManagedJobs();
                                             }
                                         }
                                         body = {"id" : job};
@@ -157,12 +155,7 @@
                                     }
                                 </script>
 
-                                <div class="col-lg-12" id="jobs-list">
-
-                                    <script>
-                                        loadJobs();
-                                    </script>
-
+                                <div class="col-lg-12" id="managed-jobs-list">
                                 </div><!--end col-->
                             </div><!--end row-->
                         </div><!--end container-->

@@ -71,58 +71,46 @@
                                 <input type="hidden" id="userId" th:value="${userId}">
 
                                 <script>
-                                    function loadJobs() {
-                                        const httpRequest = new XMLHttpRequest();
-                                        httpRequest.open("GET", "/api/v1/jobs-users/user/" + document.getElementById("userId").value, true);
-                                        httpRequest.onreadystatechange = function () {
-                                            if (httpRequest.readyState === XMLHttpRequest.DONE && httpRequest.status === 200) {
-                                                let jobs = JSON.parse(httpRequest.responseText);
-                                                let content = "";
-                                                for (let i = 0; i < jobs.length; i++) {
-                                                    content += "<div class=\"job-box card mt-4\">\n" +
-                                                        "                                        <div class=\"card-body p-4\">\n" +
-                                                        "                                            <div class=\"row\">\n" +
-                                                        "                                                <div class=\"col-lg-1\">\n" +
-                                                        "                                                    <a href=\"company-details.html\"><img src=\"/api/v1/users/" + jobs[i].job.user.id + "/image\" alt=\"\" class=\"img-fluid rounded-3\"></a>\n" +
-                                                        "                                                </div><!--end col-->\n" +
-                                                        "                                                <div class=\"col-lg-9\">\n" +
-                                                        "                                                    <div class=\"mt-3 mt-lg-0\">\n" +
-                                                        "                                                        <h5 class=\"fs-17 mb-1\"><a href=\"/jobs/" + jobs[i].job.id + "\" class=\"text-dark\">" + jobs[i].job.name + "</a> <small class=\"text-muted fw-normal\">(" + jobs[i].job.experience.level + " Exp.)</small></h5>\n" +
-                                                        "                                                        <ul class=\"list-inline mb-0\">\n" +
-                                                        "                                                            <li class=\"list-inline-item\">\n" +
-                                                        "                                                                <p class=\"text-muted fs-14 mb-0\">" + jobs[i].job.user.username + "</p>\n" +
-                                                        "                                                            </li>\n" +
-                                                        "                                                            <li class=\"list-inline-item\">\n" +
-                                                        "                                                                <p class=\"text-muted fs-14 mb-0\"><i class=\"mdi mdi-map-marker\"></i>" + jobs[i].job.location + "</p>\n" +
-                                                        "                                                            </li>\n" +
-                                                        "                                                            <li class=\"list-inline-item\">\n" +
-                                                        "                                                                <p class=\"text-muted fs-14 mb-0\"><i class=\"uil uil-wallet\"></i> " + jobs[i].job.salary + " / month</p>\n" +
-                                                        "                                                            </li>\n" +
-                                                        "                                                        </ul>\n" +
-                                                        "                                                        <div class=\"mt-2\">\n" +
-                                                        "                                                            <span class=\"badge danger-bg-subtle mt-1\">" + jobs[i].job.type + "</span>\n" +
-                                                        "                                                            <span class=\"badge info-bg-subtle mt-1\">" + jobs[i].job.industry + "</span>\n" +
-                                                        "                                                        </div>\n" +
-                                                        "                                                    </div>\n" +
-                                                        "                                                </div><!--end col-->\n" +
-                                                        "                                            </div><!--end row-->\n" +
-                                                        "                                        </div>\n" +
-                                                        "                                    </div><!--end job-box-->";
-                                                }
-                                                document.getElementById("jobs-list").innerHTML = content;
+                                    $(document).ready(function () {
+                                        $.get("/api/v1/jobs-users/user/" + document.getElementById("userId").value, function (data) {
+                                            let content = "";
+                                            for (let i = 0; i < data.length; i++) {
+                                                content += "<div class=\"job-box card mt-4\">\n" +
+                                                    "                                        <div class=\"card-body p-4\">\n" +
+                                                    "                                            <div class=\"row\">\n" +
+                                                    "                                                <div class=\"col-lg-1\">\n" +
+                                                    "                                                    <a href=\"company-details.html\"><img src=\"/api/v1/users/" + data[i].job.user.id + "/image\" alt=\"\" class=\"img-fluid rounded-3\"></a>\n" +
+                                                    "                                                </div><!--end col-->\n" +
+                                                    "                                                <div class=\"col-lg-9\">\n" +
+                                                    "                                                    <div class=\"mt-3 mt-lg-0\">\n" +
+                                                    "                                                        <h5 class=\"fs-17 mb-1\"><a href=\"/jobs/" + data[i].job.id + "\" class=\"text-dark\">" + data[i].job.name + "</a> <small class=\"text-muted fw-normal\">(" + data[i].job.experience.level + " Exp.)</small></h5>\n" +
+                                                    "                                                        <ul class=\"list-inline mb-0\">\n" +
+                                                    "                                                            <li class=\"list-inline-item\">\n" +
+                                                    "                                                                <p class=\"text-muted fs-14 mb-0\">" + data[i].job.user.username + "</p>\n" +
+                                                    "                                                            </li>\n" +
+                                                    "                                                            <li class=\"list-inline-item\">\n" +
+                                                    "                                                                <p class=\"text-muted fs-14 mb-0\"><i class=\"mdi mdi-map-marker\"></i>" + data[i].job.location + "</p>\n" +
+                                                    "                                                            </li>\n" +
+                                                    "                                                            <li class=\"list-inline-item\">\n" +
+                                                    "                                                                <p class=\"text-muted fs-14 mb-0\"><i class=\"uil uil-wallet\"></i> " + data[i].job.salary + " / month</p>\n" +
+                                                    "                                                            </li>\n" +
+                                                    "                                                        </ul>\n" +
+                                                    "                                                        <div class=\"mt-2\">\n" +
+                                                    "                                                            <span class=\"badge danger-bg-subtle mt-1\">" + data[i].job.type + "</span>\n" +
+                                                    "                                                            <span class=\"badge info-bg-subtle mt-1\">" + data[i].job.industry + "</span>\n" +
+                                                    "                                                        </div>\n" +
+                                                    "                                                    </div>\n" +
+                                                    "                                                </div><!--end col-->\n" +
+                                                    "                                            </div><!--end row-->\n" +
+                                                    "                                        </div>\n" +
+                                                    "                                    </div><!--end job-box-->";
                                             }
-                                        }
-                                        httpRequest.send();
-                                    }
-
+                                            $("#jobs-list").html(content);
+                                        })
+                                    })
                                 </script>
 
                                 <div class="col-lg-12" id="jobs-list">
-
-                                    <script>
-                                        loadJobs();
-                                    </script>
-
                                 </div><!--end col-->
                             </div><!--end row-->
                         </div><!--end container-->
