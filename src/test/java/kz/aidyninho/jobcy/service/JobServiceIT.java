@@ -1,6 +1,7 @@
 package kz.aidyninho.jobcy.service;
 
 import kz.aidyninho.jobcy.dto.JobCreateDto;
+import kz.aidyninho.jobcy.dto.JobFilter;
 import kz.aidyninho.jobcy.dto.JobReadDto;
 import kz.aidyninho.jobcy.entity.JobType;
 import org.junit.jupiter.api.MethodOrderer;
@@ -35,7 +36,7 @@ class JobServiceIT extends IntegrationTestBase {
     @Test
     @Order(2)
     void findAllByFilter() {
-        Page<JobReadDto> actual = jobService.findAllByFilter(jobService.getFilter(), Pageable.ofSize(10));
+        Page<JobReadDto> actual = jobService.findAllByFilter(new JobFilter(), Pageable.ofSize(10));
         assertNotNull(actual);
         assertFalse(actual.isEmpty());
         assertEquals(2, actual.getTotalElements());
