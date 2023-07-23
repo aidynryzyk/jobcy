@@ -25,4 +25,8 @@ public class KeywordService {
                 keywordMapper::toDto
         ).toList();
     }
+
+    public KeywordDto findById(Long id) {
+        return keywordMapper.toDto(keywordRepository.findById(id).get());
+    }
 }

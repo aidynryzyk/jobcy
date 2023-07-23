@@ -1,6 +1,7 @@
 package kz.aidyninho.jobcy.specification;
 
 import jakarta.persistence.criteria.Predicate;
+import kz.aidyninho.jobcy.dto.KeywordDto;
 import kz.aidyninho.jobcy.entity.Job;
 import kz.aidyninho.jobcy.entity.JobType;
 import kz.aidyninho.jobcy.entity.Keyword;

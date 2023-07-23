@@ -12,11 +12,10 @@ import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/")
-@SessionAttributes(value = {"userId"})
+@SessionAttributes(value = {"userId", "filter"})
 public class JobController {
 
     private final JobService jobService;
-    private final UserService userService;
     private final CategoryService categoryService;
     private final ExperienceService experienceService;
     private final KeywordService keywordService;
@@ -24,13 +23,11 @@ public class JobController {
 
     @Autowired
     public JobController(JobService jobService,
-                         UserService userService,
                          CategoryService categoryService,
                          ExperienceService experienceService,
                          KeywordService keywordService,
                          IndustryService industryService) {
         this.jobService = jobService;
-        this.userService = userService;
         this.categoryService = categoryService;
         this.experienceService = experienceService;
         this.keywordService = keywordService;
@@ -39,9 +36,6 @@ public class JobController {
 
     @GetMapping
     public String index(Model model, Authentication authentication) {
-//        if (authentication != null) {
-//            model.addAttribute("userId", userService.findByUsername(authentication.getName()).getId());
-//        }
         return "index";
     }
 
@@ -52,32 +46,20 @@ public class JobController {
     }
 
     @GetMapping("/jobs")
-    public String findAll(Model model, Authentication authentication) {
+    public String findAll(Model model, JobFilter filter) {
         model.addAttribute("cities", City.values());
         model.addAttribute("categories", categoryService.findAllWithJobsCount());
         model.addAttribute("experiences", experienceService.findAll());
         model.addAttribute("types", JobType.values());
         model.addAttribute("keywords", keywordService.findAll());
-        model.addAttribute("filter", jobService.getFilter());
-//        if (authentication != null) {
-//            model.addAttribute("userId", userService.findByUsername(authentication.getName()).getId());
-//        }
+        model.addAttribute("filter", filter);
         return "job-list";
     }
 
     @GetMapping("/jobs/{id}")
     public String jobDetailsPage(Model model, @PathVariable Long id, Authentication authentication) {
         model.addAttribute("jobId", id);
-//        if (authentication != null) {
-//            model.addAttribute("userId", userService.findByUsername(authentication.getName()).getId());
-//        }
         return "job-details";
-    }
-
-    @PostMapping("/jobs/filter")
-    public String setFilter(Model model) {
-        model.addAttribute("filter", jobService.getFilter());
-        return "redirect:/jobs";
     }
 
     @GetMapping("/users/user/jobs/post/{id}")

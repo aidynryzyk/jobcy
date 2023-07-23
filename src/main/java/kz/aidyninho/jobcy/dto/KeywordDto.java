@@ -10,7 +10,6 @@ import lombok.Setter;
 @RequiredArgsConstructor
 @AllArgsConstructor
 public class KeywordDto {
-
     private Long id;
     private String name;
 }

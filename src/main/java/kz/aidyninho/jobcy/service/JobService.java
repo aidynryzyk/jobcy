@@ -28,7 +28,6 @@ public class JobService {
     private final IndustryRepository industryRepository;
     private final JobMapper jobMapper;
     private final KeywordMapper keywordMapper;
-    private JobFilter jobFilter = new JobFilter();
 
     @Autowired
     public JobService(JobRepository jobRepository,
@@ -53,7 +52,7 @@ public class JobService {
                 filter.getName(),
                 filter.getLocation(),
                 filter.getCategoryId(),
-                filter.getExperience(),
+                filter.getExperienceId(),
                 filter.getType(),
                 filter.getPostDate(),
                 filter.getKeywords()
@@ -67,15 +66,6 @@ public class JobService {
                 .map(
                         jobMapper::toReadDto
                 ).toList();
-    }
-
-    public JobFilter getFilter() {
-        return jobFilter;
-    }
-
-    @Transactional
-    public void saveFilter(JobFilter jobFilter) {
-        this.jobFilter = jobFilter;
     }
 
     @Transactional

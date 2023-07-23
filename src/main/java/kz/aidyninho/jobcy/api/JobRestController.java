@@ -29,11 +29,7 @@ public class JobRestController {
     }
 
     @GetMapping("/jobs")
-    public Page<JobReadDto> findAll(Pageable pageable) {
-        JobFilter filter = jobService.getFilter();
-        if (filter == null) {
-            filter = new JobFilter();
-        }
+    public Page<JobReadDto> findAll(Pageable pageable, JobFilter filter) {
         return jobService.findAllByFilter(filter, pageable);
     }
 
@@ -65,16 +61,6 @@ public class JobRestController {
     @GetMapping("/jobs/previews")
     public List<JobReadDto> findTop4JobsByTypeOrderedByPostDate(@RequestParam String type) {
         return jobService.findTop4ByTypeOrderByPostDateDesc(JobType.valueOf(type));
-    }
-
-    @GetMapping("/jobs/filter")
-    public JobFilter findFilter() {
-        return jobService.getFilter();
-    }
-
-    @PostMapping("/jobs/filter")
-    public void saveFilter(@RequestBody JobFilter filter) {
-        jobService.saveFilter(filter);
     }
 
     @PostMapping("/users/user/jobs")

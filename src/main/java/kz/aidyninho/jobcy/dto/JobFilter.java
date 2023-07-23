@@ -14,7 +14,7 @@ public class JobFilter {
     private String name;
     private String location;
     private Integer categoryId;
-    private Integer experience;
+    private Integer experienceId;
     private JobType type;
     private String postDate;
     private List<Keyword> keywords;
