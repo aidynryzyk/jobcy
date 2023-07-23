@@ -35,7 +35,7 @@
                                         <div class="col-md-4">
                                             <div class="filter-search-form filter-border mt-3 mt-md-0">
                                                 <i class="uil uil-briefcase-alt"></i>
-<!--                                                                                                        <input type="search" id="job-title" class="form-control filter-input-box" placeholder="Job, Company name...">-->
+                                                <!--                                                                                                        <input type="search" id="job-title" class="form-control filter-input-box" placeholder="Job, Company name...">-->
                                                 <input class="form-control filter-input-box" id="job-search"
                                                        name="name" placeholder="Job, company... " type="search">
                                             </div>
@@ -62,7 +62,7 @@
                                         <div class="col-md-4">
                                             <div class="mt-3 mt-md-0 h-100">
                                                 <a class="btn btn-primary submit-btn w-100 h-100"
-                                                        onclick="window.location.href = '/jobs?name=' + document.getElementById('job-search').value + '&location=' + document.getElementById('location-drop-down').value">
+                                                   onclick="window.location.href = '/jobs?name=' + document.getElementById('job-search').value + '&location=' + document.getElementById('location-drop-down').value">
                                                     <i class="uil uil-search me-1"></i> Find Job
                                                 </a>
                                             </div>
@@ -135,7 +135,7 @@
                                             "                                    <i class=\"" + data[i].icon + "\"></i>\n" +
                                             "                                </div>\n" +
                                             "                                <div class=\"popu-category-content mt-4\">\n" +
-                                            "                                            <a onclick='saveFilter(" + data[i].id + ")' class=\"text-dark stretched-link\">\n" +
+                                            "                                            <a href='/jobs?categoryId=" + data[i].id + "' class=\"text-dark stretched-link\">\n" +
                                             "                                                <h5 class=\"fs-18\">" + data[i].name + "</h5>\n" +
                                             "                                            </a>\n" +
                                             "                                    <p class=\"text-muted mb-0\">" + data[i].jobsCount + " jobs</p>\n" +
@@ -145,89 +145,22 @@
                                     }
                                     $("#category-preview").html(content);
                                 })
-                            })
-                        </script>
-
-                        <script>
-                            function saveFilter(id) {
-                                let httpRequest = new XMLHttpRequest();
-                                httpRequest.open("POST", "/api/v1/jobs/filter", true);
-                                httpRequest.setRequestHeader("Content-Type", "application/json");
-                                let body;
-                                httpRequest.onreadystatechange = function () {
-                                    if (httpRequest.readyState === XMLHttpRequest.DONE && httpRequest.status === 200) {
-                                        console.log(body);
-                                    }
-                                }
-                                body = {
-                                    "name": null,
-                                    "location": null,
-                                    "categoryId": id,
-                                    "experience": null,
-                                    "type": null,
-                                    "postDate": null,
-                                    "keywords": null
-                                };
-                                body = JSON.stringify(body);
-                                console.log(body);
-                                httpRequest.send(body);
-                                window.location.href = '/jobs';
-                            }
-
-                            function saveFilterNameAndLocation(name, location) {
-                                // $(document).ready(function () {
-                                //     $.get("/api/v1/cities", function (data) {
-                                //         let content = "<option disabled selected value=''>Select city</option>";
-                                //         for (let i = 0; i < data.length; i++) {
-                                //             content += "<option>" + data[i] + "</option>";
-                                //         }
-                                //         $("#location-drop-down").html(content)
-                                //     })
-                                // })
-                                let httpRequest = new XMLHttpRequest();
-                                httpRequest.open("POST", "/api/v1/jobs/filter", true);
-                                httpRequest.setRequestHeader("Content-Type", "application/json");
-                                let body;
-                                httpRequest.onreadystatechange = function () {
-                                    if (httpRequest.readyState === XMLHttpRequest.DONE && httpRequest.status === 200) {
-                                        console.log(body);
-                                        window.location.href = "/jobs";
-
-                                    }
-                                }
-                                body = {
-                                    "name": name,
-                                    "location": location,
-                                    "categoryId": null,
-                                    "experience": null,
-                                    "type": null,
-                                    "postDate": null,
-                                    "keywords": null
-                                };
-                                body = JSON.stringify(body);
-                                console.log(body);
-                                httpRequest.send(body);
-                            }
-
+                            });
                             function apply() {
-                                let httpRequest = new XMLHttpRequest();
-                                httpRequest.open("POST", "/api/v1/jobs-users/apply", true);
-                                httpRequest.setRequestHeader("Content-Type", "application/json");
-                                let body;
-                                httpRequest.onreadystatechange = function () {
-                                    if (httpRequest.readyState === XMLHttpRequest.DONE && httpRequest.status === 200) {
-                                        console.log(body);
-                                    }
-                                }
-                                body = {
-                                    "jobId": document.getElementById("jobId").value,
-                                    "userId": document.getElementById("userId").value,
-                                    "message": document.getElementById("message").value
-                                };
-                                body = JSON.stringify(body);
-                                console.log(body);
-                                httpRequest.send(body);
-                                // window.location.href = '/jobs';
+                                $(document).ready(function () {
+                                    $.ajax({
+                                            url: "/api/v1/jobs-users/apply",
+                                            type: "POST",
+                                            data: JSON.stringify({
+                                                jobId: document.getElementById("jobId").value,
+                                                userId: document.getElementById("userId").value,
+                                                message: document.getElementById("message").value
+                                            }),
+                                            contentType: "application/json; charset=utf-8",
+                                            dataType: "json",
+                                        }
+                                    );
+                                });
                             }
                         </script>
                         <div class="row">
@@ -668,7 +601,7 @@
             </div>
             <!-- END CLIENT -->
 
-        <div th:insert="~{fragments :: applyModal}"></div>
+            <div th:insert="~{fragments :: applyModal}"></div>
         </div>
         <!-- End Page-content -->
 

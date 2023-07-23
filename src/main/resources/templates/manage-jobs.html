@@ -138,20 +138,17 @@
                                     }
 
                                     function deleteJob(job) {
-                                        let httpRequest = new XMLHttpRequest();
-                                        httpRequest.open("DELETE", "/api/v1/jobs/" + job, true);
-                                        httpRequest.setRequestHeader("Content-Type", "application/json");
-                                        let body;
-                                        httpRequest.onreadystatechange = function () {
-                                            if (httpRequest.readyState === XMLHttpRequest.DONE && httpRequest.status === 200) {
-                                                console.log(body);
-                                                loadManagedJobs();
+                                        $.ajax({
+                                                url: "/api/v1/jobs/" + job,
+                                                type: "DELETE",
+                                                data: JSON.stringify({
+                                                    id : job
+                                                }),
+                                                contentType: "application/json; charset=utf-8"
                                             }
-                                        }
-                                        body = {"id" : job};
-                                        body = JSON.stringify(body);
-                                        console.log(job);
-                                        httpRequest.send(body);
+                                        ).done(function () {
+                                            loadManagedJobs();
+                                        });
                                     }
                                 </script>
 

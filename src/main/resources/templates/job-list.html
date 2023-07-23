@@ -194,22 +194,20 @@
                                     }
 
                                     function apply() {
-                                        let httpRequest = new XMLHttpRequest();
-                                        httpRequest.open("POST", "/api/v1/jobs-users/apply", true);
-                                        httpRequest.setRequestHeader("Content-Type", "application/json");
-                                        let body;
-                                        httpRequest.onreadystatechange = function () {
-                                            if (httpRequest.readyState === XMLHttpRequest.DONE && httpRequest.status === 200) {
-                                            }
-                                        }
-                                        body = {
-                                            "jobId": document.getElementById("jobId").value,
-                                            "userId": document.getElementById("userId").value,
-                                            "message": document.getElementById("message").value
-                                        };
-                                        body = JSON.stringify(body);
-                                        httpRequest.send(body);
-                                        // window.location.href = '/jobs';
+                                        $(document).ready(function () {
+                                            $.ajax({
+                                                    url: "/api/v1/jobs-users/apply",
+                                                    type: "POST",
+                                                    data: JSON.stringify({
+                                                        jobId: document.getElementById("jobId").value,
+                                                        userId: document.getElementById("userId").value,
+                                                        message: document.getElementById("message").value
+                                                    }),
+                                                    contentType: "application/json; charset=utf-8",
+                                                    dataType: "json",
+                                                }
+                                            );
+                                        });
                                     }
                                 </script>
 

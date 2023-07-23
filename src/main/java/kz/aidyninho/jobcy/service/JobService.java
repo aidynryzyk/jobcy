@@ -15,7 +15,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional(readOnly = true)
@@ -114,7 +116,7 @@ public class JobService {
             job.setKeywords(jobCreateDto.getKeywords().stream()
                     .map(
                             keywordMapper::toModel
-                    ).toList());
+                    ).collect(Collectors.toList()));
         }
         jobRepository.save(job);
     }
